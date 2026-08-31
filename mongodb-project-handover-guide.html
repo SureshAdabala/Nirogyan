@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>Niro Health Calculator Platform · MongoDB Handover Guide</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: #0e1c2e;
+      --panel-2: #13263c;
+      --line: #24415b;
+      --text: #e8f1f8;
+      --muted: #a7bbca;
+      --accent: #65d7c2;
+      --accent-2: #83a9ff;
+      --danger: #ff8e86;
+      --warning: #ffd27e;
+      --safe: #8be4a6;
+      --shadow: 0 20px 60px rgb(0 0 0 / 24%);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 0%, rgb(101 215 194 / 11%), transparent 32rem),
+        radial-gradient(circle at 100% 10%, rgb(131 169 255 / 12%), transparent 34rem),
+        var(--bg);
+      font: 15px/1.65 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a { color: var(--accent); }
+    a:hover { color: #b7fff2; }
+    code, pre, .mono { font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace; }
+    code { color: #bfece4; font-size: .92em; }
+    .wrap { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    header { padding: 64px 0 30px; }
+    .eyebrow { color: var(--accent); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: .76rem; }
+    h1, h2, h3 { line-height: 1.18; margin: 0 0 14px; letter-spacing: -.025em; }
+    h1 { max-width: 850px; font-size: clamp(2.3rem, 6vw, 4.6rem); }
+    h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); margin-top: 18px; }
+    h3 { font-size: 1.12rem; }
+    p { margin: 8px 0 14px; }
+    .lede { max-width: 760px; color: var(--muted); font-size: 1.08rem; }
+    .meta { color: var(--muted); font-size: .9rem; }
+    nav {
+      position: sticky; top: 0; z-index: 10; backdrop-filter: blur(16px);
+      background: rgb(7 17 31 / 82%); border-block: 1px solid rgb(36 65 91 / 70%);
+    }
+    nav .wrap { display: flex; gap: 12px; overflow-x: auto; padding: 12px 0; }
+    nav a { white-space: nowrap; text-decoration: none; color: var(--muted); font-size: .88rem; }
+    nav a:hover { color: var(--text); }
+    section { padding: 34px 0; scroll-margin-top: 56px; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .card { grid-column: span 12; background: linear-gradient(145deg, rgb(19 38 60 / 88%), rgb(14 28 46 / 96%)); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+    .half { grid-column: span 6; }
+    .third { grid-column: span 4; }
+    .callout { border-left: 4px solid var(--accent); background: rgb(101 215 194 / 8%); padding: 16px 18px; border-radius: 0 12px 12px 0; }
+    .danger { border-left-color: var(--danger); background: rgb(255 142 134 / 9%); }
+    .warning { border-left-color: var(--warning); background: rgb(255 210 126 / 9%); }
+    .safe { border-left-color: var(--safe); background: rgb(139 228 166 / 8%); }
+    .badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; font-size: .76rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+    .badge.red { color: #ffd5d2; background: rgb(255 142 134 / 16%); border: 1px solid rgb(255 142 134 / 45%); }
+    .badge.amber { color: #ffe4ad; background: rgb(255 210 126 / 14%); border: 1px solid rgb(255 210 126 / 45%); }
+    .badge.green { color: #c8ffd7; background: rgb(139 228 166 / 14%); border: 1px solid rgb(139 228 166 / 45%); }
+    .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 18px; }
+    .fact { padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: rgb(7 17 31 / 35%); }
+    .fact strong { display: block; font-size: 1.05rem; color: var(--text); }
+    .fact span { color: var(--muted); font-size: .84rem; }
+    .steps { counter-reset: steps; display: grid; gap: 12px; }
+    .step { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: rgb(7 17 31 / 30%); }
+    .step::before { counter-increment: steps; content: counter(steps); display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: var(--bg); background: var(--accent); font-weight: 900; }
+    .step h3 { margin: 2px 0 5px; }
+    ul, ol { padding-left: 22px; }
+    li + li { margin-top: 5px; }
+    .checklist { display: grid; gap: 9px; }
+    label.check { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 10px; background: rgb(7 17 31 / 30%); border: 1px solid transparent; cursor: pointer; }
+    label.check:hover { border-color: var(--line); }
+    label.check input { margin-top: 5px; accent-color: var(--accent); }
+    label.check:has(input:checked) { color: var(--muted); text-decoration: line-through; }
+    pre { position: relative; overflow: auto; padding: 16px 18px; margin: 12px 0; border: 1px solid var(--line); border-radius: 12px; background: #06101b; color: #d8e9f5; font-size: .86rem; line-height: 1.6; }
+    .copy { float: right; margin: 0 0 8px 10px; padding: 5px 9px; border: 1px solid #3b6686; border-radius: 8px; background: #10283e; color: var(--text); cursor: pointer; font: inherit; font-size: .78rem; }
+    .copy:hover { border-color: var(--accent); color: var(--accent); }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+    table { width: 100%; border-collapse: collapse; min-width: 760px; }
+    th, td { text-align: left; vertical-align: top; padding: 12px 13px; border-bottom: 1px solid rgb(36 65 91 / 75%); }
+    th { color: #c6dbeb; background: #102237; font-size: .78rem; letter-spacing: .07em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+    td small { display: block; color: var(--muted); margin-top: 3px; }
+    .table-tight td, .table-tight th { padding: 9px 11px; }
+    details { border: 1px solid var(--line); border-radius: 12px; margin: 10px 0; background: rgb(7 17 31 / 25%); }
+    summary { cursor: pointer; padding: 13px 15px; color: #cfe4f1; font-weight: 750; }
+    details > div { padding: 0 15px 15px; }
+    .file-list { columns: 2 320px; column-gap: 28px; list-style: none; padding: 0; }
+    .file-list li { break-inside: avoid; color: var(--muted); font-size: .82rem; margin: 4px 0; }
+    .file-list code { color: #c1d7e7; }
+    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .timeline div { padding: 15px; border-top: 3px solid var(--accent-2); background: rgb(7 17 31 / 35%); border-radius: 10px; }
+    .timeline strong { display: block; color: var(--accent-2); }
+    footer { padding: 28px 0 60px; color: var(--muted); border-top: 1px solid var(--line); }
+    @media (max-width: 800px) { .half, .third { grid-column: span 12; } .timeline { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px) { .wrap { width: min(100% - 22px, 1180px); } header { padding-top: 40px; } .timeline { grid-template-columns: 1fr; } .card { padding: 17px; } }
+  </style>
+</head>
+<body>
+  <header class="wrap" id="top">
+    <div class="eyebrow">Secure project handover · audited 31 Aug 2026</div>
+    <h1>Niro Health Calculator Platform<br>MongoDB + team handover guide</h1>
+    <p class="lede">A project-specific setup and security checklist for transferring this repository to another developer. It contains placeholders only; do not paste real credentials into this file, Git, chat, issue trackers, or documentation.</p>
+    <p class="meta">Scope: repository root <code>C:\athnect</code> · branch observed: <code>master</code> · current local history: one reachable commit · application logic was not changed for this guide.</p>
+  </header>
+
+  <nav>
+    <div class="wrap">
+      <a href="#quick-start">Quick Start</a>
+      <a href="#audit">Audit</a>
+      <a href="#atlas">Atlas Setup</a>
+      <a href="#config">Configuration</a>
+      <a href="#files">MongoDB Files</a>
+      <a href="#security">Security</a>
+      <a href="#git">Git Handover</a>
+      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#final">Final Checklist</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section id="quick-start">
+      <div class="grid">
+        <div class="card">
+          <span class="badge red">Do before sharing</span>
+          <h2>Quick Start</h2>
+          <p>The shortest safe path is: keep the existing database private, create a separate development database user (or a separate dev project/cluster), create fresh local application secrets, and share only the repository plus this guide.</p>
+          <div class="checklist">
+            <label class="check"><input type="checkbox" data-save="quick-1"> <span>Exclude the ignored root <code>.env</code> from every ZIP, screen share, commit, and cloud upload.</span></label>
+            <label class="check"><input type="checkbox" data-save="quick-2"> <span>Create a recipient-specific Atlas database user with <code>readWrite</code> on a non-production database.</span></label>
+            <label class="check"><input type="checkbox" data-save="quick-3"> <span>Give the recipient Atlas project access only if they need the Atlas UI; an Atlas login is separate from a database user.</span></label>
+            <label class="check"><input type="checkbox" data-save="quick-4"> <span>Generate independent local <code>AUTH_ACCESS_SECRET</code>, <code>AUTH_REFRESH_SECRET</code>, and <code>ANALYTICS_HASH_SECRET</code> values.</span></label>
+            <label class="check"><input type="checkbox" data-save="quick-5"> <span>Configure the new developer's exact public IP in Atlas Network Access and run <code>npm run db:ping --workspace @niro/server</code>.</span></label>
+            <label class="check"><input type="checkbox" data-save="quick-6"> <span>After the ping succeeds, bootstrap a unique local admin account and start the two-workspace development server.</span></label>
+          </div>
+        </div>
+        <div class="card half">
+          <h3>What this repository is</h3>
+          <div class="facts">
+            <div class="fact"><strong>TypeScript monorepo</strong><span>npm workspaces: contracts, engine, server, client</span></div>
+          <div class="fact"><strong>Express + Mongoose</strong><span>Mongoose 8.24.3 / driver 6.20.0 locked in <code>package-lock.json</code></span></div>
+            <div class="fact"><strong>Next.js + React</strong><span>public/admin UI in <code>apps/client</code></span></div>
+            <div class="fact"><strong>MongoDB Atlas</strong><span>SRV URI; local MongoDB is not required</span></div>
+          </div>
+        </div>
+        <div class="card half">
+          <h3>Runtime contract</h3>
+          <div class="facts">
+            <div class="fact"><strong>Node.js 24.x</strong><span><code>.node-version</code>, CI, and native deployment</span></div>
+            <div class="fact"><strong>npm 11.6.1</strong><span><code>package.json</code>, CI, and deployment config</span></div>
+            <div class="fact"><strong>API :4000</strong><span>health: <code>/healthz</code>, readiness: <code>/readyz</code></span></div>
+            <div class="fact"><strong>Client :3000</strong><span>health: <code>/api/healthz</code></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="audit">
+      <h2>Audit snapshot</h2>
+      <p class="meta">Findings below are based on the current working tree, tracked files, configuration references, deployment templates, and the reachable local Git history. Values are intentionally not reproduced.</p>
+      <div class="grid">
+        <div class="card third"><span class="badge green">Confirmed</span><h3>Atlas, not local MongoDB</h3><p>The ignored root <code>.env</code> has a set <code>mongodb+srv</code> URI with user information, and the repository docs explicitly require a transaction-capable Atlas deployment. The manifest declares Mongoose <code>^8.19.1</code>; the lockfile resolves Mongoose <code>8.24.3</code> and the MongoDB driver <code>6.20.0</code>.</p></div>
+        <div class="card third"><span class="badge green">Confirmed</span><h3>Secrets are not tracked</h3><p><code>.env</code> is ignored and is not in Git; <code>.env.example</code> is tracked. Tracked raw URI matches are placeholders or test-only fixtures, not live Atlas credentials.</p></div>
+        <div class="card third"><span class="badge red">Critical before packaging</span><h3>Local .env is credential-bearing</h3><p>The current local <code>.env</code> contains set MongoDB, admin bootstrap, authentication, and analytics values. Do not share it. If it has ever left the owner's trusted machine, rotate the affected values immediately.</p></div>
+        <div class="card warning"><span class="badge amber">Warning</span><h3>Template gap: admin bootstrap variables</h3><p><code>scripts/bootstrap-admin.ts</code> reads <code>ADMIN_BOOTSTRAP_EMAIL</code>, <code>ADMIN_BOOTSTRAP_PASSWORD</code>, and optional <code>ADMIN_BOOTSTRAP_ROLE</code>, but the tracked <code>.env.example</code> does not list them. Add commented placeholders manually if you want the template to be self-documenting; this guide does not alter the template.</p></div>
+        <div class="card warning"><span class="badge amber">Warning</span><h3>Deployment convention matters</h3><p><code>render.yaml</code> selects Render native Node for API, web fallback, and three cron jobs. Vercel is prepared for the frontend. Docker and Kubernetes files are retained historical reference assets; their Dockerfiles use Node 22 and should not be treated as the selected deployment contract.</p></div>
+        <div class="card warning"><span class="badge amber">Could not determine</span><h3>External ownership is outside Git</h3><p>⚠️ Could not determine from the repository: the correct Atlas organization/project/cluster IDs, current Atlas members, provider account ownership, production values, DNS, monitoring, or whether any unseen remote Git history contains secrets.</p></div>
+      </div>
+    </section>
+
+    <section id="atlas">
+      <h2>MongoDB Atlas setup for the new developer</h2>
+      <p>Use the same Atlas project only when the owner intends to share that project. For the safest handover, use a separate non-production database or dev cluster and a database user created specifically for the new developer. Atlas website access and database access are separate concepts.</p>
+      <div class="callout warning"><strong>Do not share an existing database password.</strong> Create a new database user, or rotate the existing user only if its credentials were exposed. Never grant a development tool access to production data just because the application can connect to it.</div>
+      <div class="steps">
+        <article class="step"><div><h3>Create or accept Atlas access</h3><p>Sign in to <a href="https://www.mongodb.com/atlas/database" target="_blank" rel="noopener noreferrer">MongoDB Atlas</a>. The owner should invite the developer to the intended organization/project if Atlas UI access is required. Do not send an Atlas account password.</p><p>Atlas website roles are documented in <a href="https://www.mongodb.com/docs/atlas/reference/user-roles/" target="_blank" rel="noopener noreferrer">Atlas user roles</a>. Project-level access is not the same as a database user. When a developer leaves the project or no longer needs access, remove their Atlas organization/project membership and their database user separately.</p></div></article>
+        <article class="step"><div><h3>Select the correct organization and project</h3><p>Choose the project that owns the development cluster. Confirm its name and environment with the owner before creating users or changing Network Access. ⚠️ Could not determine from the repository which Atlas organization/project is authoritative.</p></div></article>
+        <article class="step"><div><h3>Create or select a development cluster</h3><p>Use the existing development cluster only if its owner approves. Otherwise create the smallest transaction-capable dev deployment permitted by the project policy. The application relies on replica-set transactions; do not substitute an arbitrary standalone local server.</p><p>See <a href="https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster/" target="_blank" rel="noopener noreferrer">Atlas free-tier cluster deployment</a> and <a href="https://www.mongodb.com/docs/manual/core/transactions/" target="_blank" rel="noopener noreferrer">MongoDB transactions</a>.</p></div></article>
+        <article class="step"><div><h3>Create a database user</h3><p>In Atlas, open <strong>Database Access</strong> and create a unique user such as <code>&lt;developer-id&gt;_app_dev</code>. Use a long random password stored in a password manager. Assign only <code>readWrite</code> on the non-production database <code>&lt;MONGODB_DATABASE&gt;</code>; do not use an Atlas Owner credential as the application credential.</p><p>Follow <a href="https://www.mongodb.com/docs/atlas/security-add-mongodb-users/" target="_blank" rel="noopener noreferrer">Configure database users</a>. For this application, full local development, seeding, admin flows, and guarded integration writes need database writes. A read-only role cannot run those workflows.</p></div></article>
+        <article class="step"><div><h3>Configure Network Access</h3><p>In <strong>Network Access</strong>, add the developer's current public IP as an exact <code>/32</code> entry, with a useful comment and an expiry if policy allows. Do not use <code>0.0.0.0/0</code> for normal development. Atlas applies the list to all clusters in the project.</p><p>See <a href="https://www.mongodb.com/docs/atlas/security/ip-access-list/" target="_blank" rel="noopener noreferrer">Configure IP access list entries</a>.</p></div></article>
+        <article class="step"><div><h3>Copy the driver URI</h3><p>Open <strong>Database &gt; Connect &gt; Drivers</strong>, choose Node.js, and copy the SRV URI. The username and password occur inside the URI; they are not separate variables used by this repository.</p><pre id="uri-template"><button class="copy" data-copy-target="uri-template">Copy</button><code>mongodb+srv://&lt;MONGODB_USERNAME&gt;:&lt;URL_ENCODED_MONGODB_PASSWORD&gt;@&lt;ATLAS_CLUSTER_HOST&gt;/&lt;MONGODB_DATABASE&gt;?retryWrites=true&amp;w=majority&amp;appName=niro-platform</code></pre><p>URL-encode the username and password when required. See <a href="https://www.mongodb.com/docs/manual/reference/connection-string-formats/" target="_blank" rel="noopener noreferrer">connection string formats</a> and the <a href="https://www.mongodb.com/docs/drivers/node/current/security/authentication/scram/" target="_blank" rel="noopener noreferrer">Node.js SCRAM authentication guide</a>.</p></div></article>
+        <article class="step"><div><h3>Configure the ignored root .env</h3><p>From the repository root, copy the template and edit only the local file:</p><pre id="copy-env"><button class="copy" data-copy-target="copy-env">Copy</button><code>Copy-Item .env.example .env</code></pre><p>Set <code>MONGODB_URI</code>, <code>MONGODB_DB_NAME</code>, and the local secrets described in the matrix below. Keep the database name unmistakably non-production, such as <code>niro_dev</code> or an owner-approved developer suffix containing <code>dev</code> or <code>test</code> when using public-test catalog mode.</p></div></article>
+        <article class="step"><div><h3>Install and verify the connection</h3><pre id="copy-install"><button class="copy" data-copy-target="copy-install">Copy</button><code>npm ci
+npm run db:ping --workspace @niro/server</code></pre><p>The ping should report status <code>ok</code>, the resolved database name, Atlas host, and ready state. It does not print the URI. Do not run cleanup-capable integration commands until the database name has been checked.</p></div></article>
+        <article class="step"><div><h3>Bootstrap a separate local admin</h3><p>Add these only to the ignored root <code>.env</code> for the one-time bootstrap. Use the developer's own email and a new password; do not reuse the owner's current bootstrap password.</p><pre id="copy-admin-env"><button class="copy" data-copy-target="copy-admin-env">Copy</button><code>ADMIN_BOOTSTRAP_EMAIL=&lt;DEVELOPER_EMAIL&gt;
+ADMIN_BOOTSTRAP_PASSWORD=&lt;ONE_TIME_BOOTSTRAP_PASSWORD&gt;
+ADMIN_BOOTSTRAP_ROLE=editor</code></pre><pre id="copy-admin"><button class="copy" data-copy-target="copy-admin"><code>Copy</code></button><code>npm run admin:bootstrap</code></pre><p>The script uses <code>$setOnInsert</code>; if the email already exists, it does not reset that user's password. Use a unique email for a new account, then remove the bootstrap variables from the shell/file when finished.</p></div></article>
+        <article class="step"><div><h3>Start and smoke-test the app</h3><pre id="copy-dev"><button class="copy" data-copy-target="copy-dev">Copy</button><code>npm run dev</code></pre><p>Open <code>http://localhost:3000</code>, <code>http://localhost:3000/admin/login</code>, <code>http://localhost:4000/healthz</code>, and <code>http://localhost:4000/readyz</code>. The root dev runner starts the server on port 4000 and gives Next.js <code>CLIENT_PORT</code> (default 3000).</p></div></article>
+      </div>
+    </section>
+
+    <section id="config">
+      <h2>Project configuration</h2>
+      <div class="callout"><strong>Where MongoDB is wired.</strong> The server calls <code>loadProjectEnvironment()</code>, which resolves the project-root <code>.env</code>. <code>connectDatabase()</code> uses <code>MONGODB_URI</code> plus <code>MONGODB_DB_NAME</code>, <code>MONGODB_SERVER_SELECTION_TIMEOUT_MS</code>, and <code>MONGODB_MAX_POOL_SIZE</code>. Production validation is fail-closed and rejects unresolved placeholders, unsafe database names, and non-TLS non-SRV production URIs.</div>
+      <div class="table-wrap" style="margin-top:16px">
+        <table>
+          <thead><tr><th>File → exact location / variable</th><th>Current purpose</th><th>What to change before sharing</th><th>Safe example</th></tr></thead>
+          <tbody>
+            <tr><td><code>.env → MONGODB_URI</code></td><td>Atlas SRV connection string consumed by Mongoose.</td><td>Never share the current value. Create a recipient-specific database user and replace the URI in the recipient's local file. If the old URI was exposed, delete/revoke the old user or rotate its password.</td><td><code>mongodb+srv://&lt;MONGODB_USERNAME&gt;:&lt;URL_ENCODED_MONGODB_PASSWORD&gt;@&lt;ATLAS_CLUSTER_HOST&gt;/&lt;MONGODB_DATABASE&gt;?retryWrites=true&amp;w=majority</code></td></tr>
+            <tr><td><code>.env → MONGODB_DB_NAME</code></td><td>Explicit database selected by Mongoose; defaults to <code>niro_dev</code> only when absent.</td><td>Use a separate non-production database. Verify it before every write-capable script.</td><td><code>&lt;MONGODB_DATABASE&gt;</code> or <code>niro_dev</code></td></tr>
+            <tr><td><code>.env → MONGODB_SERVER_SELECTION_TIMEOUT_MS</code></td><td>Atlas server selection timeout.</td><td>Usually keep the documented local value; change only for a known network/tier reason.</td><td><code>10000</code></td></tr>
+            <tr><td><code>.env → MONGODB_MAX_POOL_SIZE</code></td><td>Mongoose connection pool cap.</td><td>Keep the local default unless the Atlas tier or workload requires a reviewed value.</td><td><code>10</code></td></tr>
+            <tr><td><code>.env → AUTH_ACCESS_SECRET</code><br><code>.env → AUTH_REFRESH_SECRET</code></td><td>Signs admin access and refresh JWTs.</td><td>Generate two independent high-entropy values. Never reuse the owner's values. Rotating them invalidates existing tokens.</td><td><code>&lt;GENERATE_32_PLUS_RANDOM_CHARS&gt;</code></td></tr>
+            <tr><td><code>.env → ANALYTICS_HASH_SECRET</code></td><td>Server-only HMAC key for privacy-safe analytics identifiers.</td><td>Generate a fresh local value; never expose it through <code>NEXT_PUBLIC_*</code>. Do not use a production value in development.</td><td><code>&lt;GENERATE_32_PLUS_RANDOM_CHARS&gt;</code></td></tr>
+            <tr><td><code>.env → ADMIN_BOOTSTRAP_EMAIL</code><br><code>.env → ADMIN_BOOTSTRAP_PASSWORD</code><br><code>.env → ADMIN_BOOTSTRAP_ROLE</code></td><td>One-time account creation inputs read by <code>scripts/bootstrap-admin.ts</code>; omitted from <code>.env.example</code>.</td><td>Use a new developer email/password and the least role needed (<code>editor</code> for authoring, <code>medical-reviewer</code> only when independently authorized). Remove the password after bootstrapping.</td><td><code>&lt;DEVELOPER_EMAIL&gt;</code>, <code>&lt;ONE_TIME_PASSWORD&gt;</code>, <code>editor</code></td></tr>
+            <tr><td><code>.env → ASSESSMENT_RETENTION_DAYS</code></td><td>Required when MongoDB-backed assessment/result persistence is enabled; production fails closed if missing.</td><td>Use the approved policy value. Do not invent retention policy. It is not a database credential, but it controls deletion/TTL behavior.</td><td><code>&lt;APPROVED_RETENTION_DAYS&gt;</code></td></tr>
+            <tr><td><code>.env → ANALYTICS_*</code></td><td>Analytics retention, reporting timezone, leases, cohort suppression, and optional visitor persistence.</td><td>Use approved policy values. Visitor persistence requires the enable flag, retention, and consent version together; keep disabled unless approved.</td><td><code>&lt;APPROVED_POLICY_VALUE&gt;</code></td></tr>
+            <tr><td><code>.env → LEAD_RETENTION_DAYS</code><br><code>.env → LEAD_CONSENT_VERSION</code></td><td>Optional server-side lead capture retention/consent contract.</td><td>Keep absent/disabled unless the product/privacy owner supplies both values. Do not invent a consent version.</td><td><code>&lt;APPROVED_VALUE&gt;</code></td></tr>
+            <tr><td><code>.env → API_BASE_URL</code><br><code>.env → NEXT_PUBLIC_API_BASE_URL</code><br><code>.env → SITE_URL</code><br><code>.env → NEXT_PUBLIC_SITE_URL</code><br><code>.env → CORS_ORIGINS</code></td><td>Server-rendering, browser API, canonical site, and CORS origins.</td><td>For local development use exact localhost origins. For production use matching HTTPS origins; never put credentials in URLs.</td><td><code>http://localhost:4000/api/v1</code>, <code>http://localhost:3000</code></td></tr>
+            <tr><td><code>.env → CACHE_INVALIDATION_ENDPOINT</code><br><code>.env → CACHE_INVALIDATION_SIGNING_SECRET</code></td><td>Signs cache-outbox callbacks from the API/worker to the Next revalidation route.</td><td>Not needed for ordinary local startup. If deployment uses it, configure both endpoint and fresh server-only secret together; put the same secret only in the API/cache worker and Next server runtime.</td><td><code>https://&lt;SITE_HOST&gt;/api/v1/internal/revalidate</code>, <code>&lt;GENERATE_32_PLUS_RANDOM_CHARS&gt;</code></td></tr>
+            <tr><td><code>.env → METRICS_SCRAPE_TOKEN</code></td><td>Bearer protection for server-only <code>/metrics</code>.</td><td>Optional locally; required and distinct in the production validator. Never put it in a <code>NEXT_PUBLIC_*</code> variable or browser build.</td><td><code>&lt;GENERATE_32_PLUS_RANDOM_CHARS&gt;</code></td></tr>
+            <tr><td><code>.env → RESTORE_MONGODB_URI</code><br><code>.env → RESTORE_MONGODB_DB_NAME</code><br><code>.env → RESTORE_TARGET_LABEL</code></td><td>Read-only isolated restore verification only.</td><td>Keep out of normal application pods and ordinary developer files. Use only an isolated restore target and a read-only Atlas restore user when the owner authorizes a drill.</td><td><code>mongodb+srv://&lt;RESTORE_READER&gt;:&lt;REDACTED&gt;@&lt;RESTORED_HOST&gt;/&lt;DB&gt;</code>, <code>restore-drill-&lt;ID&gt;</code></td></tr>
+            <tr><td><code>.github/workflows/ci.yml → secrets.P10_MONGODB_URI</code><br><code>.github/workflows/p10-gate.yml → secrets.P10_MONGODB_URI</code></td><td>Protected GitHub <code>p10-test</code> Atlas URI for guarded integration/live gates.</td><td>Use only a dedicated disposable/test database or cluster. Rotate/revoke if exposed. The new developer does not need this to run ordinary local development.</td><td><code>&lt;DEDICATED_P10_ATLAS_URI&gt;</code></td></tr>
+            <tr><td><code>render.yaml → niro-api envVars</code></td><td>Render source service owns Atlas URI, database, policy, origins, and server secrets; cron services consume selected values via <code>fromService</code>.</td><td>Enter values in Render's secret/config manager, not Git. Re-sync after source changes; rebuild the client after any changed <code>NEXT_PUBLIC_*</code> value.</td><td><code>&lt;PROVIDER_SECRET_MANAGER_VALUE&gt;</code></td></tr>
+            <tr><td><code>apps/client/app/api/v1/internal/revalidate/route.ts → CACHE_INVALIDATION_SIGNING_SECRET</code></td><td>Server-only signature verification for revalidation requests.</td><td>Keep secret-only and server-side. Never provide it as a client build argument or <code>NEXT_PUBLIC_*</code> value.</td><td><code>&lt;SAME_SERVER_ONLY_SIGNING_SECRET&gt;</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin-top:28px">Environment variable matrix</h3>
+      <p>These are the variable names detected from the template, source, CI, scripts, and deployment files. “Required” means required for the named scope—not necessarily for every local command.</p>
+      <details open><summary>Local development and application runtime</summary><div class="table-wrap"><table class="table-tight"><thead><tr><th>Variable</th><th>Scope</th><th>Safe value/action</th></tr></thead><tbody>
+        <tr><td><code>NODE_ENV</code></td><td>Local/server</td><td><code>development</code> or <code>test</code>; production is validated separately.</td></tr>
+        <tr><td><code>PORT</code>, <code>CLIENT_PORT</code>, <code>HOST</code>, <code>TRUST_PROXY_HOPS</code></td><td>Local/server/network</td><td><code>4000</code>, <code>3000</code>, <code>127.0.0.1</code>, and <code>0</code> for direct local use.</td></tr>
+        <tr><td><code>CORS_ORIGINS</code></td><td>Server</td><td>Exact local UI origin, for example <code>http://localhost:3000</code>.</td></tr>
+        <tr><td><code>LOG_LEVEL</code></td><td>Server</td><td><code>info</code> locally; never log credentials, headers, bodies, URLs with queries, or health inputs.</td></tr>
+        <tr><td><code>MONGODB_URI</code>, <code>MONGODB_DB_NAME</code></td><td>Server/CLI</td><td>New developer-specific Atlas URI and an approved non-production DB name.</td></tr>
+        <tr><td><code>MONGODB_SERVER_SELECTION_TIMEOUT_MS</code>, <code>MONGODB_MAX_POOL_SIZE</code></td><td>Mongoose</td><td>Documented local defaults: <code>10000</code> and <code>10</code>.</td></tr>
+        <tr><td><code>ASSESSMENT_RETENTION_DAYS</code></td><td>Persistence</td><td>Approved positive number; required whenever <code>MONGODB_URI</code> is configured.</td></tr>
+        <tr><td><code>AUTH_ACCESS_SECRET</code>, <code>AUTH_REFRESH_SECRET</code></td><td>Server-only auth</td><td>Two distinct random secrets, each at least 32 characters.</td></tr>
+        <tr><td><code>ANALYTICS_HASH_SECRET</code></td><td>Server-only analytics</td><td>Distinct random secret, at least 32 characters; required for analytics writes/production.</td></tr>
+        <tr><td><code>ANALYTICS_IDENTITY_KEY_VERSION</code>, <code>ANALYTICS_EVENTS_RETENTION_DAYS</code>, <code>ANALYTICS_REPORTING_TIMEZONE</code>, <code>ANALYTICS_JOB_LEASE_SECONDS</code>, <code>ANALYTICS_MIN_COHORT_SIZE</code></td><td>Analytics</td><td>Use approved policy values; code defaults include <code>v1</code>, <code>180</code>, <code>Asia/Kolkata</code>, <code>900</code>, and <code>5</code> where applicable.</td></tr>
+        <tr><td><code>ANALYTICS_VISITOR_PERSISTENCE_ENABLED</code>, <code>ANALYTICS_VISITOR_RETENTION_DAYS</code>, <code>ANALYTICS_VISITOR_CONSENT_VERSION</code></td><td>Optional visitor persistence</td><td>Keep <code>false</code>/unset unless approved; when enabled, configure all three consistently.</td></tr>
+        <tr><td><code>LEAD_RETENTION_DAYS</code>, <code>LEAD_CONSENT_VERSION</code></td><td>Optional lead capture</td><td>Configure both together only with approved policy; otherwise keep unset.</td></tr>
+        <tr><td><code>PUBLIC_TEST_CATALOG_ENABLED</code></td><td>Loopback dev only</td><td><code>false</code> normally. If enabled, code requires development mode, loopback host/origins, a MongoDB URI, and a dev/test-looking DB name.</td></tr>
+        <tr><td><code>API_BASE_URL</code>, <code>NEXT_PUBLIC_API_BASE_URL</code>, <code>SITE_URL</code>, <code>NEXT_PUBLIC_SITE_URL</code></td><td>Server/client URLs</td><td>Local values may use localhost; production values must be exact matching HTTPS URLs.</td></tr>
+        <tr><td><code>NEXT_PUBLIC_ANALYTICS_ENABLED</code>, <code>NEXT_PUBLIC_ANALYTICS_REPORTING_TIMEZONE</code></td><td>Browser policy</td><td>Explicit <code>true</code>/<code>false</code>; timezone must match the server if analytics is enabled.</td></tr>
+        <tr><td><code>NEXT_PUBLIC_ANALYTICS_VISITOR_PERSISTENCE_ENABLED</code>, <code>NEXT_PUBLIC_ANALYTICS_VISITOR_RETENTION_DAYS</code>, <code>NEXT_PUBLIC_ANALYTICS_VISITOR_CONSENT_VERSION</code></td><td>Browser visitor policy</td><td>Keep disabled unless approved; when enabled, match server values exactly.</td></tr>
+        <tr><td><code>NEXT_PUBLIC_LEAD_CAPTURE_ENABLED</code>, <code>NEXT_PUBLIC_LEAD_CONSENT_VERSION</code>, <code>NEXT_PUBLIC_LEAD_CONSENT_TEXT</code></td><td>Browser lead policy</td><td>Keep disabled with explicit <code>false</code> until server retention/consent policy and approved copy exist.</td></tr>
+        <tr><td><code>CACHE_INVALIDATION_LEASE_SECONDS</code>, <code>CACHE_INVALIDATION_BATCH_SIZE</code></td><td>Cache worker</td><td>Documented defaults <code>60</code> and <code>25</code>; required for the production cache job.</td></tr>
+        <tr><td><code>CACHE_INVALIDATION_ENDPOINT</code>, <code>CACHE_INVALIDATION_SIGNING_SECRET</code></td><td>Cache worker + Next server</td><td>Configure together only when signed invalidation is deployed; use an HTTPS endpoint and a fresh distinct secret.</td></tr>
+        <tr><td><code>METRICS_SCRAPE_TOKEN</code></td><td>Metrics</td><td>Optional local; fresh distinct secret and network restriction in production.</td></tr>
+        <tr><td><code>DEPLOYMENT_ENVIRONMENT</code>, <code>RELEASE_ID</code>, <code>NEXT_PUBLIC_RELEASE_ID</code></td><td>Hosted production</td><td>Use <code>staging</code>/<code>production</code> and an immutable release ID; the two release IDs must match.</td></tr>
+        <tr><td><code>RESTORE_MONGODB_URI</code>, <code>RESTORE_MONGODB_DB_NAME</code>, <code>RESTORE_TARGET_LABEL</code></td><td>Isolated recovery verifier</td><td>Separate read-only restore environment only; do not put in normal application pods.</td></tr>
+      </tbody></table></div></details>
+      <details><summary>One-time bootstrap, CI, tool, and provider variables</summary><div class="table-wrap"><table class="table-tight"><thead><tr><th>Variable</th><th>Where detected</th><th>Use</th></tr></thead><tbody>
+        <tr><td><code>ADMIN_BOOTSTRAP_EMAIL</code>, <code>ADMIN_BOOTSTRAP_PASSWORD</code>, <code>ADMIN_BOOTSTRAP_ROLE</code></td><td><code>scripts/bootstrap-admin.ts</code>, live draft importer</td><td>Ignored local one-time bootstrap inputs; not currently present in <code>.env.example</code>.</td></tr>
+        <tr><td><code>P10_MONGODB_URI</code></td><td>Protected GitHub <code>p10-test</code> environment</td><td>Dedicated Atlas URI for guarded integration/live gates, not ordinary local setup.</td></tr>
+        <tr><td><code>P10_API_BASE_URL</code>, <code>P10_CLIENT_URL</code></td><td>P10 performance/link/e2e scripts</td><td>Optional test target URLs; default to loopback where the script supports it.</td></tr>
+        <tr><td><code>P10_CALCULATOR_SLUG</code>, <code>P10_PERFORMANCE_INPUTS</code>, <code>P10_PERFORMANCE_REQUESTS</code>, <code>P10_PERFORMANCE_CONCURRENCY</code>, <code>P10_PERFORMANCE_P95_MS</code>, <code>P10_RUN_K6</code></td><td>P10 scripts</td><td>Gate-specific test controls. Use only against an authorized isolated target.</td></tr>
+        <tr><td><code>P10_LINK_CHECK_MAX_PAGES</code>, <code>P10_EVIDENCE_OWNER</code>, <code>P10_SOURCE_REVISION</code></td><td>P10 link/evidence scripts</td><td>Bounded link traversal and evidence metadata; not app runtime credentials.</td></tr>
+        <tr><td><code>P8_ADMIN_API_BASE_URL</code></td><td>Live draft importer</td><td>Optional loopback API override; the importer rejects production and non-loopback unsafe modes.</td></tr>
+        <tr><td><code>NIRO_NEXT_DIST_DIR</code></td><td>Next/P10 isolated builds</td><td>Nonce-isolated build directory only; normal development uses <code>.next</code>.</td></tr>
+        <tr><td><code>NODE_VERSION</code>, <code>SKIP_INSTALL_DEPS</code>, <code>HOSTNAME</code>, <code>RENDER_GIT_COMMIT</code></td><td>Render/Docker/provider runtime</td><td>Provider/build contract values. Render uses Node 24.x; Docker templates are historical Node 22 references.</td></tr>
+        <tr><td><code>NIRO_CLIENT_BUILD_RELEASE_ID</code></td><td>Generated by Next config</td><td>Non-secret release ID embedded in the client health response; do not set it to a secret.</td></tr>
+        <tr><td><code>P11_PUBLIC_SITE_URL</code></td><td>GitHub repository variable</td><td>Non-secret deployed public site for quarterly link checks.</td></tr>
+      </tbody></table></div></details>
+    </section>
+
+    <section id="files">
+      <h2>MongoDB-related files</h2>
+      <p>The direct runtime surface is small even though tests and operational evidence reference MongoDB broadly. The files below are the ones a new developer should understand or protect.</p>
+      <details open><summary>Runtime and persistence</summary><div><ul class="file-list">
+        <li><code>apps/server/src/config/env.ts</code></li><li><code>apps/server/src/config/production.ts</code></li><li><code>apps/server/src/db/connection.ts</code></li><li><code>apps/server/src/db/ping.ts</code></li><li><code>apps/server/src/runtime-persistence.ts</code></li><li><code>apps/server/src/server.ts</code></li><li><code>apps/server/src/persistence/transactions.ts</code></li><li><code>apps/server/src/persistence/types.ts</code></li><li><code>apps/server/src/persistence/models/index.ts</code></li><li><code>apps/server/src/persistence/models/admin-governance-lock.ts</code></li><li><code>apps/server/src/persistence/models/admin-session.ts</code></li><li><code>apps/server/src/persistence/models/admin-user.ts</code></li><li><code>apps/server/src/persistence/models/analytics-attribution-claim.ts</code></li><li><code>apps/server/src/persistence/models/analytics-daily.ts</code></li><li><code>apps/server/src/persistence/models/analytics-event.ts</code></li><li><code>apps/server/src/persistence/models/analytics-materialization-lock.ts</code></li><li><code>apps/server/src/persistence/models/anonymous-visitor.ts</code></li><li><code>apps/server/src/persistence/models/assessment.ts</code></li><li><code>apps/server/src/persistence/models/audit-log.ts</code></li><li><code>apps/server/src/persistence/models/cache-invalidation-event.ts</code></li><li><code>apps/server/src/persistence/models/calculator-version.ts</code></li><li><code>apps/server/src/persistence/models/calculator.ts</code></li><li><code>apps/server/src/persistence/models/job-run.ts</code></li><li><code>apps/server/src/persistence/models/lead.ts</code></li><li><code>apps/server/src/persistence/models/login-attempt.ts</code></li><li><code>apps/server/src/persistence/models/measurement-revision.ts</code></li><li><code>apps/server/src/persistence/models/result.ts</code></li>
+      </ul><p>The implemented collections are <code>admin_governance_locks</code>, <code>admin_sessions</code>, <code>admin_users</code>, <code>analytics_attribution_claims</code>, <code>analytics_daily</code>, <code>analytics_events</code>, <code>analytics_materialization_locks</code>, <code>anonymous_visitors</code>, <code>assessments</code>, <code>audit_logs</code>, <code>cache_invalidation_events</code>, <code>calculator_versions</code>, <code>calculators</code>, <code>job_runs</code>, <code>leads</code>, <code>login_attempts</code>, <code>biomarkers</code>, and <code>results</code>.</p></div></details>
+      <details><summary>Application, scripts, and tests</summary><div><ul class="file-list">
+        <li><code>apps/server/src/modules/public.ts</code></li><li><code>apps/server/src/modules/admin.ts</code></li><li><code>apps/server/src/modules/analytics.ts</code></li><li><code>apps/server/src/modules/measurement-contract.ts</code></li><li><code>apps/server/src/analytics/dashboard.ts</code></li><li><code>apps/server/src/analytics/rollup.ts</code></li><li><code>apps/server/src/ops/analytics-rollup-cli.ts</code></li><li><code>apps/server/src/ops/cache-invalidation-cli.ts</code></li><li><code>scripts/dev.mjs</code></li><li><code>scripts/bootstrap-admin.ts</code></li><li><code>scripts/db-integration-check.ts</code></li><li><code>scripts/seed-core-measurements.ts</code></li><li><code>scripts/analytics-rollup.ts</code></li><li><code>scripts/run-native-job.mjs</code></li><li><code>scripts/admin-api-integration.ts</code></li><li><code>scripts/public-api-integration.ts</code></li><li><code>scripts/p6-api-integration.ts</code></li><li><code>scripts/p5-browser-fixture.ts</code></li><li><code>scripts/p6-browser-fixture.ts</code></li><li><code>scripts/p7-browser-fixture.ts</code></li><li><code>scripts/p9-analytics-integration.ts</code></li><li><code>scripts/p10-e2e.ts</code></li><li><code>scripts/import-niro-drafts-live.ts</code></li><li><code>scripts/verify-atlas-restore.ts</code></li><li><code>apps/server/src/**.test.ts</code></li><li><code>scripts/**.test.ts</code></li>
+      </ul><p>Tests contain local/example URIs and synthetic credential-like strings for redaction and validation assertions. They are not live credentials. Do not copy those fixtures into operational configuration.</p></div></details>
+      <details><summary>Configuration, deployment, CI, and documentation</summary><div><ul class="file-list">
+        <li><code>.env.example</code></li><li><code>.gitignore</code></li><li><code>.dockerignore</code></li><li><code>package.json</code></li><li><code>apps/server/package.json</code></li><li><code>.github/workflows/ci.yml</code></li><li><code>.github/workflows/p10-gate.yml</code></li><li><code>render.yaml</code></li><li><code>deploy/native/processes.json</code></li><li><code>deploy/native/render.md</code></li><li><code>deploy/docker/server.Dockerfile</code></li><li><code>deploy/docker/client.Dockerfile</code></li><li><code>deploy/kubernetes/jobs.example.yaml</code></li><li><code>deploy/kubernetes/workloads.example.yaml</code></li><li><code>README.md</code></li><li><code>docs/operations/mongodb-atlas-development.md</code></li><li><code>docs/operations/production-deployment-runbook.md</code></li><li><code>docs/operations/recovery-and-rollback-runbook.md</code></li><li><code>docs/operations/handover.md</code></li><li><code>docs/operations/launch-readiness.md</code></li>
+      </ul></div></details>
+    </section>
+
+    <section id="security">
+      <h2>Security checklist and audit</h2>
+      <div class="grid">
+        <div class="card danger"><span class="badge red">🔴 Critical</span><h3>Credential-bearing ignored .env</h3><p>The current root <code>.env</code> is present locally, ignored by Git, and contains set values for <code>MONGODB_URI</code>, <code>ADMIN_BOOTSTRAP_PASSWORD</code>, authentication secrets, and analytics HMAC. Do not include it in the handover. If it was copied, uploaded, committed, or shown to an untrusted person, rotate the Atlas database credential and all affected application secrets.</p><p><strong>Owner action:</strong> create a new per-developer DB user, create fresh local application secrets, remove bootstrap values after one-time use, and verify the archive contains no <code>.env</code>.</p></div>
+        <div class="card warning"><span class="badge amber">🟠 Warning</span><h3>Atlas access needs an ownership decision</h3><p>⚠️ Could not determine from the repository whether the new developer should join the existing Atlas project or use a new one. Decide this outside Git. If joining, invite their own Atlas account with the least project role; do not share an Atlas login. Restrict the application database user to the dev database and, where possible, specific clusters.</p></div>
+        <div class="card warning"><span class="badge amber">🟠 Warning</span><h3>Git history scope is incomplete</h3><p>This checkout has one reachable commit and no tracked <code>.env</code>. That does not prove a remote repository, deleted branch, fork, tag, or earlier clone is clean. Before public sharing, audit the authoritative remote and all branches/tags. If a real secret appears in history, rotate it first, then use a documented history-rewrite process.</p><p>See <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository" target="_blank" rel="noopener noreferrer">GitHub's sensitive-data removal guidance</a>.</p></div>
+        <div class="card warning"><span class="badge amber">🟠 Warning</span><h3>Tracked generated/history artifacts</h3><p>The repository includes generated/history/evidence material. The scan found no live credential-bearing URI in the tracked files inspected, but traces, screenshots, logs, and copied reports can capture sensitive data. Do not share <code>tmp/</code>, local build output, browser traces, database dumps, or unreviewed archives.</p></div>
+        <div class="card warning"><span class="badge amber">🟠 Warning</span><h3>Example template omission</h3><p>Add commented <code>ADMIN_BOOTSTRAP_*</code> placeholders to <code>.env.example</code> manually if the team wants a complete onboarding template. Keep the password line clearly marked as one-time and never place a real password there.</p></div>
+        <div class="card safe"><span class="badge green">🟢 Safe</span><h3>Existing ignore rules are appropriate</h3><p><code>.gitignore</code> ignores <code>.env</code> and <code>.env.*</code> while allowing <code>.env.example</code>. <code>.dockerignore</code> excludes environment files, dependencies, builds, caches, generated history, temporary files, and logs. Preserve this convention; do not add a broad rule that hides useful checked-in templates.</p></div>
+        <div class="card safe"><span class="badge green">🟢 Safe</span><h3>CI and Docker secret boundaries</h3><p>CI references the protected GitHub <code>p10-test</code> secret rather than embedding an Atlas value. The client Dockerfile accepts public build values only; the server Dockerfile expects runtime injection. Never pass MongoDB/auth/analytics/metrics/revalidation secrets as Docker build arguments.</p></div>
+        <div class="card safe"><span class="badge green">🟢 Safe</span><h3>Test-only credential-like strings</h3><p>Test fixtures include synthetic values such as a fake URI/password to verify redaction or production validation. They target example/non-routable hosts or are assertions; no live secret was found in the tracked scan. Keep them test-only.</p></div>
+      </div>
+      <h3 style="margin-top:28px">What must be rotated or replaced</h3>
+      <div class="table-wrap"><table><thead><tr><th>Credential/config</th><th>Action</th><th>When rotation is mandatory</th></tr></thead><tbody>
+        <tr><td>Existing Atlas database user/password embedded in the owner's local URI</td><td>Do not give it to the new developer. Create a separate user with <code>readWrite</code> on a non-production DB. Replace the new developer's URI.</td><td>Immediately if the old user/password was shared, committed, uploaded, or used in an untrusted environment. Otherwise it may remain owner-private.</td></tr>
+        <tr><td>Atlas project/organization access</td><td>Invite the person's own Atlas account with least privilege, or create a separate project. Remove old team members when their access should end.</td><td>When team membership changes or a person no longer needs the project.</td></tr>
+        <tr><td><code>AUTH_ACCESS_SECRET</code>, <code>AUTH_REFRESH_SECRET</code></td><td>Generate independent local values; never copy the owner's values.</td><td>Always replace in a shared/local handover. Rotate hosted values if exposed; old tokens will stop validating.</td></tr>
+        <tr><td><code>ANALYTICS_HASH_SECRET</code></td><td>Generate a distinct local value; keep server-only.</td><td>Always replace in a shared/local handover; rotate if exposed.</td></tr>
+        <tr><td><code>ADMIN_BOOTSTRAP_PASSWORD</code></td><td>Use a new one-time password and unique email; remove the variable after bootstrap.</td><td>Immediately if the current local value was shared or reused.</td></tr>
+        <tr><td><code>METRICS_SCRAPE_TOKEN</code>, <code>CACHE_INVALIDATION_SIGNING_SECRET</code></td><td>Fresh, distinct, provider-managed secrets in hosted environments; not needed for ordinary local development.</td><td>Whenever the deployment owner or trust boundary changes, or if exposed.</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section id="git">
+      <h2>Git/GitHub handover checklist</h2>
+      <div class="grid">
+        <div class="card half"><h3>Owner prepares the repository</h3><div class="checklist">
+          <label class="check"><input type="checkbox" data-save="git-1"> <span>Run <code>git status --short</code> and confirm the ignored <code>.env</code> is not part of the package.</span></label>
+          <label class="check"><input type="checkbox" data-save="git-2"> <span>Inspect all branches, tags, releases, forks, CI artifacts, and remote history for secrets; the current checkout alone has only one reachable commit.</span></label>
+          <label class="check"><input type="checkbox" data-save="git-3"> <span>Rotate any credential that ever appeared in Git, a build log, a trace, a screenshot, a report, or a shared archive before history cleanup.</span></label>
+          <label class="check"><input type="checkbox" data-save="git-4"> <span>Share <code>.env.example</code>, not <code>.env</code>; consider adding commented admin bootstrap placeholders.</span></label>
+          <label class="check"><input type="checkbox" data-save="git-5"> <span>Exclude <code>node_modules/</code>, <code>dist/</code>, <code>.next/</code>, <code>tmp/</code>, database dumps, logs, traces, and browser recordings from the handover archive.</span></label>
+          <label class="check"><input type="checkbox" data-save="git-6"> <span>Protect the release branch and require CI. The repository's CI expects a protected GitHub <code>p10-test</code> environment for Atlas-backed gates.</span></label>
+        </div></div>
+        <div class="card half"><h3>New developer configures locally</h3><div class="checklist">
+          <label class="check"><input type="checkbox" data-save="git-7"> <span>Clone the authoritative repository and verify the expected branch/commit.</span></label>
+          <label class="check"><input type="checkbox" data-save="git-8"> <span>Install Node 24.x and npm 11.6.1, then run <code>npm ci</code>.</span></label>
+          <label class="check"><input type="checkbox" data-save="git-9"> <span>Copy <code>.env.example</code> to root <code>.env</code>; populate only approved local values.</span></label>
+          <label class="check"><input type="checkbox" data-save="git-10"> <span>Use a personal Atlas DB user and an exact current IP access-list entry.</span></label>
+          <label class="check"><input type="checkbox" data-save="git-11"> <span>Run the read-only ping, then the deterministic checks before any guarded write command.</span></label>
+          <label class="check"><input type="checkbox" data-save="git-12"> <span>Never paste URI values or secret output into tickets, chat, CI logs, or this HTML file.</span></label>
+        </div></div>
+      </div>
+      <div class="callout warning" style="margin-top:16px"><strong>History cleanup is not automatic.</strong> This guide does not rewrite Git history, revoke Atlas users, remove files, or modify <code>.env.example</code>. If a secret was committed, follow an approved incident/history-cleanup procedure; changing the file in the latest commit alone is not enough.</div>
+    </section>
+
+    <section id="environment">
+      <h2>Dependencies and environment</h2>
+      <div class="grid">
+        <div class="card third"><h3>Required</h3><ul><li>Node.js <code>24.x</code></li><li>npm <code>11.6.1</code></li><li>Network access to transaction-capable MongoDB Atlas</li><li>Git and a shell</li><li>Chromium only for the P10 browser gate</li></ul></div>
+        <div class="card third"><h3>Not required for normal app use</h3><ul><li>Local MongoDB Server</li><li>Docker Desktop</li><li>MongoDB Shell (<code>mongosh</code>)</li><li>Java</li><li>OAuth provider credentials or external API keys detected by the repository</li></ul></div>
+        <div class="card third"><h3>Detected but ancillary</h3><ul><li>Python appears only for historical document-generation scripts under <code>docs/archive</code>.</li><li>Docker and Kubernetes templates are non-selected deployment references.</li><li>k6 is installed separately for performance gates.</li><li>Prometheus is an optional external metrics consumer.</li></ul></div>
+      </div>
+      <h3 style="margin-top:28px">Recommended first checks</h3>
+      <pre id="copy-checks"><button class="copy" data-copy-target="copy-checks">Copy</button><code>npm run contracts:check-generated
+npm run fixtures:validate
+npm run measurements:integrity
+npm run p8:divergence:check
+npm run p8:readiness:check
+npm run check
+npm run build</code></pre>
+      <p>Database-backed integrations and P10 require the Atlas environment and explicit write flags. Use an owned temporary database only when the harness proves its name/nonce and the owner authorizes the command.</p>
+    </section>
+
+    <section id="deployment">
+      <h2>Deployment handover notes</h2>
+      <div class="timeline">
+        <div><strong>1 · Render API</strong><span>Native Node 24.x web service; runtime secrets live in Render's secret manager.</span></div>
+        <div><strong>2 · Render cron</strong><span>Analytics partial every 5 minutes, analytics final after midnight policy boundary, cache invalidation every minute.</span></div>
+        <div><strong>3 · Vercel web</strong><span><code>apps/client/vercel.json</code>; Root Directory <code>apps/client</code>; <code>NEXT_PUBLIC_*</code> values are build-time.</span></div>
+        <div><strong>4 · Atlas</strong><span>Allow provider egress ranges, use least-privilege service users, and verify backup/PITR/restore policy separately.</span></div>
+      </div>
+      <div class="callout warning" style="margin-top:16px"><strong>Rebuild after public config changes.</strong> Render <code>fromService</code> values are resolved on Blueprint sync, and Next embeds <code>NEXT_PUBLIC_*</code> values during build. After changing them, re-sync, rebuild/redeploy the exact revision, and verify matching release IDs. Do not use Docker/Kubernetes assets without an intentional deployment decision; they are not the selected path.</div>
+      <p>Official provider links: <a href="https://render.com/docs/native-runtimes" target="_blank" rel="noopener noreferrer">Render native runtimes</a>, <a href="https://render.com/docs/blueprint-spec" target="_blank" rel="noopener noreferrer">Render Blueprint specification</a>, <a href="https://render.com/docs/cronjobs" target="_blank" rel="noopener noreferrer">Render cron jobs</a>, <a href="https://vercel.com/docs/project-configuration/vercel-json" target="_blank" rel="noopener noreferrer">Vercel project configuration</a>, and <a href="https://vercel.com/docs/monorepos" target="_blank" rel="noopener noreferrer">Vercel monorepos</a>.</p>
+    </section>
+
+    <section id="troubleshooting">
+      <h2>Troubleshooting</h2>
+      <div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Check</th><th>Fix</th></tr></thead><tbody>
+        <tr><td><code>MONGODB_URI is not configured</code></td><td>Does root <code>.env</code> exist? Is the variable spelled exactly?</td><td>Run <code>Copy-Item .env.example .env</code> from the repository root and set the new Atlas URI. The server does not use a package-local env file.</td></tr>
+        <tr><td><code>MONGODB_URI still contains an unresolved placeholder</code></td><td>Search only for placeholder markers in your local file; do not print the URI.</td><td>Replace every username, password, cluster-host, and database placeholder with Atlas values. URL-encode special characters in username/password.</td></tr>
+        <tr><td>Authentication failed</td><td>Atlas database user vs Atlas website login; exact username/password; correct cluster and DB role.</td><td>Create/reset the database user in Database Access and confirm <code>readWrite</code> on the dev database. Do not use the Atlas account password in the URI.</td></tr>
+        <tr><td>IP not allowed</td><td>Network Access list and current public IP; VPN/ISP changes.</td><td>Add the current exact IP as a temporary or permanent narrow entry. Do not use <code>0.0.0.0/0</code> for normal development.</td></tr>
+        <tr><td>SRV/DNS/TLS/server selection timeout</td><td>Exact <code>mongodb+srv</code> URI, cluster running, corporate DNS/firewall/VPN, and Atlas region status.</td><td>Copy the URI again from Atlas Drivers, test outside the restrictive network if permitted, and keep the timeout/pool settings within the cluster tier's limits.</td></tr>
+        <tr><td>Transactions fail</td><td>Cluster topology and whether the target is a transaction-capable replica set.</td><td>Use the Atlas deployment intended by the project. Do not substitute a standalone local MongoDB instance for transaction tests.</td></tr>
+        <tr><td><code>ASSESSMENT_RETENTION_DAYS</code> required</td><td><code>MONGODB_URI</code> is set, so persistence is enabled.</td><td>Set the policy-approved positive number in the local root <code>.env</code>; do not invent a value for production.</td></tr>
+        <tr><td>Client cannot call the API</td><td><code>NEXT_PUBLIC_API_BASE_URL</code>, <code>API_BASE_URL</code>, server port, client port, and <code>CORS_ORIGINS</code>.</td><td>Use exact local origins: API <code>http://localhost:4000/api/v1</code>, UI <code>http://localhost:3000</code>, and matching CORS.</td></tr>
+        <tr><td>Public test catalog rejected</td><td>Flag requires development mode, loopback binding/origins, an Atlas URI, and a dev/test-looking DB name.</td><td>Keep <code>PUBLIC_TEST_CATALOG_ENABLED=false</code> unless those conditions and the owner-approved test workflow are intentional.</td></tr>
+        <tr><td>Too many connections</td><td>Multiple dev/test processes, stale shells, or a small Atlas tier.</td><td>Stop unused processes, reduce <code>MONGODB_MAX_POOL_SIZE</code> only with understanding of the impact, and avoid pointing multiple test harnesses at a shared DB.</td></tr>
+      </tbody></table></div>
+      <p>Official help: <a href="https://www.mongodb.com/docs/atlas/troubleshoot-connection/" target="_blank" rel="noopener noreferrer">Atlas connection troubleshooting</a>, <a href="https://www.mongodb.com/docs/drivers/node/current/fundamentals/connection/connect/" target="_blank" rel="noopener noreferrer">Node.js driver connection</a>, <a href="https://www.mongodb.com/docs/manual/security/" target="_blank" rel="noopener noreferrer">MongoDB security</a>, and <a href="https://www.mongodb.com/docs/atlas/security-add-mongodb-users/" target="_blank" rel="noopener noreferrer">Atlas database users</a>.</p>
+    </section>
+
+    <section id="final">
+      <h2>Final handover checklist</h2>
+      <div class="card">
+        <div class="checklist">
+          <label class="check"><input type="checkbox" data-save="final-1"> <span>All current/previously exposed MongoDB credentials have been assessed; exposed ones were revoked or rotated.</span></label>
+          <label class="check"><input type="checkbox" data-save="final-2"> <span>A personal Atlas account was invited with least project privilege, or an isolated dev project/cluster was created.</span></label>
+          <label class="check"><input type="checkbox" data-save="final-3"> <span>A personal database user has only the required non-production database role; no production URI was shared.</span></label>
+          <label class="check"><input type="checkbox" data-save="final-4"> <span>The recipient's current IP was added narrowly to Atlas Network Access.</span></label>
+          <label class="check"><input type="checkbox" data-save="final-5"> <span>The root <code>.env</code>, dumps, logs, traces, recordings, build output, and <code>node_modules</code> are excluded from the handover.</span></label>
+          <label class="check"><input type="checkbox" data-save="final-6"> <span>The recipient generated fresh local auth/analytics secrets and used a one-time admin bootstrap account.</span></label>
+          <label class="check"><input type="checkbox" data-save="final-7"> <span><code>npm ci</code>, <code>npm run db:ping --workspace @niro/server</code>, health/readiness checks, and the relevant deterministic checks pass.</span></label>
+          <label class="check"><input type="checkbox" data-save="final-8"> <span>Remote Git history, branches, tags, CI artifacts, and forks were reviewed before public or wider sharing.</span></label>
+          <label class="check"><input type="checkbox" data-save="final-9"> <span>Atlas, Render/Vercel, DNS, monitoring, recovery, privacy/retention, and clinical ownership items are recorded outside this repository where required.</span></label>
+        </div>
+      </div>
+      <div class="callout safe" style="margin-top:16px"><strong>Done means safely reproducible.</strong> The recipient should be able to clone the repository, create their own ignored root <code>.env</code>, connect to the approved non-production Atlas database, start the app, and verify the health/readiness paths without ever receiving an existing secret.</div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <p><strong>Important:</strong> This HTML is a guide, not a secret store. It intentionally contains no real password, URI, token, API key, project ID, cluster host, or private credential.</p>
+    <p>Generated from repository inspection. If the repository's configuration changes, rerun the audit and update this guide rather than copying stale values.</p>
+  </footer>
+
+  <script>
+    (() => {
+      const storageKey = 'niro-mongodb-handover-checklist-v1';
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch (_) { saved = {}; }
+      document.querySelectorAll('input[data-save]').forEach((input) => {
+        const key = input.dataset.save;
+        input.checked = saved[key] === true;
+        input.addEventListener('change', () => {
+          saved[key] = input.checked;
+          try { localStorage.setItem(storageKey, JSON.stringify(saved)); } catch (_) { /* private browsing */ }
+        });
+      });
+      document.querySelectorAll('[data-copy-target]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const target = document.getElementById(button.dataset.copyTarget);
+          if (!target) return;
+          const text = target.querySelector('code')?.textContent || target.textContent || '';
+          try {
+            await navigator.clipboard.writeText(text.trim());
+            const old = button.textContent;
+            button.textContent = 'Copied';
+            setTimeout(() => { button.textContent = old; }, 1200);
+          } catch (_) {
+            button.textContent = 'Copy failed';
+            setTimeout(() => { button.textContent = 'Copy'; }, 1200);
+          }
+        });
+      });
+      document.querySelectorAll('a[href^="http"]').forEach((link) => {
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+      });
+    })();
+  </script>
+</body>
+</html>
