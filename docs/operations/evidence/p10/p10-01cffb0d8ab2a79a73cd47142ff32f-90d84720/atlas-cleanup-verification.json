@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "niro-p10-atlas-cleanup-verification.v1",
+  "verifiedAtUtc": "2026-08-29T23:58:48Z",
+  "method": "P10 guarded drop plus post-run MongoDB admin listDatabases name-only query",
+  "database": "niro_p7_01cffb0d8ab2a79a73cd47142ff32f",
+  "present": false,
+  "nextP10CacheCount": 0,
+  "otherHistoricalP7DatabasesUntouched": true
+}

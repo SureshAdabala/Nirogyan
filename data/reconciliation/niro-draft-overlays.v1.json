@@ -1,0 +1,292 @@
+{
+  "schemaVersion": "niro-draft-reconciliation.v1",
+  "purpose": "Metadata-only reconciliation overlays for the four source-derived Niro draft calculators. Source fixtures remain immutable diagnostic fixtures.",
+  "engineSemanticVersion": "1.0.0",
+  "sourceFixtureHashes": {
+    "data/fixtures/config-samples/covid-risk.config.json": "82180cbfa630eba514f536419bcdb969ee74da36cca5e44236fe7f1bf8897de3",
+    "data/fixtures/config-samples/diabetes-risk.config.json": "1dee527ed5ce64ac64f7a567577d1e3cee49a0c442a7afc2793a3b956d75152a",
+    "data/fixtures/config-samples/heart-risk.config.json": "2c4c70c6b1264abbe2db2c12638052abbc83255fab76ef7bc06968d76c802f93",
+    "data/fixtures/config-samples/hypothyroid-risk.config.json": "a6ebd589f2b5ae105ed3b96376bfb263e2f5ba1432d291a0e37a3988177fb7c8",
+    "data/fixtures/config-samples/niro-cws.config.json": "42e0a1826efb32fbc7df593a5574424df08d93b855abc4026a64b4ce6bbce52e"
+  },
+  "sourceArtifactHashes": {
+    "data/sources/risk-analysis/Comprehensive Wellness Score Framework_ A Point-Based Assessment of Health Parameters.pdf": "4754b17e16e8f029a912462847ec47568a7b4bd0e547433b13692742fdb21ee3",
+    "data/sources/risk-analysis/Risk calculators.xlsx": "f1d808861d61b1a4e748a2c079c0cafae521a3c1e0ef01c84cd015ac293fc089"
+  },
+  "quarantineBoundary": {
+    "catalogPathsAllowed": false,
+    "covidIncluded": false,
+    "note": "The 62-calculator/79-measurement catalog remains quarantined. COVID is an internal nonclinical demonstration fixture and is not a Niro reconciliation draft."
+  },
+  "overlays": [
+    {
+      "calculatorSlug": "diabetes-risk",
+      "fixturePath": "data/fixtures/config-samples/diabetes-risk.config.json",
+      "expectedSha256": "1dee527ed5ce64ac64f7a567577d1e3cee49a0c442a7afc2793a3b956d75152a",
+      "metadataOverlay": {
+        "status": "draft",
+        "engineSemanticVersion": "1.0.0",
+        "sources": [
+          {
+            "type": "niro",
+            "ref": "data/sources/risk-analysis/Risk calculators.xlsx#Diabetes!B5:I27",
+            "title": "Niro Risk Calculators workbook — Diabetes sheet",
+            "verification": "source-provided",
+            "note": "Exact source locator only; this overlay does not approve or alter any clinical boundary."
+          }
+        ],
+        "governance": {
+          "clinicalStatus": "unreviewed",
+          "sourceReviewStatus": "partial",
+          "discrepancyIds": [
+            "GEN-02",
+            "GEN-04",
+            "GEN-05",
+            "GEN-06",
+            "GEN-07",
+            "GEN-08",
+            "DIA-01",
+            "DIA-02",
+            "DIA-03",
+            "DIA-04",
+            "DIA-05",
+            "DIA-06",
+            "DIA-07",
+            "DIA-08",
+            "DIA-09",
+            "DIA-10",
+            "DIA-11",
+            "DIA-12",
+            "DIA-13",
+            "DIA-14",
+            "N3"
+          ],
+          "publishBlockers": [
+            "[DIA-01,DIA-02,DIA-03] Niro must resolve age 35 and exact HbA1c/FBS endpoint wording; external diagnostic cutoffs cannot overwrite the workbook.",
+            "[DIA-04,N3] PP Sugar has labels but no source numeric criteria or approved categorical-input policy.",
+            "[DIA-06,DIA-07] Empty glycemic aggregation and missing-waist fallback behavior lack approval.",
+            "[DIA-09,DIA-13] Reachable maximum and noninteger-age gap remain unresolved.",
+            "[DIA-10,GEN-02] Immutable measurement revision links and claim-level source traceability are incomplete.",
+            "[DIA-11,DIA-12,DIA-14,GEN-04,GEN-05] Population, anomalous activity value, and sex-context meaning require source-owner/medical review.",
+            "[GEN-06,GEN-07,GEN-08] Complete saved goldens, reviewed content/SEO/citations/authorship, and approved score-lattice semantics are absent."
+          ],
+          "reviews": [],
+          "measurementRevisionIds": []
+        }
+      },
+      "resolvedByLockedContract": ["DIA-05", "DIA-08"],
+      "publicationEligibility": {
+        "eligible": false,
+        "status": "blocked",
+        "reason": "Source-owner, medical-review, content, dependency, and complete-golden gates remain open."
+      }
+    },
+    {
+      "calculatorSlug": "heart-risk",
+      "fixturePath": "data/fixtures/config-samples/heart-risk.config.json",
+      "expectedSha256": "2c4c70c6b1264abbe2db2c12638052abbc83255fab76ef7bc06968d76c802f93",
+      "metadataOverlay": {
+        "status": "draft",
+        "engineSemanticVersion": "1.0.0",
+        "sources": [
+          {
+            "type": "niro",
+            "ref": "data/sources/risk-analysis/Risk calculators.xlsx#'Heart '!A1:V66",
+            "title": "Niro Risk Calculators workbook — Heart sheet (trailing-space sheet name)",
+            "verification": "source-provided",
+            "note": "Includes a base-stage 13-points to 10-percent example; it is not a complete final-result example."
+          }
+        ],
+        "governance": {
+          "clinicalStatus": "unreviewed",
+          "sourceReviewStatus": "partial",
+          "discrepancyIds": [
+            "GEN-02",
+            "GEN-03",
+            "GEN-04",
+            "GEN-05",
+            "GEN-06",
+            "GEN-07",
+            "GEN-08",
+            "HRT-01",
+            "HRT-02",
+            "HRT-03",
+            "HRT-04",
+            "HRT-05",
+            "HRT-06",
+            "HRT-07",
+            "HRT-08",
+            "HRT-09",
+            "HRT-10",
+            "HRT-11",
+            "HRT-12",
+            "HRT-13",
+            "HRT-14",
+            "HRT-15",
+            "HRT-16",
+            "HRT-17",
+            "HRT-18",
+            "HRT-19",
+            "HRT-20",
+            "N6",
+            "N7",
+            "N8"
+          ],
+          "publishBlockers": [
+            "[HRT-01,N6] The single-table sex/unisex applicability question is an absolute publication blocker.",
+            "[HRT-02,HRT-03] Applicability below age 30 and numeric treatment of source interval outputs are unresolved.",
+            "[HRT-04,HRT-05,HRT-06,N7] Floor value, complete eligibility predicate, and LDL/TC endpoints are unresolved.",
+            "[HRT-07,HRT-08,GEN-08] Result-category and triglyceride continuous boundaries require approved lattice/endpoint semantics.",
+            "[HRT-09,HRT-10,GEN-03] Missing treatment and glycemic-state behavior could understate risk.",
+            "[HRT-11,HRT-12,HRT-13,N8] Probability cap/validity, non-HDL, and vascular-age scope are unresolved.",
+            "[HRT-14] Calculator-local 38.61 conversion remains source-specific and must be reviewed, not globally harmonized.",
+            "[HRT-16,GEN-06] The 13-to-10 example verifies only a base stage; an approved complete final-input golden is absent (PUB-007 open).",
+            "[HRT-17,HRT-18,HRT-20] Missing-value meaning, imputation overlap, and multi-floor clinical approval remain open.",
+            "[GEN-02,GEN-04,GEN-05,GEN-07] Measurement snapshots, population/context approval, and reviewed content/evidence are absent."
+          ],
+          "reviews": [],
+          "measurementRevisionIds": []
+        }
+      },
+      "resolvedByLockedContract": ["HRT-15", "HRT-19", "HRT-20"],
+      "publicationEligibility": {
+        "eligible": false,
+        "status": "blocked",
+        "reason": "Only a partial base-stage example is source-confirmed; clinical applicability, floor, boundary, content, and dependency gates remain open."
+      }
+    },
+    {
+      "calculatorSlug": "hypothyroid-risk",
+      "fixturePath": "data/fixtures/config-samples/hypothyroid-risk.config.json",
+      "expectedSha256": "a6ebd589f2b5ae105ed3b96376bfb263e2f5ba1432d291a0e37a3988177fb7c8",
+      "metadataOverlay": {
+        "status": "draft",
+        "engineSemanticVersion": "1.0.0",
+        "sources": [
+          {
+            "type": "niro",
+            "ref": "data/sources/risk-analysis/Risk calculators.xlsx#Hypothyroid!A2:E49",
+            "title": "Niro Risk Calculators workbook — Hypothyroid sheet",
+            "verification": "source-provided",
+            "note": "The merged symptom rows remain ambiguous and are not resolved by this locator."
+          }
+        ],
+        "governance": {
+          "clinicalStatus": "unreviewed",
+          "sourceReviewStatus": "partial",
+          "discrepancyIds": [
+            "GEN-02",
+            "GEN-03",
+            "GEN-04",
+            "GEN-05",
+            "GEN-06",
+            "GEN-07",
+            "GEN-08",
+            "HYP-01",
+            "HYP-02",
+            "HYP-03",
+            "HYP-04",
+            "HYP-05",
+            "HYP-06",
+            "HYP-07",
+            "N5"
+          ],
+          "publishBlockers": [
+            "[HYP-01,HYP-05,N5] Niro must decide whether symptom points apply once to the cluster or per symptom row before the maximum/categories are approved.",
+            "[HYP-02,HYP-03,GEN-03] Unknown laboratory and omitted Boolean inputs must not silently become normal/false without approval.",
+            "[HYP-04] No source-approved minimum-completion or partial-assessment interpretation exists.",
+            "[HYP-06,GEN-08] The score lattice or the continuous 15-to-16 seam must be explicitly approved.",
+            "[HYP-07,GEN-04] Adult-only population applicability is not established by the workbook.",
+            "[GEN-02,GEN-05,GEN-06,GEN-07] Measurement/source traceability, context meaning, complete goldens, and reviewed content/SEO are absent."
+          ],
+          "reviews": [],
+          "measurementRevisionIds": []
+        }
+      },
+      "resolvedByLockedContract": [],
+      "publicationEligibility": {
+        "eligible": false,
+        "status": "blocked",
+        "reason": "Symptom, missing-input, partial-assessment, population, content, dependency, and golden gates remain open."
+      }
+    },
+    {
+      "calculatorSlug": "niro-cws",
+      "fixturePath": "data/fixtures/config-samples/niro-cws.config.json",
+      "expectedSha256": "42e0a1826efb32fbc7df593a5574424df08d93b855abc4026a64b4ce6bbce52e",
+      "metadataOverlay": {
+        "status": "draft",
+        "engineSemanticVersion": "1.0.0",
+        "sources": [
+          {
+            "type": "niro",
+            "ref": "data/sources/risk-analysis/Comprehensive Wellness Score Framework_ A Point-Based Assessment of Health Parameters.pdf#sections-2-6-and-page-18",
+            "title": "Comprehensive Wellness Score Framework: A Point-Based Assessment of Health Parameters",
+            "verification": "source-provided",
+            "note": "The source itself records rejection because client-stratified ranges were unavailable; this is an absolute publication blocker."
+          }
+        ],
+        "governance": {
+          "clinicalStatus": "unreviewed",
+          "sourceReviewStatus": "partial",
+          "discrepancyIds": [
+            "GEN-02",
+            "GEN-04",
+            "GEN-05",
+            "GEN-06",
+            "GEN-07",
+            "GEN-08",
+            "CWS-01",
+            "CWS-02",
+            "CWS-03",
+            "CWS-04",
+            "CWS-05",
+            "CWS-06",
+            "CWS-07",
+            "CWS-08",
+            "CWS-09",
+            "CWS-10",
+            "CWS-11",
+            "CWS-12",
+            "CWS-13",
+            "CWS-14",
+            "CWS-15",
+            "CWS-16",
+            "CWS-17",
+            "CWS-18",
+            "CWS-19",
+            "CWS-20",
+            "N1",
+            "N2",
+            "N4",
+            "N9",
+            "C4",
+            "C5",
+            "C7"
+          ],
+          "publishBlockers": [
+            "[CWS-01,N1] Absolute block: the source explicitly rejected this framework because client-stratified ranges were unavailable.",
+            "[CWS-03,CWS-04,CWS-19,C5,C7] Partial-input denominator, all-missing-domain, derived-missing, and required/optional behavior lack approval.",
+            "[CWS-05,CWS-06,CWS-07,CWS-20,N9] Complete known unbanded regions must remain no-score/blocking until source-owner dispositions exist.",
+            "[CWS-08,CWS-09,N2] Afternoon cortisol abnormal bands and conditionally required sampling context are unresolved.",
+            "[CWS-10,CWS-11,N4] Estradiol has no two-point/postmenopausal bands and the context selector is incomplete.",
+            "[CWS-12,C4,GEN-08] Continuous category seams at 20-to-21, 30-to-31, and 50-to-51 are not clinically approved.",
+            "[CWS-13] Declared score extrema do not cover all reachable adjustments and sparse scoring behavior.",
+            "[CWS-14,CWS-15] Exact five-year smoking and operational activity boundaries are unresolved.",
+            "[CWS-16,GEN-02] eAG derivation provenance must be separated from Niro's scoring decision; claim-level traceability is incomplete.",
+            "[CWS-18] Unit-alias decisions remain incomplete and require reviewed stable measurement/unit identities.",
+            "[GEN-04,GEN-05,GEN-06,GEN-07] Population/context approval, complete goldens, and reviewed content/SEO/citations/authorship are absent."
+          ],
+          "reviews": [],
+          "measurementRevisionIds": []
+        }
+      },
+      "resolvedByLockedContract": ["CWS-02", "CWS-17"],
+      "publicationEligibility": {
+        "eligible": false,
+        "status": "rejected-source-draft",
+        "reason": "CWS must stay draft pending Niro stratified-range confirmation; build work cannot overrule the source rejection."
+      }
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "$schema": "niro-platform/calculator-version.v1",
+  "calculatorSlug": "heart-risk",
+  "name": "Heart Risk Calculator",
+  "version": 1,
+  "status": "draft",
+  "shortDescription": "Modified Framingham 10-year cardiovascular risk with young-age correction, missing-data handling and lipid floor penalties.",
+  "disclaimers": ["Educational risk estimate, not a diagnosis. Discuss cardiovascular risk with your clinician."],
+  "NIRO_SOURCE_STATUS": {
+    "banner": "NIRO-DEFINED (ACTIVE) — 'Modified Cardiovascular Risk Engine'",
+    "explanation": "Point tables, risk mapping, multipliers, floor-penalty and messaging transcribed from Niro 'Risk calculators.xlsx' sheet 'Heart'. Sheet self-description: 'incorporates Atherogenic Dyslipidemia (Triglycerides & Non-HDL) and handles Missing Data Imputation & Penalty Logic'. Sheet references: Braunwald's Ch.47, 2018 AHA/ACC, 2021 ESC, D'Agostino 2008, Harrison's Ch.400. Worked example verified: Age 58 + HDL 38 + TC 168 + SBP-NT 124 + Smoker = 13 pts → 10% ✓",
+    "remainingClarifications": ["N6: single Framingham table (no sex split) — unisex intended?", "N7: LDL 130–159 floor written '12%–15%' — exact value (12 configured, flagged)", "N8: 'Vascular Age' cited in references but no table in sheet — in scope?"]
+  },
+  "parameters": [
+    { "key": "age", "label": "Age", "group": "profile", "inputType": "number", "unit": { "canonical": "years" },
+      "validation": { "required": true, "min": 30, "max": 120 }, "missingPolicy": "block", "order": 1 },
+    { "key": "totalCholesterol", "label": "Total Cholesterol", "group": "lipids", "biomarkerKey": "total-cholesterol", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "mmol/L", "factor": 38.61 } ] },
+      "validation": { "required": true, "min": 50, "max": 500 }, "order": 2,
+      "source": { "type": "niro", "ref": "XLSX conversion note: 1 mmol/L = 38.61 mg/dL (divide by 0.0259)" } },
+    { "key": "ldl", "label": "LDL Cholesterol", "group": "lipids", "biomarkerKey": "ldl-cholesterol", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "mmol/L", "factor": 38.61 } ] },
+      "validation": { "required": true, "min": 20, "max": 400 }, "order": 3,
+      "source": { "type": "niro", "ref": "needed for S_lipid and floor penalty" } },
+    { "key": "hdl", "label": "HDL Cholesterol", "group": "lipids", "biomarkerKey": "hdl-cholesterol", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "mmol/L", "factor": 38.61 } ] },
+      "validation": { "required": true, "min": 5, "max": 150 }, "order": 4 },
+    { "key": "triglycerides", "label": "Triglycerides", "group": "lipids", "biomarkerKey": "triglycerides", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "mmol/L", "factor": 88.57 } ] },
+      "validation": { "required": false, "min": 20, "max": 2000 }, "missingPolicy": "exclude-from-max", "order": 5,
+      "source": { "type": "niro", "ref": "XLSX: atherogenic-dyslipidemia addition to classic Framingham" } },
+    { "key": "sbp", "label": "Systolic Blood Pressure", "group": "vitals", "biomarkerKey": "systolic-bp", "inputType": "number",
+      "unit": { "canonical": "mmHg" }, "validation": { "required": false, "min": 60, "max": 260 }, "missingPolicy": "impute-rule", "order": 6,
+      "source": { "type": "niro", "ref": "XLSX: 'SBP Missing' column — age-based imputation points" } },
+    { "key": "bpTreated", "label": "On blood pressure medication", "group": "vitals", "inputType": "boolean",
+      "visibility": { "all": [ { "param": "sbp", "op": "exists" } ] }, "order": 7 },
+    { "key": "smoker", "label": "Current smoker", "group": "lifestyle", "inputType": "boolean", "validation": { "required": true }, "order": 8 },
+    { "key": "glycemicStatus", "label": "Blood sugar status (HbA1c / fasting glucose)", "group": "labs", "inputType": "select",
+      "validation": { "required": false }, "missingPolicy": "default-option", "defaultOption": "normal",
+      "options": [
+        { "value": "normal", "label": "Normal HbA1c and fasting glucose" },
+        { "value": "borderline", "label": "Borderline HbA1c or fasting glucose" },
+        { "value": "high", "label": "High HbA1c or fasting glucose" }
+      ], "order": 9,
+      "source": { "type": "niro", "ref": "XLSX 'Diabetic' column modified to HbA1c/glucose criteria" } }
+  ],
+  "scoringRules": [
+    { "parameterKey": "age", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 30, "max": 35, "points": 0 }, { "min": 35, "max": 40, "points": 2 }, { "min": 40, "max": 45, "points": 4 },
+      { "min": 45, "max": 50, "points": 5 }, { "min": 50, "max": 55, "points": 7 }, { "min": 55, "max": 60, "points": 8 },
+      { "min": 60, "max": 65, "points": 9 }, { "min": 65, "max": 70, "points": 10 }, { "min": 70, "max": 75, "points": 11 }, { "min": 75, "points": 12 } ],
+      "source": { "type": "niro", "ref": "XLSX Modified Framingham age points (N6: unisex table)" } } ] },
+    { "parameterKey": "hdl", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 60, "points": -2 }, { "min": 50, "max": 60, "points": -1 }, { "min": 45, "max": 50, "points": 0 },
+      { "min": 35, "max": 45, "points": 1 }, { "max": 35, "points": 2 } ],
+      "source": { "type": "niro", "ref": "XLSX HDL points" } } ] },
+    { "parameterKey": "totalCholesterol", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 160, "points": 0 }, { "min": 160, "max": 200, "points": 1 }, { "min": 200, "max": 240, "points": 3 },
+      { "min": 240, "max": 280, "points": 4 }, { "min": 280, "points": 5 } ],
+      "source": { "type": "niro", "ref": "XLSX TC points" } } ] },
+    { "parameterKey": "sbp", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "bpTreated", "op": "ne", "value": true } ] }, "bands": [
+        { "max": 120, "points": -3 }, { "min": 120, "max": 130, "points": 0 }, { "min": 130, "max": 140, "points": 1 },
+        { "min": 140, "max": 150, "points": 2 }, { "min": 150, "max": 160, "points": 4 }, { "min": 160, "points": 5 } ] },
+      { "when": { "all": [ { "param": "bpTreated", "op": "eq", "value": true } ] }, "bands": [
+        { "max": 120, "points": -1 }, { "min": 120, "max": 130, "points": 2 }, { "min": 130, "max": 140, "points": 3 },
+        { "min": 140, "max": 150, "points": 5 }, { "min": 150, "max": 160, "points": 6 }, { "min": 160, "points": 7 } ] } ],
+      "source": { "type": "niro", "ref": "XLSX SBP treated/untreated points" } },
+    { "parameterKey": "smoker", "optionPoints": [ { "value": true, "points": 3 }, { "value": false, "points": 0 } ],
+      "source": { "type": "niro", "ref": "XLSX Smoker Yes→3" } },
+    { "parameterKey": "glycemicStatus", "optionPoints": [
+      { "value": "normal", "points": 0 }, { "value": "borderline", "points": 1 }, { "value": "high", "points": 4 } ],
+      "source": { "type": "niro", "ref": "XLSX modified Diabetic points 0/1/4" } },
+    { "parameterKey": "triglycerides", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 150, "maxInclusive": true, "points": 0 }, { "min": 151, "max": 200, "maxInclusive": true, "points": 1 },
+      { "min": 201, "max": 500, "maxInclusive": true, "points": 2 }, { "min": 500, "minExclusive": true, "points": 4 } ],
+      "source": { "type": "niro", "ref": "XLSX Triglycerides points <150→0 · 151–200→1 · 201–500→2 · >500→4" } } ] }
+  ],
+  "imputationRules": [
+    { "key": "sbp-missing", "parameterKey": "sbp", "when": { "all": [ { "param": "sbp", "op": "missing" } ] },
+      "action": { "setPointsByBand": { "bandParam": "age", "bands": [
+        { "max": 40, "points": 0 }, { "min": 40, "max": 50, "maxInclusive": true, "points": 1 }, { "min": 50, "points": 2 } ] } },
+      "source": { "type": "niro", "ref": "XLSX 'SBP Missing': <40→0 · 40–50→1 · 50+→2" } }
+  ],
+  "lookupTables": [
+    { "key": "points-to-risk", "label": "Framingham points → 10-year CVD risk %", "map": [
+      { "points": -2, "orBelow": true, "riskPct": 0.9 }, { "points": -1, "riskPct": 1.0 }, { "points": 0, "riskPct": 1.2 },
+      { "points": 1, "riskPct": 1.5 }, { "points": 2, "riskPct": 1.7 }, { "points": 3, "riskPct": 2.0 }, { "points": 4, "riskPct": 2.4 },
+      { "points": 5, "riskPct": 2.8 }, { "points": 6, "riskPct": 3.3 }, { "points": 7, "riskPct": 3.9 }, { "points": 8, "riskPct": 4.5 },
+      { "points": 9, "riskPct": 5.3 }, { "points": 10, "riskPct": 6.3 }, { "points": 11, "riskPct": 7.3 }, { "points": 12, "riskPct": 8.6 },
+      { "points": 13, "riskPct": 10.0 }, { "points": 14, "riskPct": 11.7 }, { "points": 15, "riskPct": 13.7 }, { "points": 16, "riskPct": 15.9 },
+      { "points": 17, "riskPct": 18.5 }, { "points": 18, "riskPct": 21.5 }, { "points": 19, "riskPct": 24.8 }, { "points": 20, "riskPct": 28.5 },
+      { "points": 21, "orAbove": true, "riskPct": 30.1, "display": ">30" } ],
+      "source": { "type": "niro", "ref": "XLSX CVD Risk table (≤−2 → '<1' displayed; 0.9 configured for computation, display string preserved)" } }
+  ],
+  "formulas": [
+    { "key": "base-points", "expression": "sum(points)", "source": { "type": "niro", "ref": "XLSX §1 Modified Framingham" } },
+    { "key": "base-risk", "expression": "lookup('points-to-risk', basePoints)", "source": { "type": "niro", "ref": "XLSX points→risk map" } },
+    { "key": "s-lipid", "expression": "0.6 * (ldl / 100) + 0.4 * (totalCholesterol / 160)",
+      "source": { "type": "niro", "ref": "XLSX §2 (verbatim): Lipid severity factor = 0.6*(LDL/100) + 0.4*(Total chol/160)" } },
+    { "key": "m-young", "expression": "age < 30 ? 2.5 : (age < 40 ? 1.8 : 1)",
+      "source": { "type": "niro", "ref": "XLSX §2 (verbatim): 2.5 if <30, 1.8 if 30–39, 1 if ≥40" } },
+    { "key": "adjusted-risk", "expression": "baseRisk * sLipid * mYoung",
+      "source": { "type": "niro", "ref": "XLSX §2: Adjusted heart risk % = Base × S_lipid × M_young" } },
+    { "key": "final-score", "expression": "max(adjustedRisk, floorPenalty)",
+      "source": { "type": "niro", "ref": "XLSX §3 (verbatim): Final heart risk score = Max(Adjusted heart risk, floor penalty)" } }
+  ],
+  "floorRules": [
+    { "key": "ldl-floor", "label": "Isolated high-cholesterol floor penalty",
+      "appliesWhen": { "description": "only Total Cholesterol / LDL are elevated and no other lifestyle or lab parameters are flagged",
+        "all": [ { "param": "smoker", "op": "eq", "value": false }, { "param": "glycemicStatus", "op": "eq", "value": "normal" } ] },
+      "tiers": [
+        { "bandParam": "ldl", "max": 130, "floorPct": 0, "uxClass": "Normal", "message": "Your lipid levels are within optimal range." },
+        { "bandParam": "ldl", "min": 130, "max": 160, "floorPct": 12, "floorPctRangeNote": "source says 12%–15% (N7)", "uxClass": "Mild Attention", "message": "Slightly elevated. Responsive to diet and exercise." },
+        { "bandParam": "ldl", "min": 160, "max": 190, "floorPct": 25, "uxClass": "Suboptimal", "message": "Elevated LDL. Early lifestyle focus prevents future risk." },
+        { "bandParam": "ldl", "min": 190, "floorPct": 40, "uxClass": "Action Needed", "message": "Significant elevation. Requires clinical evaluation." },
+        { "bandParam": "totalCholesterol", "min": 240, "floorPct": 30, "uxClass": "Suboptimal", "message": "Significant elevation. Requires clinical evaluation." }
+      ],
+      "display": "Show both patient messagings when a floor penalty applies (XLSX instruction, verbatim)",
+      "source": { "type": "niro", "ref": "XLSX §3 floor penalty table (Harrison's Ch.400 cited in sheet)" } }
+  ],
+  "domains": [ { "key": "overall", "label": "Cardiovascular risk", "weight": 1.0, "implicit": true,
+    "parameterKeys": ["age", "totalCholesterol", "ldl", "hdl", "triglycerides", "sbp", "smoker", "glycemicStatus"] } ],
+  "resultCategories": {
+    "scale": { "min": 0, "max": 60, "unit": "% 10-year risk", "direction": "higher-is-worse" },
+    "bandEdges": "min-inclusive",
+    "bands": [
+      { "label": "Low Risk", "max": 10, "color": "#1a9850",
+        "message": "Your immediate likelihood of a heart event over the next 10 years is extremely low.",
+        "source": { "type": "niro", "ref": "XLSX messaging (verbatim)" } },
+      { "label": "Intermediate", "min": 10, "max": 20, "color": "#fee08b",
+        "message": "Your 10-year cardiovascular score is slightly elevated compared to optimal ranges. The good news is that these risk factors are highly manageable through early lifestyle adjustments and medical guidance.",
+        "source": { "type": "niro", "ref": "XLSX messaging (verbatim, 10–19%)" } },
+      { "label": "High risk", "min": 20, "color": "#d73027",
+        "message": "Your current heart health markers suggest an area that needs attention. Taking proactive steps now—such as tweaking your diet, staying active, and consulting with your doctor—can significantly lower your long-term cardiovascular risk and protect your heart.",
+        "source": { "type": "niro", "ref": "XLSX messaging (verbatim, >20%)" } }
+    ]
+  },
+  "uiConfig": {
+    "theme": { "accent": "#be123c" },
+    "steps": [ { "key": "about", "title": "About you", "parameterGroups": ["profile", "lifestyle"] },
+               { "key": "labs", "title": "Lipids, blood pressure & sugar", "parameterGroups": ["lipids", "vitals", "labs"] } ],
+    "result": { "layout": ["score-gauge", "category", "key-contributors", "recommendations"] }
+  },
+  "sources": [
+    { "type": "niro", "ref": "Risk calculators.xlsx — 'Heart' sheet (primary)" },
+    { "type": "external", "org": "cited within Niro sheet", "note": "Braunwald's Heart Disease Ch.47; 2018 AHA/ACC; 2021 ESC; D'Agostino et al. Circulation 2008; Harrison's Ch.400" }
+  ]
+}

@@ -1,0 +1,343 @@
+{
+  "schemaVersion": "core-measurement-seed-audit-history.v1",
+  "collection": "biomarkers",
+  "hashAlgorithm": "sha256(stable-json-v1)",
+  "scope": "seed-owned-fields-only",
+  "revisions": [
+    {
+      "revision": 1,
+      "recordCount": 40,
+      "revisionHash": "e46d25bc3bfd424a09209656cb36c7bb17724d3baed322a6a8b318c0e7410054",
+      "records": [
+        {
+          "key": "albumin",
+          "contentHash": "7ec8c80b79e157a9faaaaa954ff5096e9f959ac0b091ea21dc70d96a40c852e9"
+        },
+        {
+          "key": "alt",
+          "contentHash": "08060cedde99e99a9bd0c39f0b8b79b0af124bdea2e84e7be227a5bebd363162"
+        },
+        {
+          "key": "anti-tpo",
+          "contentHash": "44773171737d9d7f11aebf8159f45c2db27934843b6bf4b24cefad4c09110548"
+        },
+        {
+          "key": "apob-apoa-ratio",
+          "contentHash": "c37d90175e7ba6c5d3ec74b542a89a2bce44e9f7692ffaf8dec7d9ca719e8d4d"
+        },
+        {
+          "key": "ast",
+          "contentHash": "df5662772cd794225832aaccd37cd2f0a0c2b633ed3721bb5cccd182afdaef13"
+        },
+        {
+          "key": "bun",
+          "contentHash": "e898c87b83371977a72220d112ce38d5f7f77b2b1e19af541e239b559c70d43f"
+        },
+        {
+          "key": "cortisol",
+          "contentHash": "ae77bcccb7ac310ea4b9e7ecd415400c0568ac7fe0308cf95d93fc64f4bdf0a0"
+        },
+        {
+          "key": "creatinine",
+          "contentHash": "00964f98f6e1569d80e081f640e60e8881617347b92905570b185854c9753a5e"
+        },
+        {
+          "key": "crp",
+          "contentHash": "0d2c57d426c5da42a880c15807946cd3fb53d95dfa340b330bd1e226859bd2f2"
+        },
+        {
+          "key": "eag",
+          "contentHash": "e7f5c99fcde1d95a36f9a638b7fe3a822e54eb4e0809568af591fdf4ced9a2d4"
+        },
+        {
+          "key": "egfr",
+          "contentHash": "cf2cd47aac74d0af975beed23dbd6a7617f9b9a462856e21ed3d42dc33f85d99"
+        },
+        {
+          "key": "esr",
+          "contentHash": "1ac6c90d351debfde85f3ecae418d5bbc6b0c58296c66509b142c71a77c1e668"
+        },
+        {
+          "key": "estradiol",
+          "contentHash": "3372946436d0a6e8f04f1978076c8c2accec5f98d0e13d11388263d5225803cd"
+        },
+        {
+          "key": "fasting-glucose",
+          "contentHash": "0a960e452425fddf8eeeec62176b07f7bbc85d3cc4a0f54fd89966220f272f5e"
+        },
+        {
+          "key": "fasting-insulin",
+          "contentHash": "fe64b33b075e0c1568afa678a57ccb9ea63d10c8b90f1218b4d664a8b0344581"
+        },
+        {
+          "key": "ferritin",
+          "contentHash": "f9fb25bcce8dc76c1c6d26b707854b705f9012808a91d1ae02afb8bd6b0311e2"
+        },
+        {
+          "key": "folate",
+          "contentHash": "4c4f39c7468d14bdb16e2b3a849ab1a56e3eabb90dc70d27596172c0a9f9808d"
+        },
+        {
+          "key": "free-t3",
+          "contentHash": "ece569a74751dc8ecebdd2a911db1d841eb6cdf1c95d041384e5983ea2f1e8af"
+        },
+        {
+          "key": "free-t4",
+          "contentHash": "97fc24e61142a091e8234858d28dc82b40768b4005c9061dee33e6d83fe8dcca"
+        },
+        {
+          "key": "ggt",
+          "contentHash": "6193f118189ccaece00a2e500dd8bb41d36c5dadcde2b95c3be21f2e9e77cc02"
+        },
+        {
+          "key": "hba1c",
+          "contentHash": "d33b95b5faa9e0744783e68ad179518f0cf6afd99be3f92c229845f4d96a07b2"
+        },
+        {
+          "key": "hdl-cholesterol",
+          "contentHash": "9152d2fbef131d0877605cc4079472099666a4bc11eca0b43afb2e4ce7163b6c"
+        },
+        {
+          "key": "hemoglobin",
+          "contentHash": "f6d7f28b02ff9951d1bafee20aa3da9f4236991291eaa362b36b789c0d6395c8"
+        },
+        {
+          "key": "hscrp",
+          "contentHash": "18baae3bfaaf7d26372de20fc3c4bcc18eacff3546a45edc2752d6e431d6b7a2"
+        },
+        {
+          "key": "il6",
+          "contentHash": "c9e62f0fd98a6ee08762f4e87ddfdfcdbcd3074ee360a66b8b69c2716e179b87"
+        },
+        {
+          "key": "ldl-cholesterol",
+          "contentHash": "f79ea802de67c72051990e6b64271dbc3d40b9e60ce9dec40a0888ac809ca8db"
+        },
+        {
+          "key": "magnesium",
+          "contentHash": "fca06640b39593bbf29cc894fdc0846e65a513040c7d740090a1839b184be17e"
+        },
+        {
+          "key": "mcv",
+          "contentHash": "30b21facbdd8fde86d81f2c3b4140d3a90f30e26edcac6ddbbdd6bc3c2986f77"
+        },
+        {
+          "key": "platelets",
+          "contentHash": "360710c903c321084b5d785bb5bf574ccf66017c13e61a8e75997748bda2b603"
+        },
+        {
+          "key": "systolic-bp",
+          "contentHash": "8a432d99612a40ef4495ba9f6139fb0fcd7990f716d453494a0af3111652ce8e"
+        },
+        {
+          "key": "testosterone",
+          "contentHash": "274ba87565f5f787ff449862846a53b4897160b23a7c73f96a777bcf22d20e6a"
+        },
+        {
+          "key": "total-bilirubin",
+          "contentHash": "c7f1661867f86e20a38556ff16d54afd14952df9f81638eed425636e7ac9edd3"
+        },
+        {
+          "key": "total-cholesterol",
+          "contentHash": "3dcca1917beffc01327a5c81eac914b0ebaa27271f601c2283048ed4d39ea2df"
+        },
+        {
+          "key": "triglycerides",
+          "contentHash": "e03fa955041b6063b771ef573c4a142c267603b6b27b27cf9b49056223ef76a5"
+        },
+        {
+          "key": "tsh",
+          "contentHash": "613d28651822c86ec7759aa93cd1fa2beb8746680a7295ee3ac1e72a499b1349"
+        },
+        {
+          "key": "uric-acid",
+          "contentHash": "66b8af803b3ea1adafe42959d4369fa4fcf91e9bd51e5cea9538181db813c2b5"
+        },
+        {
+          "key": "vitamin-b12",
+          "contentHash": "606b7b9e834e008dad974c28978075baba5cf7a05369e5f3510ac53a7e280b1e"
+        },
+        {
+          "key": "vitamin-d",
+          "contentHash": "b21e76308035c1d67ada00dcdf4fee5c660e9e492aadafd919f84b7fdb90e016"
+        },
+        {
+          "key": "wbc",
+          "contentHash": "fe19d09a6db598b86aa1b2e7e933c7db5c9d84c09305a246a9c7898a567c1198"
+        },
+        {
+          "key": "zinc",
+          "contentHash": "e908dc5616b55120167aa96a37ea39b0d8b6fae11b4cd904d509529d03149684"
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "recordCount": 40,
+      "revisionHash": "79d60601991578b8d78061894cd2d2914ba049bbf24399561c3698fa4d13f54b",
+      "records": [
+        {
+          "key": "albumin",
+          "contentHash": "d064fcd93851ab94c0f1517bd64b29f168bb15cb678cdfade89a1398e833c4b2"
+        },
+        {
+          "key": "alt",
+          "contentHash": "7feef934064875db196a5c5403949e430f80df8a8086847820efac8270f63db5"
+        },
+        {
+          "key": "anti-tpo",
+          "contentHash": "d767ab954655ec6b89462aed68d3e0c5b2c9480984bc8504b6869669679d222d"
+        },
+        {
+          "key": "apob-apoa-ratio",
+          "contentHash": "2bce8353fa7069f9b372867990d8ee16e08ba07267c3fa2a2bbef4cb846e8d2b"
+        },
+        {
+          "key": "ast",
+          "contentHash": "a2ebe25406e403ff5ef8d9b0343a322fdc844f7ce50c4edfc660243e269bea3f"
+        },
+        {
+          "key": "bun",
+          "contentHash": "af7b549b477c431549f3f78e583df30df0b906f57ec36aa95645827e371229ed"
+        },
+        {
+          "key": "cortisol",
+          "contentHash": "fe39917c056c33901b5bc25d3858a0a1f76570c9db97f7c8797efb2b81ca8553"
+        },
+        {
+          "key": "creatinine",
+          "contentHash": "505ba1fda916e67078850a5bede740e2d11bd991d07526796e9eee6b928e9bbf"
+        },
+        {
+          "key": "crp",
+          "contentHash": "9891bd2274540b8323be2fe344c98f03828fe75736c30e89d79a9530da470f79"
+        },
+        {
+          "key": "eag",
+          "contentHash": "be299883303d972fe0e95c389759633609db9c455d54c643c41b0384ec0acadc"
+        },
+        {
+          "key": "egfr",
+          "contentHash": "c6a28a424b2dbfef6b26ee4bf73c88be8924bd3f443158cae1869183c40cc977"
+        },
+        {
+          "key": "esr",
+          "contentHash": "9ce57c8d079acbf5d6d7b9644dc0a6cf4ad3e49deb477c0f5bcbc163ebfcb743"
+        },
+        {
+          "key": "estradiol",
+          "contentHash": "ab57e9fafd2d8c2d093247886037a3a33357aca8b87bbdd4d810e8dfbd920079"
+        },
+        {
+          "key": "fasting-glucose",
+          "contentHash": "86d4ecb455a53c9625d7a9cc2189b8646d0103b0bb24aa8f0fa0ddf3948aa374"
+        },
+        {
+          "key": "fasting-insulin",
+          "contentHash": "f2d7cec83dadfd8fb6d6b7f9742a4744a23c50febb1ebb2de5751ffa19d63607"
+        },
+        {
+          "key": "ferritin",
+          "contentHash": "5a312dd4e94b14ca1dcc6d4880d9c0a1ecf5823188f925efdde1575e3ddf4bbe"
+        },
+        {
+          "key": "folate",
+          "contentHash": "50f9fd7410429c29166c103947a0e4f023388731b2deafed96fdc53037893f35"
+        },
+        {
+          "key": "free-t3",
+          "contentHash": "c88ed0d648281cc907ca81781a00afc3608566ef3cc03a91ea115b73aa2b573f"
+        },
+        {
+          "key": "free-t4",
+          "contentHash": "9ad6b8a72a1b4af77c5e445f2234125fa7ee855cbf72bcf7daade988bfe86b6c"
+        },
+        {
+          "key": "ggt",
+          "contentHash": "51e9c11b4969886071ea9bab0e319acef14a7683528edfe18e6e7045ac29b706"
+        },
+        {
+          "key": "hba1c",
+          "contentHash": "6c37b6ea026ddc107407ab0a3be9f477c72c782430c170c6b03caacd463bf1c9"
+        },
+        {
+          "key": "hdl-cholesterol",
+          "contentHash": "fff7eb56d9458a54e0e877504a2dcf36a75b6e336f5178cdff06773f7c1312cd"
+        },
+        {
+          "key": "hemoglobin",
+          "contentHash": "889b01400b60fa5a935087eaee7483e150430b9367e857f8a2387e1b8b5df39a"
+        },
+        {
+          "key": "hscrp",
+          "contentHash": "5129ba54d8c2da24326c802938c2fe61656e131a4609f8764c7d772eeeaec1c7"
+        },
+        {
+          "key": "il6",
+          "contentHash": "cbcaeff17c80eb6bd78dc23ab20809996a52e701aba88cd6fb8010523fbf6149"
+        },
+        {
+          "key": "ldl-cholesterol",
+          "contentHash": "9f7b46afe6d3d8bc4f4522af8d437bb0ea0aeeef84f7e6f5a5c65b903d045517"
+        },
+        {
+          "key": "magnesium",
+          "contentHash": "0e0000bc17734cf868f6cfc953000373e2dc770c20d74341d864afc35dcceaf9"
+        },
+        {
+          "key": "mcv",
+          "contentHash": "8e8d7a8655b01f921257e2bf9ab164519517f9c76d2b75358602bb30196b9334"
+        },
+        {
+          "key": "platelets",
+          "contentHash": "c8da867b7a5d34cc4c12ac4d0c90c8bded70d6d8ccc83b459d269bcad112e17c"
+        },
+        {
+          "key": "systolic-bp",
+          "contentHash": "a2bd59c2e9e37958fab24e67fd260defffaea122f7ded6a8df8723c7a1f976f0"
+        },
+        {
+          "key": "testosterone",
+          "contentHash": "0498cf58973ed1a6a2a9f21b0c1ea147ee8044f9d236f691a6a2e7f440a0138a"
+        },
+        {
+          "key": "total-bilirubin",
+          "contentHash": "5570efd2f49d5aabed2a42491eb81d879ff02604cdcede29613ac3b6c6bd9e38"
+        },
+        {
+          "key": "total-cholesterol",
+          "contentHash": "b3ab63a692a07961bc66cda4859b8a4e1adf7fd4eff94ac32af7b187c90e7f59"
+        },
+        {
+          "key": "triglycerides",
+          "contentHash": "c452ca8757fc83e16f23d6e738d46551d983688eb705da7a6b7647b4246140b9"
+        },
+        {
+          "key": "tsh",
+          "contentHash": "4f259fe435abc41e8829bc8d2cb56c42e6b368f72a0589d175437ef6a82c00ad"
+        },
+        {
+          "key": "uric-acid",
+          "contentHash": "bdcf89ba4b833c9d8fb6c2eaaa596b0358e79fc8cd93758a3af575cf184cd47a"
+        },
+        {
+          "key": "vitamin-b12",
+          "contentHash": "a2a913d8ae98fcde7383c1fd65cae0c891a57795cc7cb169110410570918debb"
+        },
+        {
+          "key": "vitamin-d",
+          "contentHash": "a332212eaaad7678fa4658efc8127727c2f033db1fec98a5bacb4cd2db249cec"
+        },
+        {
+          "key": "wbc",
+          "contentHash": "f85c282725d73d8390c370d7ed6a6c9ab8996b406d23ac6ec5b9279edd5654ac"
+        },
+        {
+          "key": "zinc",
+          "contentHash": "62bace3b856131d3037018fbddf3499f694b90fddbcd26fb8d5c60711f6aa2b5"
+        }
+      ]
+    }
+  ]
+}
+

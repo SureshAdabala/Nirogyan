@@ -1,0 +1,260 @@
+{
+  "schemaVersion": "diabetes-review-preparation.v1",
+  "calculatorSlug": "diabetes-risk",
+  "kind": "review-preparation-only-non-executable",
+  "purpose": "Pointer-only template for collecting authoritative Diabetes review artifacts without storing clinical values, executable logic, reviewer identities, approvals, or lifecycle changes.",
+  "normativeSpec": "packages/contracts/specs/p8-evidence-handoff.v1.md",
+  "policy": {
+    "autoApply": false,
+    "autoApprove": false,
+    "databaseWriteAllowed": false,
+    "clinicalValuesPresent": false,
+    "approvalEvidencePresent": false,
+    "canSatisfyPublicationGate": false
+  },
+  "preflight": {
+    "sourceArtifact": {
+      "path": "data/sources/risk-analysis/Risk calculators.xlsx",
+      "locator": "data/sources/risk-analysis/Risk calculators.xlsx#Diabetes!B5:I27",
+      "sha256": "f1d808861d61b1a4e748a2c079c0cafae521a3c1e0ef01c84cd015ac293fc089"
+    },
+    "calculatorFixture": {
+      "path": "data/fixtures/config-samples/diabetes-risk.config.json",
+      "sha256": "1dee527ed5ce64ac64f7a567577d1e3cee49a0c442a7afc2793a3b956d75152a"
+    },
+    "measurementSeed": {
+      "path": "data/seeds/core-measurements.v1.seed.json",
+      "sha256": "8e15cedd8c79eb37a202a36ca225be74a6c204d12e35d82187e35b7d632c371a"
+    }
+  },
+  "externalBlockers": [
+    {
+      "id": "DIA-01",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    },
+    {
+      "id": "DIA-02",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    },
+    {
+      "id": "DIA-03",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    },
+    {
+      "id": "DIA-04",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    },
+    {
+      "id": "DIA-06",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    },
+    {
+      "id": "DIA-07",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    },
+    {
+      "id": "DIA-09",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    },
+    {
+      "id": "DIA-10",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    },
+    {
+      "id": "DIA-11",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    },
+    {
+      "id": "DIA-12",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    },
+    {
+      "id": "DIA-13",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    },
+    {
+      "id": "DIA-14",
+      "status": "open",
+      "authorityEvidenceRef": null,
+      "authorityEvidenceSha256": null,
+      "studioDispositionRef": null
+    }
+  ],
+  "lockedNonClinicalDispositions": [
+    {
+      "id": "DIA-05",
+      "scope": "engineering-semantics-only",
+      "authorizesClinicalChange": false,
+      "authorizesPublication": false
+    },
+    {
+      "id": "DIA-08",
+      "scope": "engineering-semantics-only",
+      "authorizesClinicalChange": false,
+      "authorizesPublication": false
+    }
+  ],
+  "measurementCandidates": [
+    {
+      "parameterKey": "fbs",
+      "measurementKey": "fasting-glucose",
+      "revision": 3,
+      "seedDefinitionHash": "f4b636b1c550386c60c51eb1f3305864b8938ec5ae307fb91d1098fe8873794d",
+      "lifecycleStatus": "draft",
+      "reviewStatus": "unreviewed",
+      "approvalState": "unapproved",
+      "bindable": false,
+      "bindingState": "not-bound-candidate-only"
+    },
+    {
+      "parameterKey": "hba1c",
+      "measurementKey": "hba1c",
+      "revision": 3,
+      "seedDefinitionHash": "bf8bea3734bf1a74c7e3ae31b0795eddbdf205c6aff8e3751b9f680c1dfe00e3",
+      "lifecycleStatus": "draft",
+      "reviewStatus": "unreviewed",
+      "approvalState": "unapproved",
+      "bindable": false,
+      "bindingState": "not-bound-candidate-only"
+    }
+  ],
+  "evidencePlaceholders": {
+    "sourceOwnerDisposition": {
+      "status": "awaiting-authority",
+      "authoritativeArtifactRef": null,
+      "authoritativeArtifactSha256": null
+    },
+    "measurementReview": {
+      "status": "awaiting-authority",
+      "authoritativeArtifactRef": null,
+      "authoritativeArtifactSha256": null
+    },
+    "completeSourceWorkedExample": {
+      "status": "awaiting-authority",
+      "authoritativeArtifactRef": null,
+      "authoritativeArtifactSha256": null,
+      "completeInputsPresent": false,
+      "expectedFinalScorePresent": false,
+      "expectedCategoryPresent": false,
+      "preciseSourceLocatorPresent": false
+    },
+    "boundaryExamples": [
+      {
+        "blockerId": "DIA-01",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      },
+      {
+        "blockerId": "DIA-02",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      },
+      {
+        "blockerId": "DIA-03",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      },
+      {
+        "blockerId": "DIA-04",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      },
+      {
+        "blockerId": "DIA-06",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      },
+      {
+        "blockerId": "DIA-07",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      },
+      {
+        "blockerId": "DIA-09",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      },
+      {
+        "blockerId": "DIA-10",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      },
+      {
+        "blockerId": "DIA-11",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      },
+      {
+        "blockerId": "DIA-12",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      },
+      {
+        "blockerId": "DIA-13",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      },
+      {
+        "blockerId": "DIA-14",
+        "status": "awaiting-authority",
+        "authoritativeArtifactRef": null,
+        "authoritativeArtifactSha256": null
+      }
+    ],
+    "contentGovernance": {
+      "status": "awaiting-authority",
+      "authoritativeArtifactRef": null,
+      "authoritativeArtifactSha256": null
+    },
+    "independentMedicalReview": {
+      "status": "blocked-by-prerequisite",
+      "authoritativeArtifactRef": null,
+      "authoritativeArtifactSha256": null
+    }
+  },
+  "nextAllowedAction": "Preserve future authority artifacts outside this template, verify provenance and role, then apply accepted decisions only to a new Calculator Studio draft through the normal protected review workflow."
+}

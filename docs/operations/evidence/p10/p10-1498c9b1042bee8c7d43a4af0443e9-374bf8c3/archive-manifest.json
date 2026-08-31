@@ -1,0 +1,254 @@
+{
+  "schemaVersion": "niro-p10-evidence-archive.v1",
+  "executionId": "p10-1498c9b1042bee8c7d43a4af0443e9-374bf8c3",
+  "status": "ok",
+  "completedAtUtc": "2026-08-30T05:32:00.769Z",
+  "owner": "local workspace operator",
+  "sourceRevision": "unavailable-no-git-metadata",
+  "releaseId": "p10-1498c9b1042bee8c7d43a4af0443e9-374bf8c3",
+  "deploymentShape": "native Node API plus staged Next.js standalone server",
+  "runtime": {
+    "node": "v24.11.0",
+    "npmUserAgent": "npm/11.6.1 node/v24.11.0 win32 x64 workspaces/false",
+    "platform": "win32",
+    "architecture": "x64",
+    "playwright": "1.62.1",
+    "browser": "bundled Chromium"
+  },
+  "k6": {
+    "requested": true,
+    "completed": true,
+    "version": "k6.exe v2.2.0 (commit/00a9a1b7f5, go1.26.5, windows/amd64)"
+  },
+  "performance": {
+    "status": "ok",
+    "calculatorSlug": "p10-1498c9b1042bee8c7d43a4af0443e9-calculator",
+    "coldConfigMs": 36.66,
+    "warmConfigMs": 4.49,
+    "warmCacheStatus": 304,
+    "requestCount": 18,
+    "concurrency": 3,
+    "assessmentP50Ms": 91.29,
+    "assessmentP95Ms": 164.83,
+    "assessmentMaxMs": 164.83,
+    "budgetMs": 300
+  },
+  "protectedImplementationSha256": "c6316303cc13dc4f67ac137bc5e0c8db4af81f2cad7f5941660611c74f83b9df",
+  "artifacts": [
+    {
+      "path": "atlas-cleanup-verification.json",
+      "bytes": 350,
+      "sha256": "88df8a8bcc3ab694b329958fbce5299fa260b1c3b274bd0e419db07327b88c3c"
+    },
+    {
+      "path": "k6-summary.json",
+      "bytes": 4612,
+      "sha256": "f3123521ed1b9b0454af39073a11ca5d91d56ae4cad35801815a5c46117de315"
+    },
+    {
+      "path": "logs/api-server-node-performance.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/api-server-node-performance.stdout.log",
+      "bytes": 59,
+      "sha256": "7fa696c6fd64cf24c5271da1093acb419b7466cc82a4370bc4771f0ae6679ad9"
+    },
+    {
+      "path": "logs/api-server.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/api-server.stdout.log",
+      "bytes": 59,
+      "sha256": "7fa696c6fd64cf24c5271da1093acb419b7466cc82a4370bc4771f0ae6679ad9"
+    },
+    {
+      "path": "logs/k6.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/k6.stdout.log",
+      "bytes": 1830,
+      "sha256": "ab6310ba832296e1ced32463eb16d5623824214cbd85cc6e2110cd92a6afe283"
+    },
+    {
+      "path": "logs/next-client-build.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/next-client-build.stdout.log",
+      "bytes": 1184,
+      "sha256": "08b91a82e583a7ec3a87e4e761479a2fc8ee6ae45a2fb351faf13b7de903d3a3"
+    },
+    {
+      "path": "logs/next-client-standalone-stage.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/next-client-standalone-stage.stdout.log",
+      "bytes": 152,
+      "sha256": "47e28c6f4e6ea2dbf6901dcd6d06b365f4cc3118dcb36eff17a921e0bc243569"
+    },
+    {
+      "path": "logs/next-client.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/next-client.stdout.log",
+      "bytes": 150,
+      "sha256": "10a922120d24fc3e5e4134fa739c59a53072ee5799e2072df242f7322e7a99b8"
+    },
+    {
+      "path": "logs/playwright.stderr.log",
+      "bytes": 164,
+      "sha256": "fa0cceb88b30bd9933a90b427865ebee94c3ebc4f55adb1407b99d941f6105dd"
+    },
+    {
+      "path": "logs/playwright.stdout.log",
+      "bytes": 343,
+      "sha256": "ebbf88f252718cbf6e5f9bda783547b2266061f58984e238a181a2770cdeb497"
+    },
+    {
+      "path": "playwright-artifacts/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "path": "playwright-artifacts/p10-reusability-P10-Studio-dddbf-nd-hardens-a-new-calculator-chromium/trace.zip",
+      "bytes": 31978450,
+      "sha256": "5b7aa2f07b9fd98a6e19ee2fa0727eb2c82d0493108fb32538ffc77b2cb05e0f"
+    },
+    {
+      "path": "playwright-artifacts/p10-reusability-P10-Studio-dddbf-nd-hardens-a-new-calculator-chromium/video.webm",
+      "bytes": 7530969,
+      "sha256": "a6446761563b9f3a34ede2774c09269a3ee23675524ce9657b9f7a0d844a3a9a"
+    },
+    {
+      "path": "playwright-report/data/d3e638ba3ded06006f0f449f738ca5820f212562.zip",
+      "bytes": 31978450,
+      "sha256": "5b7aa2f07b9fd98a6e19ee2fa0727eb2c82d0493108fb32538ffc77b2cb05e0f"
+    },
+    {
+      "path": "playwright-report/data/d6aab0a34a05913e0a695425bda634a5604bb58d.webm",
+      "bytes": 7530969,
+      "sha256": "a6446761563b9f3a34ede2774c09269a3ee23675524ce9657b9f7a0d844a3a9a"
+    },
+    {
+      "path": "playwright-report/index.html",
+      "bytes": 553603,
+      "sha256": "506e760b6bf00ffee66b59f962f373806aba621448b809ecc00ba965c64b5979"
+    },
+    {
+      "path": "playwright-report/trace/assets/codeMirrorModule-rXmQmLUY.js",
+      "bytes": 307393,
+      "sha256": "bb0f7c41f9889e4195c2504878e38061288881f426498434c9955479828f7e66"
+    },
+    {
+      "path": "playwright-report/trace/assets/defaultSettingsView-B-dXF5JN.js",
+      "bytes": 643184,
+      "sha256": "2ce8be133fe21a4abd7d8330d9b443092dc2ce28826f191442c14989f9d55b15"
+    },
+    {
+      "path": "playwright-report/trace/assets/urlMatch-L3liM589.js",
+      "bytes": 2510,
+      "sha256": "1bc6321e32d11c31a452bc75896f0b344e6153321854d9f1658818be7f845c16"
+    },
+    {
+      "path": "playwright-report/trace/codeMirrorModule.-QdMvsKi.css",
+      "bytes": 6251,
+      "sha256": "20be824a82832b62cc04642d31da3c609fd280b23f1cdcb1e622c4f40aac5ab8"
+    },
+    {
+      "path": "playwright-report/trace/codicon.DCmgc-ay.ttf",
+      "bytes": 80340,
+      "sha256": "0f1d5219934e96e83b8db162d60b4d8c09b5de1e7d38031cbafe4a3c0f2889c9"
+    },
+    {
+      "path": "playwright-report/trace/defaultSettingsView.BLFoOugd.css",
+      "bytes": 105310,
+      "sha256": "72241b3112ab609ca0e06195e85e02cb373799217cd5f24a07d61d9273c4ad3e"
+    },
+    {
+      "path": "playwright-report/trace/index.B_TqY17P.css",
+      "bytes": 2055,
+      "sha256": "08a212fcacae1866f44f065654afcc4c7d03409c68c74b3315c5bda17a0ca003"
+    },
+    {
+      "path": "playwright-report/trace/index.html",
+      "bytes": 2363,
+      "sha256": "e2218af9284b6e1c2ec3b547320857778a323fd1473d90620153e967223c5721"
+    },
+    {
+      "path": "playwright-report/trace/index.KZ4wOW1K.js",
+      "bytes": 6566,
+      "sha256": "53e2227532161670bc601e241a7a9af00ac54826a9dd2ef9c15b8c1f77e92e63"
+    },
+    {
+      "path": "playwright-report/trace/manifest.webmanifest",
+      "bytes": 429,
+      "sha256": "d8540500603a32a39fe7e5a0375dc0f9ebafd11118e06a846db7efc608223ab9"
+    },
+    {
+      "path": "playwright-report/trace/playwright-logo.svg",
+      "bytes": 5033,
+      "sha256": "6b0a4367bdeab10995bc239278f04c68c10e48adbec15e799e01909a0d66dcb9"
+    },
+    {
+      "path": "playwright-report/trace/snapshot.B_Jk1wbt.js",
+      "bytes": 650,
+      "sha256": "d4d09e05451d107d8e1a6bbd041405fe518b9fd2833890e4ebaaad83b7f554f5"
+    },
+    {
+      "path": "playwright-report/trace/snapshot.html",
+      "bytes": 389,
+      "sha256": "c608c8899c95c5a74d3f556e20146c3d852b9df85ae2854c659a7cc773c9b727"
+    },
+    {
+      "path": "playwright-report/trace/sw.bundle.js",
+      "bytes": 93459,
+      "sha256": "cfd6662a71914516efe90a5a6f3da2bbe5db6e442939b868ca465f765d33723f"
+    },
+    {
+      "path": "playwright-report/trace/uiMode.C7UW1sC9.css",
+      "bytes": 54341,
+      "sha256": "c194e703ad4697e31c5e9b8d1e4f75f201a1fbe9940620fa6319dfa5543707b4"
+    },
+    {
+      "path": "playwright-report/trace/uiMode.Dzuouizj.js",
+      "bytes": 37932,
+      "sha256": "a584f96f0797144552430d7a04f7e3b84b1baaa0b781a664b1512339ec1c760b"
+    },
+    {
+      "path": "playwright-report/trace/uiMode.html",
+      "bytes": 727,
+      "sha256": "32b260f173708fe088834efe8eff0f9d92af0c7e2e6c987cd8e197f0a066742f"
+    },
+    {
+      "path": "playwright-report/trace/xtermModule.kHJ-D0s7.css",
+      "bytes": 2853,
+      "sha256": "0dd60056134e6a2994a86b59a1e9789b9f04e92924da109aef8c923acaf08ce5"
+    },
+    {
+      "path": "protected-after.json",
+      "bytes": 41418,
+      "sha256": "9a554b3db5873f406c6c6977c38aa4c581740f74a968113760fc48a28f1e2089"
+    },
+    {
+      "path": "protected-before.json",
+      "bytes": 41418,
+      "sha256": "9a554b3db5873f406c6c6977c38aa4c581740f74a968113760fc48a28f1e2089"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 2284,
+      "sha256": "891febf6b51a2bb6ead3c08032ed0c72f859c6de808d67ae240a10f911f4dfe8"
+    }
+  ]
+}

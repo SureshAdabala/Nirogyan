@@ -1,0 +1,984 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:niro:schema:calculator-version:v1",
+  "title": "Niro Calculator Version v1",
+  "description": "Strict structural contract for an immutable calculator version. Semantic and publish rules are defined in the companion P0A specifications.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "calculatorSlug",
+    "name",
+    "version",
+    "status",
+    "shortDescription",
+    "disclaimers",
+    "parameters",
+    "scoringRules",
+    "domains",
+    "formulas",
+    "resultCategories",
+    "uiConfig"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "niro-platform/calculator-version.v1",
+      "description": "Instance contract discriminator. It is retained for compatibility with the five P0A fixtures."
+    },
+    "calculatorSlug": { "$ref": "#/$defs/slug" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "version": { "type": "integer", "minimum": 1 },
+    "status": {
+      "enum": ["draft", "in-review", "approved", "published", "retired", "rejected"]
+    },
+    "shortDescription": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "disclaimers": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 1000 }
+    },
+    "engineSemanticVersion": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]*\\.[0-9]+\\.[0-9]+$"
+    },
+    "NIRO_SOURCE_STATUS": {
+      "deprecated": true,
+      "$ref": "#/$defs/legacyNiroSourceStatus"
+    },
+    "PURPOSE_NOTE": {
+      "deprecated": true,
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 5000
+    },
+    "parameters": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/parameter" }
+    },
+    "scoringRules": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/scoringRule" }
+    },
+    "parameterGroupsAggregation": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/parameterGroupAggregation" }
+    },
+    "imputationRules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/imputationRule" }
+    },
+    "lookupTables": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/lookupTable" }
+    },
+    "formulas": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/formula" }
+    },
+    "floorRules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/floorRule" }
+    },
+    "domains": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/domain" }
+    },
+    "domainAggregationPolicy": { "$ref": "#/$defs/domainAggregationPolicy" },
+    "adjustmentRules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/adjustmentRule" }
+    },
+    "resultCategories": { "$ref": "#/$defs/resultCategories" },
+    "uiConfig": { "$ref": "#/$defs/uiConfig" },
+    "content": { "$ref": "urn:niro:schema:content-page:v1" },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "governance": { "$ref": "#/$defs/governance" },
+    "testCases": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/testCase" }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": { "enum": ["approved", "published", "retired"] }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "required": [
+          "engineSemanticVersion",
+          "content",
+          "sources",
+          "governance",
+          "testCases"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "key": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9-]*$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "scalar": {
+      "type": ["string", "number", "boolean"]
+    },
+    "nullableNumber": {
+      "type": ["number", "null"]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "type": {
+          "enum": ["niro", "external", "internal", "needs-clarification"]
+        },
+        "ref": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "org": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "url": { "type": "string", "format": "uri", "maxLength": 2000 },
+        "accessed": { "type": "string", "format": "date" },
+        "note": { "type": "string", "maxLength": 2000 },
+        "verification": {
+          "enum": [
+            "fetch-verified",
+            "search-verified",
+            "blocked-cited",
+            "source-provided",
+            "needs-verification"
+          ]
+        },
+        "demoPoints": { "type": "boolean" },
+        "claimIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/key" }
+        }
+      }
+    },
+    "legacyNiroSourceStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["banner", "explanation"],
+      "properties": {
+        "banner": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "explanation": { "type": "string", "minLength": 1, "maxLength": 5000 },
+        "governanceCaveat": { "type": "string", "minLength": 1, "maxLength": 5000 },
+        "remainingClarifications": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 1000 }
+        }
+      }
+    },
+    "conditionValue": {
+      "oneOf": [
+        { "$ref": "#/$defs/scalar" },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/scalar" }
+        }
+      ]
+    },
+    "predicate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["op"],
+      "properties": {
+        "param": { "$ref": "#/$defs/key" },
+        "aggregate": { "$ref": "#/$defs/key" },
+        "formula": { "$ref": "#/$defs/key" },
+        "op": {
+          "enum": [
+            "eq",
+            "ne",
+            "gt",
+            "gte",
+            "lt",
+            "lte",
+            "in",
+            "not-in",
+            "exists",
+            "missing"
+          ]
+        },
+        "value": { "$ref": "#/$defs/conditionValue" }
+      },
+      "oneOf": [
+        { "required": ["param"] },
+        { "required": ["aggregate"] },
+        { "required": ["formula"] }
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "op": { "enum": ["exists", "missing"] }
+            },
+            "required": ["op"]
+          },
+          "then": { "not": { "required": ["value"] } },
+          "else": { "required": ["value"] }
+        }
+      ]
+    },
+    "condition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["all"],
+          "properties": {
+            "all": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/condition" }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["any"],
+          "properties": {
+            "any": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/condition" }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["not"],
+          "properties": {
+            "not": { "$ref": "#/$defs/condition" }
+          }
+        },
+        { "$ref": "#/$defs/predicate" }
+      ]
+    },
+    "unitChoice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "factor"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "factor": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "offset": { "type": "number", "default": 0 }
+      }
+    },
+    "unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical"],
+      "properties": {
+        "canonical": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "allowed": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/unitChoice" }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": { "type": "boolean" },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "integer": { "type": "boolean" },
+        "softMin": { "type": "number" },
+        "softMax": { "type": "number" }
+      }
+    },
+    "option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "label"],
+      "properties": {
+        "value": { "$ref": "#/$defs/scalar" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "source": { "$ref": "#/$defs/source" }
+      }
+    },
+    "derived": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["formula", "dependsOn"],
+      "properties": {
+        "formula": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "dependsOn": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/key" }
+        }
+      }
+    },
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "group", "inputType", "order"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "group": { "$ref": "#/$defs/key" },
+        "biomarkerKey": { "$ref": "#/$defs/slug" },
+        "inputType": { "enum": ["number", "select", "boolean", "derived"] },
+        "unit": { "$ref": "#/$defs/unit" },
+        "validation": { "$ref": "#/$defs/validation" },
+        "options": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/option" }
+        },
+        "defaultOption": { "$ref": "#/$defs/scalar" },
+        "missingPolicy": {
+          "enum": [
+            "block",
+            "default-option",
+            "impute-rule",
+            "exclude-from-max",
+            "exclude-from-group",
+            "zero-points",
+            "not-applicable"
+          ]
+        },
+        "derived": { "$ref": "#/$defs/derived" },
+        "visibility": { "$ref": "#/$defs/condition" },
+        "order": { "type": "integer", "minimum": 0 },
+        "source": { "$ref": "#/$defs/source" },
+        "helpText": { "type": "string", "maxLength": 2000 },
+        "placeholder": { "type": "string", "maxLength": 300 }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "inputType": { "const": "select" } },
+            "required": ["inputType"]
+          },
+          "then": { "required": ["options"] }
+        },
+        {
+          "if": {
+            "properties": { "inputType": { "const": "derived" } },
+            "required": ["inputType"]
+          },
+          "then": { "required": ["derived"] }
+        }
+      ]
+    },
+    "scoreBand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["points"],
+      "properties": {
+        "min": { "$ref": "#/$defs/nullableNumber" },
+        "max": { "$ref": "#/$defs/nullableNumber" },
+        "minInclusive": { "type": "boolean" },
+        "minExclusive": { "type": "boolean" },
+        "maxInclusive": { "type": "boolean" },
+        "maxExclusive": { "type": "boolean" },
+        "points": { "type": "number" },
+        "interpretation": { "type": "string", "maxLength": 500 },
+        "source": { "$ref": "#/$defs/source" },
+        "asWritten": { "type": "boolean" },
+        "clarificationRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 100 }
+        }
+      },
+      "anyOf": [{ "required": ["min"] }, { "required": ["max"] }]
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["when", "bands"],
+      "properties": {
+        "when": {
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/condition" }]
+        },
+        "bands": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/scoreBand" }
+        },
+        "source": { "$ref": "#/$defs/source" },
+        "asWritten": { "type": "boolean" },
+        "clarificationRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 100 }
+        }
+      }
+    },
+    "optionPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "points"],
+      "properties": {
+        "value": { "$ref": "#/$defs/scalar" },
+        "points": { "type": "number" },
+        "source": { "$ref": "#/$defs/source" }
+      }
+    },
+    "scoringRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parameterKey"],
+      "properties": {
+        "parameterKey": { "$ref": "#/$defs/key" },
+        "bandEdges": { "enum": ["min-inclusive", "explicit"] },
+        "contexts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/context" }
+        },
+        "optionPoints": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/optionPoint" }
+        },
+        "source": { "$ref": "#/$defs/source" },
+        "asWritten": { "type": "boolean" },
+        "clarificationRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 100 }
+        }
+      },
+      "oneOf": [
+        { "required": ["contexts"], "not": { "required": ["optionPoints"] } },
+        { "required": ["optionPoints"], "not": { "required": ["contexts"] } }
+      ]
+    },
+    "parameterGroupAggregation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "aggregate", "parameterKeys"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "aggregate": { "enum": ["max", "min", "sum", "mean"] },
+        "parameterKeys": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/key" }
+        },
+        "emptyPolicy": { "enum": ["absent", "zero", "block"] },
+        "source": { "$ref": "#/$defs/source" }
+      }
+    },
+    "imputationBandAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bandParam", "bands"],
+      "properties": {
+        "bandParam": { "$ref": "#/$defs/key" },
+        "bands": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/scoreBand" }
+        }
+      }
+    },
+    "imputationAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "setPoints": { "type": "number" },
+        "setPointsByBand": { "$ref": "#/$defs/imputationBandAction" }
+      },
+      "oneOf": [
+        { "required": ["setPoints"] },
+        { "required": ["setPointsByBand"] }
+      ]
+    },
+    "imputationRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "parameterKey", "when", "action"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "parameterKey": { "$ref": "#/$defs/key" },
+        "when": { "$ref": "#/$defs/condition" },
+        "action": { "$ref": "#/$defs/imputationAction" },
+        "fallbackPolicy": {
+          "enum": ["block", "exclude-from-max", "zero-points", "not-applicable"]
+        },
+        "source": { "$ref": "#/$defs/source" }
+      }
+    },
+    "legacyLookupRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["points", "riskPct"],
+      "properties": {
+        "points": { "type": "number" },
+        "riskPct": { "type": "number" },
+        "orBelow": { "type": "boolean" },
+        "orAbove": { "type": "boolean" },
+        "display": { "type": "string", "maxLength": 100 }
+      }
+    },
+    "lookupEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input", "output"],
+      "properties": {
+        "input": { "$ref": "#/$defs/scalar" },
+        "output": { "$ref": "#/$defs/scalar" },
+        "orBelow": { "type": "boolean" },
+        "orAbove": { "type": "boolean" },
+        "display": { "type": "string", "maxLength": 100 },
+        "source": { "$ref": "#/$defs/source" }
+      }
+    },
+    "lookupTable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "inputField": { "$ref": "#/$defs/key" },
+        "outputField": { "$ref": "#/$defs/key" },
+        "map": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/legacyLookupRow" }
+        },
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/lookupEntry" }
+        },
+        "source": { "$ref": "#/$defs/source" }
+      },
+      "oneOf": [
+        { "required": ["map"], "not": { "required": ["entries"] } },
+        { "required": ["entries"], "not": { "required": ["map"] } }
+      ]
+    },
+    "formula": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "expression"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "symbol": { "$ref": "#/$defs/key" },
+        "expression": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "scope": { "enum": ["global", "per-domain"] },
+        "note": { "type": "string", "maxLength": 2000 },
+        "source": { "$ref": "#/$defs/source" }
+      }
+    },
+    "floorAppliesWhen": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string", "maxLength": 1000 },
+        "all": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/condition" }
+        },
+        "any": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/condition" }
+        }
+      },
+      "anyOf": [{ "required": ["all"] }, { "required": ["any"] }]
+    },
+    "floorTier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bandParam", "floorPct"],
+      "properties": {
+        "bandParam": { "$ref": "#/$defs/key" },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "minInclusive": { "type": "boolean" },
+        "minExclusive": { "type": "boolean" },
+        "maxInclusive": { "type": "boolean" },
+        "maxExclusive": { "type": "boolean" },
+        "floorPct": { "type": "number" },
+        "floorPctRangeNote": { "type": "string", "maxLength": 500 },
+        "uxClass": { "type": "string", "maxLength": 100 },
+        "message": { "type": "string", "maxLength": 2000 },
+        "source": { "$ref": "#/$defs/source" },
+        "asWritten": { "type": "boolean" },
+        "clarificationRefs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 100 }
+        }
+      },
+      "anyOf": [{ "required": ["min"] }, { "required": ["max"] }]
+    },
+    "floorRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "appliesWhen", "tiers"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "appliesWhen": { "$ref": "#/$defs/floorAppliesWhen" },
+        "tiers": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/floorTier" }
+        },
+        "display": { "type": "string", "maxLength": 1000 },
+        "source": { "$ref": "#/$defs/source" }
+      }
+    },
+    "domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "weight", "parameterKeys"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "weight": { "type": "number", "minimum": 0, "maximum": 1 },
+        "implicit": { "type": "boolean" },
+        "parameterKeys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/key" }
+        },
+        "aggregateKeys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/key" }
+        },
+        "source": { "$ref": "#/$defs/source" }
+      }
+    },
+    "domainAggregationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["zeroDenominator", "missingDomainPolicy", "negativeDomainPolicy"],
+      "properties": {
+        "zeroDenominator": { "enum": ["unscored", "block", "no-score"] },
+        "missingDomainPolicy": {
+          "enum": ["block", "exclude-and-renormalize", "zero-contribution", "no-score"]
+        },
+        "negativeDomainPolicy": { "enum": ["preserve", "clamp-zero"] },
+        "minimumWeightCoverage": { "type": "number", "minimum": 0, "maximum": 1 },
+        "minimumParameterCoverage": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "adjustmentRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "bandParam": { "$ref": "#/$defs/key" },
+        "bandEdges": { "enum": ["min-inclusive", "explicit"] },
+        "bands": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/scoreBand" }
+        },
+        "optionParam": { "$ref": "#/$defs/key" },
+        "optionPoints": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/optionPoint" }
+        },
+        "source": { "$ref": "#/$defs/source" }
+      },
+      "oneOf": [
+        {
+          "required": ["bandParam", "bands"],
+          "not": { "anyOf": [{ "required": ["optionParam"] }, { "required": ["optionPoints"] }] }
+        },
+        {
+          "required": ["optionParam", "optionPoints"],
+          "not": { "anyOf": [{ "required": ["bandParam"] }, { "required": ["bands"] }] }
+        }
+      ]
+    },
+    "scale": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["min", "max", "direction"],
+      "properties": {
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "unit": { "type": "string", "maxLength": 100 },
+        "direction": {
+          "enum": [
+            "higher-is-worse",
+            "lower-is-worse",
+            "higher-is-better",
+            "lower-is-better"
+          ]
+        },
+        "clamp": { "type": "boolean", "default": false },
+        "displayDecimals": { "type": "integer", "minimum": 0, "maximum": 6 }
+      }
+    },
+    "resultBand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "color"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "min": { "$ref": "#/$defs/nullableNumber" },
+        "max": { "$ref": "#/$defs/nullableNumber" },
+        "minInclusive": { "type": "boolean" },
+        "minExclusive": { "type": "boolean" },
+        "maxInclusive": { "type": "boolean" },
+        "maxExclusive": { "type": "boolean" },
+        "color": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "message": { "type": "string", "maxLength": 3000 },
+        "recommendation": { "type": "string", "maxLength": 3000 },
+        "source": { "$ref": "#/$defs/source" },
+        "asWritten": { "type": "boolean" },
+        "clarificationRefs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 100 }
+        }
+      },
+      "anyOf": [{ "required": ["min"] }, { "required": ["max"] }]
+    },
+    "resultOverride": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["when", "minCategory"],
+      "properties": {
+        "when": { "$ref": "#/$defs/condition" },
+        "minCategory": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "source": { "$ref": "#/$defs/source" }
+      }
+    },
+    "boundarySemantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "note"],
+      "properties": {
+        "status": { "enum": ["confirmed", "as-documented", "needs-clarification"] },
+        "note": { "type": "string", "minLength": 1, "maxLength": 3000 }
+      }
+    },
+    "resultCategories": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scale", "bandEdges", "bands"],
+      "properties": {
+        "scale": { "$ref": "#/$defs/scale" },
+        "bandEdges": { "enum": ["min-inclusive", "explicit"] },
+        "boundarySemantics": { "$ref": "#/$defs/boundarySemantics" },
+        "scoreLattice": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["step", "origin"],
+          "properties": {
+            "step": { "type": "number", "exclusiveMinimum": 0 },
+            "origin": { "type": "number" }
+          }
+        },
+        "bands": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/resultBand" }
+        },
+        "overrides": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/resultOverride" }
+        }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accent"],
+      "properties": {
+        "accent": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+      }
+    },
+    "uiStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "title", "parameterGroups"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "parameterGroups": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/key" }
+        }
+      }
+    },
+    "uiResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["layout"],
+      "properties": {
+        "layout": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "score-gauge",
+              "category",
+              "key-contributors",
+              "domain-breakdown",
+              "biomarker-details",
+              "recommendations"
+            ]
+          }
+        },
+        "informationHierarchy": { "type": "string", "maxLength": 1000 }
+      }
+    },
+    "uiConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["theme", "steps", "result"],
+      "properties": {
+        "theme": { "$ref": "#/$defs/theme" },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/uiStep" }
+        },
+        "result": { "$ref": "#/$defs/uiResult" }
+      }
+    },
+    "reviewEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewerId", "reviewedAt", "decision", "scope"],
+      "properties": {
+        "reviewerId": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "reviewedAt": { "type": "string", "format": "date-time" },
+        "decision": { "enum": ["approved", "changes-requested", "rejected"] },
+        "scope": { "enum": ["clinical-logic", "content", "sources", "full-version"] },
+        "note": { "type": "string", "maxLength": 3000 }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clinicalStatus", "sourceReviewStatus", "discrepancyIds", "publishBlockers"],
+      "properties": {
+        "clinicalStatus": {
+          "enum": ["unreviewed", "in-review", "approved", "rejected", "not-applicable"]
+        },
+        "sourceReviewStatus": {
+          "enum": ["unreviewed", "partial", "verified", "expired", "not-applicable"]
+        },
+        "discrepancyIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 100 }
+        },
+        "publishBlockers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 500 }
+        },
+        "reviews": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/reviewEvidence" }
+        },
+        "measurementRevisionIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 200 }
+        },
+        "sourceReviewExpiresAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "inputValue": {
+      "oneOf": [
+        { "$ref": "#/$defs/scalar" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "unit"],
+          "properties": {
+            "value": { "type": "number" },
+            "unit": { "type": "string", "minLength": 1, "maxLength": 40 }
+          }
+        }
+      ]
+    },
+    "testCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "name", "kind", "inputs", "expected"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "kind": { "enum": ["nonclinical-fixture", "source-worked-example", "boundary", "regression"] },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/inputValue" }
+        },
+        "expected": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "finalScore": { "type": "number" },
+            "category": { "type": "string", "minLength": 1, "maxLength": 200 },
+            "traceAssertions": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1, "maxLength": 500 }
+            },
+            "errorCode": { "type": "string", "minLength": 1, "maxLength": 100 }
+          },
+          "anyOf": [
+            { "required": ["finalScore"] },
+            { "required": ["category"] },
+            { "required": ["errorCode"] }
+          ]
+        },
+        "source": { "$ref": "#/$defs/source" }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "git": {
+    "deploymentEnabled": false
+  },
+  "installCommand": "cd ../.. && npm install --global npm@11.6.1 && npm ci --include=dev",
+  "buildCommand": "cd ../.. && npm run deploy:build:client-native",
+  "outputDirectory": ".next"
+}

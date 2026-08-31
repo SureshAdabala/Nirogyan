@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "niro-p10-evidence-archive.v1",
+  "executionId": "p10-f93fecff3974b861c5909eb20495d9-7434cfaf",
+  "status": "ok",
+  "completedAtUtc": "2026-08-29T18:58:13Z",
+  "owner": "local workspace operator",
+  "sourceRevision": "unavailable-no-git-metadata",
+  "releaseId": "p10-f93fecff3974b861c5909eb20495d9-7434cfaf",
+  "deploymentShape": "native Node API plus staged Next.js standalone server",
+  "runtime": {
+    "node": "24.11.0",
+    "npm": "11.6.1",
+    "playwright": "1.62.1",
+    "browser": "bundled Chromium"
+  },
+  "k6": {
+    "version": "k6.exe v1.7.1 (commit/9f82e6f1fc, go1.26.1, windows/amd64)",
+    "officialReleaseArchiveSha256": "1a4dc636eb195002d314b3813aeef8c63896e7fea0e81ac10a820aee4fd63a37"
+  },
+  "artifacts": [
+    {
+      "path": "summary.json",
+      "bytes": 2185,
+      "sha256": "84baa2a8dc70464528a88e1d35bccb91fb17825ad645acc7e415a5f1585b19a1"
+    },
+    {
+      "path": "k6-summary.json",
+      "bytes": 4590,
+      "sha256": "0b2f8333bff3400f73578b3709b03b6af0f3741900812395c4378fbf3dfe3084"
+    },
+    {
+      "path": "protected-before.json",
+      "bytes": 41026,
+      "sha256": "1bf9fe806a9039c3b9d8c2964867017c0a19a678e430c887877364edb7699e15"
+    },
+    {
+      "path": "protected-after.json",
+      "bytes": 41026,
+      "sha256": "1bf9fe806a9039c3b9d8c2964867017c0a19a678e430c887877364edb7699e15"
+    },
+    {
+      "path": "logs/playwright.stdout.log",
+      "bytes": 252,
+      "sha256": "c0e87cfe86ea927ef0f7243f6c6a3844a57d2e07756089990fc5f010805938e3"
+    },
+    {
+      "path": "logs/k6.stdout.log",
+      "bytes": 1821,
+      "sha256": "ff9636bf126cd132ad5f61c58c76c8610f73b4912183d940af15e3a134a7c430"
+    },
+    {
+      "path": "logs/next-client-standalone-stage.stdout.log",
+      "bytes": 152,
+      "sha256": "cdfa3e6ad2bb6604f409bfdfe5215db45a93b8e2f9254178ad50ca05d58ebb24"
+    },
+    {
+      "path": "atlas-cleanup-verification.json",
+      "bytes": 297,
+      "sha256": "6825a3c69592752005320e98dade67ac5fe245a6cf7554879a6ee4d2b2fb3eec"
+    },
+    {
+      "path": "playwright-artifacts/p10-reusability-P10-Studio-dddbf-nd-hardens-a-new-calculator-chromium/trace.zip",
+      "bytes": 31480704,
+      "sha256": "c5446f5b76409e7a43f1a42fee82c64de5b348b0ef452a59f028aa81b9e7430f"
+    },
+    {
+      "path": "playwright-artifacts/p10-reusability-P10-Studio-dddbf-nd-hardens-a-new-calculator-chromium/video.webm",
+      "bytes": 4175228,
+      "sha256": "25ae1d0f60945b7b7fa2b2edacf81b183f9e22c879d99583c962f05fed84a2f0"
+    }
+  ]
+}

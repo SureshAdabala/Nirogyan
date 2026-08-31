@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "niro-p10-evidence-archive.v1",
+  "executionId": "p10-01cffb0d8ab2a79a73cd47142ff32f-90d84720",
+  "status": "ok",
+  "completedAtUtc": "2026-08-29T23:58:48Z",
+  "owner": "local workspace operator",
+  "sourceRevision": "unavailable-no-git-metadata",
+  "releaseId": "p10-01cffb0d8ab2a79a73cd47142ff32f-90d84720",
+  "deploymentShape": "native Node API plus staged Next.js standalone server",
+  "runtime": {
+    "node": "24.11.0",
+    "npm": "11.6.1",
+    "playwright": "1.62.1",
+    "browser": "bundled Chromium"
+  },
+  "k6": {
+    "version": "k6.exe v1.7.1 (commit/9f82e6f1fc, go1.26.1, windows/amd64)",
+    "officialReleaseArchiveSha256": "1a4dc636eb195002d314b3813aeef8c63896e7fea0e81ac10a820aee4fd63a37"
+  },
+  "performance": {
+    "k6AssessP95Ms": 102.33,
+    "nodeAssessP95Ms": 129.85,
+    "budgetMs": 300,
+    "checks": 20,
+    "failedRequests": 0
+  },
+  "protectedImplementationSha256": "5c6316d822616fdf802610ff3b54f998fadf900bb90e3401d3f04f8f4b27eb4b",
+  "artifacts": [
+    { "path": "summary.json", "bytes": 2184, "sha256": "58521d0fa30b3a88a5753af66567a5be3f029bcc3e4d5339888e2dd4b5d4945c" },
+    { "path": "k6-summary.json", "bytes": 4574, "sha256": "bc81c332bae0862714f19776c06eec7af4a34fa7e4f066bca0511bf3f9197f3c" },
+    { "path": "protected-before.json", "bytes": 41027, "sha256": "6420e03e06f798239a5c8e2794c6b7f32faedadf0ec72b2737aaf0fa574e07e6" },
+    { "path": "protected-after.json", "bytes": 41027, "sha256": "6420e03e06f798239a5c8e2794c6b7f32faedadf0ec72b2737aaf0fa574e07e6" },
+    { "path": "logs/playwright.stdout.log", "bytes": 252, "sha256": "f7e9063c1716ba7746ed1f2095ba536ac3839599d218847004d6c9520facdd68" },
+    { "path": "logs/playwright.stderr.log", "bytes": 164, "sha256": "035ef43854891c1cedc96c9009969bbdedc23624f3272d26446c76b4a5790e78" },
+    { "path": "logs/k6.stdout.log", "bytes": 1830, "sha256": "31f2c6b241b002ded0107fd7bb6357742fef2e715bd30d6acd6597e856df3db2" },
+    { "path": "logs/k6.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "logs/api-server-node-performance.stdout.log", "bytes": 59, "sha256": "ca33dfe690c48ae9dfae6471dba0498dca5bb801a2fb49aba6686f36c1b81a8f" },
+    { "path": "logs/api-server-node-performance.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "logs/api-server.stdout.log", "bytes": 59, "sha256": "ca33dfe690c48ae9dfae6471dba0498dca5bb801a2fb49aba6686f36c1b81a8f" },
+    { "path": "logs/api-server.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "logs/next-client-build.stdout.log", "bytes": 1181, "sha256": "b9d63782765041a4ea4731bd1204672239bfcf294eb710755c4697269cf61028" },
+    { "path": "logs/next-client-build.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "logs/next-client-standalone-stage.stdout.log", "bytes": 152, "sha256": "9e771a4a9f07264dec2bff78ab33d80a3173c7c9514d2bf36bcaf4232833839b" },
+    { "path": "logs/next-client-standalone-stage.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "logs/next-client.stdout.log", "bytes": 150, "sha256": "74911c5d3d75ff4f57ef29d202f982e42d26e86d52c5e1f8fa8215125f13cca7" },
+    { "path": "logs/next-client.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "playwright-artifacts/p10-reusability-P10-Studio-dddbf-nd-hardens-a-new-calculator-chromium/trace.zip", "bytes": 33366724, "sha256": "0e3dd1211d156cc04dd0dff607d5ffde311de05ea3f9931ccb96c2f051c5bf10" },
+    { "path": "playwright-artifacts/p10-reusability-P10-Studio-dddbf-nd-hardens-a-new-calculator-chromium/video.webm", "bytes": 4730358, "sha256": "e92252d23f93125b6a25943682e6ef5097b62161f460167d70ad171897b22b9e" }
+  ]
+}

@@ -1,0 +1,993 @@
+{
+  "$schema": "niro-platform/biomarker-library.v1",
+  "generatedAt": "2026-08-18",
+  "legend": {
+    "sourceTypes": {
+      "niro": "Defined by Niro original sources (audio / risk-logic sheet / brief consolidating them)",
+      "external": "Externally verified against authoritative medical source (org+URL recorded)",
+      "needs-clarification": "Not resolvable from Niro sources or trusted external sources without ambiguity"
+    },
+    "niroScoringNote": "Per-parameter scoring thresholds & points are defined in the Niro Risk Logic Google Sheet, which is referenced by the Niro brief but NOT present in the provided folder. Every niroScoring block is therefore status=needs-clarification until the sheet is provided. External clinical bands below are clearly-labelled interpretation references, NOT substitutes for Niro scoring.",
+    "validationNote": "validation.min/max are engineering plausibility guards for input sanity (soft warn / hard block), not medical claims. Tune during implementation."
+  },
+  "domains": [
+    { "key": "cardiovascular", "label": "Cardiovascular", "weight": 0.25, "source": "niro" },
+    { "key": "metabolic", "label": "Metabolic", "weight": 0.20, "source": "niro" },
+    { "key": "inflammatory", "label": "Inflammatory", "weight": 0.15, "source": "niro" },
+    { "key": "nutritional", "label": "Nutritional", "weight": 0.10, "source": "niro" },
+    { "key": "liver", "label": "Liver", "weight": 0.10, "source": "niro" },
+    { "key": "kidney", "label": "Kidney", "weight": 0.05, "source": "niro" },
+    { "key": "thyroid", "label": "Thyroid", "weight": 0.05, "source": "niro" },
+    { "key": "hematological", "label": "Hematological", "weight": 0.05, "source": "niro" },
+    { "key": "hormonal", "label": "Hormonal", "weight": 0.05, "source": "niro" }
+  ],
+  "biomarkers": [
+    {
+      "key": "total-cholesterol",
+      "displayName": "Total Cholesterol",
+      "altNames": ["TC", "Cholesterol, total"],
+      "domain": "cardiovascular",
+      "whatItMeasures": "Total cholesterol across LDL, HDL and other lipoprotein fractions.",
+      "whyItMatters": "Elevated levels drive atherosclerosis, raising coronary artery disease, heart attack and stroke risk.",
+      "unit": { "canonical": "mg/dL", "conversions": [{ "code": "mmol/L", "toCanonical": 38.67 }] },
+      "referenceExternal": { "healthyAdult": "< 200 mg/dL", "bands": [
+        { "label": "Desirable", "max": 200 },
+        { "label": "Borderline high", "min": 200, "max": 240 },
+        { "label": "High", "min": 240 }
+      ]},
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 50, "max": 500 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification", "note": "Await Niro Risk Logic Sheet points/thresholds" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Cholesterol Levels: What You Need to Know", "url": "https://medlineplus.gov/cholesterollevelswhatyouneedtoknow.html", "accessed": "2026-08-18" },
+        { "type": "external", "org": "Cleveland Clinic", "title": "Cholesterol Numbers", "url": "https://my.clevelandclinic.org/health/articles/11920-cholesterol-numbers-what-do-they-mean", "accessed": "2026-08-18", "note": "NCEP ATP III tiers" },
+        { "type": "niro", "ref": "Niro brief §5 — parameter of Cardiovascular domain" }
+      ]
+    },
+    {
+      "key": "hdl-cholesterol",
+      "displayName": "HDL Cholesterol",
+      "altNames": ["HDL-C", "High-Density Lipoprotein", "good cholesterol"],
+      "domain": "cardiovascular",
+      "whatItMeasures": "Cholesterol carried by high-density lipoproteins (reverse transport to the liver).",
+      "whyItMatters": "Higher HDL is protective; low HDL is an independent cardiovascular risk factor.",
+      "unit": { "canonical": "mg/dL", "conversions": [{ "code": "mmol/L", "toCanonical": 38.67 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Low", "context": { "sex": "male" }, "max": 40 },
+        { "label": "Low", "context": { "sex": "female" }, "max": 50 },
+        { "label": "Optimal", "min": 60 }
+      ], "conflict": "StatPearls female low cutoff <55 vs MedlinePlus/NCEP <50 — recorded, not merged" },
+      "sexSpecific": true, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 5, "max": 150 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "HDL: The Good Cholesterol", "url": "https://medlineplus.gov/hdlthegoodcholesterol.html", "accessed": "2026-08-18" },
+        { "type": "external", "org": "StatPearls/NCBI", "title": "Hypercholesterolemia", "url": "https://www.ncbi.nlm.nih.gov/books/NBK459188/", "accessed": "2026-08-18", "note": "conflicting female cutoff recorded" },
+        { "type": "niro", "ref": "Niro brief §5/§6 — gender-specific interpretation documented" }
+      ]
+    },
+    {
+      "key": "ldl-cholesterol",
+      "displayName": "LDL Cholesterol",
+      "altNames": ["LDL-C", "Low-Density Lipoprotein", "bad cholesterol"],
+      "domain": "cardiovascular",
+      "whatItMeasures": "Cholesterol carried by low-density lipoproteins.",
+      "whyItMatters": "Primary atherogenic particle; lower is better.",
+      "unit": { "canonical": "mg/dL", "conversions": [{ "code": "mmol/L", "toCanonical": 38.67 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Optimal", "max": 100 },
+        { "label": "Near optimal", "min": 100, "max": 130 },
+        { "label": "Borderline high", "min": 130, "max": 160 },
+        { "label": "High", "min": 160, "max": 190 },
+        { "label": "Very high", "min": 190 }
+      ]},
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 20, "max": 400 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "LDL: The Bad Cholesterol", "url": "https://medlineplus.gov/ldlthebadcholesterol.html", "accessed": "2026-08-18", "note": "NCEP ATP III tiers verified verbatim" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "triglycerides",
+      "displayName": "Triglycerides",
+      "altNames": ["TG", "TAG", "triacylglycerols"],
+      "domain": "cardiovascular",
+      "whatItMeasures": "Most common type of fat in the blood (fasting sample, 9–12h).",
+      "whyItMatters": "High levels raise coronary artery disease risk; very high levels risk acute pancreatitis.",
+      "unit": { "canonical": "mg/dL", "conversions": [{ "code": "mmol/L", "toCanonical": 88.57 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal", "max": 150 },
+        { "label": "Borderline high", "min": 150, "max": 200 },
+        { "label": "High", "min": 200, "max": 500 },
+        { "label": "Very high", "min": 500 }
+      ]},
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 20, "max": 2000 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Triglycerides / Triglycerides Test", "url": "https://medlineplus.gov/triglycerides.html", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "systolic-bp",
+      "displayName": "Systolic Blood Pressure",
+      "altNames": ["SBP", "top number"],
+      "domain": "cardiovascular",
+      "whatItMeasures": "Arterial pressure when the heart contracts.",
+      "whyItMatters": "Leading modifiable risk factor for heart attack, stroke, heart failure and kidney disease.",
+      "unit": { "canonical": "mmHg", "conversions": [] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal", "max": 120 },
+        { "label": "Elevated", "min": 120, "max": 130 },
+        { "label": "Hypertension Stage 1", "min": 130, "max": 140 },
+        { "label": "Hypertension Stage 2", "min": 140 },
+        { "label": "Hypertensive crisis", "min": 180, "note": "seek care immediately" }
+      ], "note": "2017 ACC/AHA categories; retained by 2025 AHA/ACC guideline. Full classification also uses diastolic — Niro brief lists systolic only." },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 60, "max": 260 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "High Blood Pressure", "url": "https://medlineplus.gov/highbloodpressure.html", "accessed": "2026-08-18" },
+        { "type": "external", "org": "StatPearls/NCBI", "title": "Essential Hypertension", "url": "https://www.ncbi.nlm.nih.gov/books/NBK539859/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5 — systolic BP is the listed CV parameter" }
+      ]
+    },
+    {
+      "key": "hscrp",
+      "displayName": "hs-CRP",
+      "altNames": ["High-sensitivity C-reactive protein", "cardiac CRP"],
+      "domain": "cardiovascular",
+      "whatItMeasures": "Very low CRP concentrations, used for cardiovascular risk stratification.",
+      "whyItMatters": "Low-grade vascular inflammation predicts atherosclerotic cardiovascular events.",
+      "unit": { "canonical": "mg/L", "conversions": [{ "code": "mg/dL", "toCanonical": 10 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Low CV risk", "max": 1 },
+        { "label": "Average CV risk", "min": 1, "max": 3 },
+        { "label": "High CV risk", "min": 3 }
+      ], "note": "AHA/CDC 2003 scientific statement cutpoints" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0, "max": 50 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "StatPearls/NCBI", "title": "C Reactive Protein", "url": "https://www.ncbi.nlm.nih.gov/books/NBK441843/", "accessed": "2026-08-18" },
+        { "type": "external", "org": "AHA/CDC (provenance)", "title": "Pearson et al., Circulation 2003;107:499–511", "url": "https://www.ahajournals.org/doi/10.1161/01.CIR.0000052939.59093.45", "accessed": "2026-08-18", "note": "publisher fetch blocked; values verified via NIH-family sources" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "apob-apoa-ratio",
+      "displayName": "ApoB:ApoA-I Ratio",
+      "altNames": ["apoB/apoA-1", "atherogenic ratio"],
+      "domain": "cardiovascular",
+      "whatItMeasures": "Balance of atherogenic (ApoB) vs anti-atherogenic (ApoA-I) lipoprotein particles.",
+      "whyItMatters": "Higher ratio predicts major adverse cardiovascular events decades in advance (AMORIS cohort).",
+      "unit": { "canonical": "ratio", "conversions": [] },
+      "referenceExternal": { "bands": [
+        { "label": "Low risk", "min": 0.2, "max": 0.6 },
+        { "label": "Medium risk", "min": 0.61, "max": 0.9 },
+        { "label": "High risk", "min": 0.91, "max": 5.0 }
+      ], "note": "RESEARCH-DERIVED (AMORIS/PLOS Medicine 2021), not guideline-defined. No US clinical guideline categories exist." },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0.1, "max": 5 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification", "note": "Niro sheet may define its own bands — must take precedence over research-derived bands" },
+      "sources": [
+        { "type": "external", "org": "PLOS Medicine", "title": "Walldius et al. 2021 — AMORIS cohort", "url": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003853", "accessed": "2026-08-18" },
+        { "type": "needs-clarification", "note": "Guideline-grade categories do not exist; flag in UI as research-derived" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "fasting-glucose",
+      "displayName": "Fasting Glucose",
+      "altNames": ["FPG", "Fasting Plasma Glucose", "FBG"],
+      "domain": "metabolic",
+      "whatItMeasures": "Blood glucose after ≥8 hour fast.",
+      "whyItMatters": "ADA diagnostic test for prediabetes and diabetes.",
+      "unit": { "canonical": "mg/dL", "conversions": [{ "code": "mmol/L", "toCanonical": 18.02 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal", "max": 100 },
+        { "label": "Prediabetes", "min": 100, "max": 126 },
+        { "label": "Diabetes range", "min": 126 }
+      ], "note": "ADA diagnostic categories" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 30, "max": 600 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "American Diabetes Association", "title": "Diabetes Diagnosis & Tests", "url": "https://diabetes.org/about-diabetes/diagnosis", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "hba1c",
+      "displayName": "HbA1c",
+      "altNames": ["A1C", "Hemoglobin A1c", "glycated hemoglobin"],
+      "domain": "metabolic",
+      "whatItMeasures": "Percent of hemoglobin with attached glucose ≈ 3-month average blood glucose.",
+      "whyItMatters": "Diagnostic + long-term glycemic control standard; higher A1C correlates with complications.",
+      "unit": { "canonical": "%", "conversions": [] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal", "max": 5.7 },
+        { "label": "Prediabetes", "min": 5.7, "max": 6.5 },
+        { "label": "Diabetes range", "min": 6.5 }
+      ], "note": "ADA categories, verified on ADA + NIDDK" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 3, "max": 20 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "American Diabetes Association", "title": "Diabetes Diagnosis & Tests", "url": "https://diabetes.org/about-diabetes/diagnosis", "accessed": "2026-08-18" },
+        { "type": "external", "org": "NIDDK (NIH)", "title": "The A1C Test & Diabetes", "url": "https://www.niddk.nih.gov/health-information/diagnostic-tests/a1c-test", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "fasting-insulin",
+      "displayName": "Fasting Insulin",
+      "altNames": ["serum insulin", "immunoreactive insulin"],
+      "domain": "metabolic",
+      "whatItMeasures": "Insulin concentration after 8–12h fast; HOMA-IR input.",
+      "whyItMatters": "Assesses insulin resistance and hypoglycemia causes.",
+      "unit": { "canonical": "µIU/mL", "conversions": [{ "code": "mIU/L", "toCanonical": 1 }] },
+      "referenceExternal": {
+        "status": "needs-clarification",
+        "note": "No universal guideline range; assays not standardized. MedlinePlus provides no numbers; URMC free-insulin '<17 µIU/mL' with lab-variation caveat. Do not hard-code a range without the user's lab interval or the Niro sheet."
+      },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0.5, "max": 300 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Insulin in Blood", "url": "https://medlineplus.gov/lab-tests/insulin-in-blood/", "accessed": "2026-08-18", "note": "no numeric range published" },
+        { "type": "external", "org": "Univ. of Rochester Medical Center", "title": "Total and Free Insulin (Blood)", "url": "https://www.urmc.rochester.edu/encyclopedia/content?contenttypeid=167&contentid=insulin_total_free", "accessed": "2026-08-18" },
+        { "type": "needs-clarification", "note": "Range must come from Niro sheet or user's lab report" }
+      ]
+    },
+    {
+      "key": "eag",
+      "displayName": "Estimated Average Glucose",
+      "altNames": ["eAG", "A1C-derived average glucose"],
+      "domain": "metabolic",
+      "whatItMeasures": "Derived value converting HbA1c into meter units (mg/dL).",
+      "whyItMatters": "Relates 3-month A1C to daily glucose readings.",
+      "unit": { "canonical": "mg/dL", "conversions": [] },
+      "derived": { "formula": "28.7 * hba1c - 46.7", "dependsOn": ["hba1c"], "source": { "type": "external", "org": "American Diabetes Association", "title": "eAG/A1C Conversion Calculator (ADAG study, Nathan 2008)", "url": "https://professional.diabetes.org/glucose_calc", "accessed": "2026-08-18", "note": "formula verified verbatim" } },
+      "referenceExternal": { "note": "No independent categories — interpret via HbA1c bands." },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "derived", "validation": {},
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification", "note": "Confirm whether Niro scores eAG separately or uses it as display-only" },
+      "sources": [
+        { "type": "external", "org": "American Diabetes Association", "title": "eAG/A1C Conversion Calculator", "url": "https://professional.diabetes.org/glucose_calc", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5 lists eAG as a Metabolic parameter" }
+      ]
+    },
+    {
+      "key": "il6",
+      "displayName": "IL-6",
+      "altNames": ["Interleukin-6"],
+      "domain": "inflammatory",
+      "whatItMeasures": "Pro-inflammatory cytokine that drives the acute-phase response (induces CRP).",
+      "whyItMatters": "Rises early in infection, sepsis and systemic inflammation.",
+      "unit": { "canonical": "pg/mL", "conversions": [] },
+      "referenceExternal": {
+        "status": "needs-clarification",
+        "examples": [
+          { "org": "ARUP Laboratories", "value": "≤ 2.0 pg/mL", "verified": true },
+          { "org": "Mayo Clinic Labs", "value": "< 6.4 pg/mL", "verified": false, "note": "catalog 403-blocked; search-verified only" }
+        ],
+        "note": "Assay/lab-dependent; no guideline categories. Interpret against the performing lab's interval."
+      },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0, "max": 1000 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "ARUP Laboratories (Univ. of Utah)", "title": "Interleukin 6, Serum — test 0051537", "url": "https://ltd.aruplab.com/Tests/Pub/0051537", "accessed": "2026-08-18" },
+        { "type": "external", "org": "NCBI/PubMed", "title": "Said et al. 2021 — IL-6 in healthy individuals (meta-analysis)", "url": "https://pubmed.ncbi.nlm.nih.gov/33155686/", "accessed": "2026-08-18" },
+        { "type": "needs-clarification", "note": "lab-dependent" }
+      ]
+    },
+    {
+      "key": "crp",
+      "displayName": "CRP",
+      "altNames": ["C-Reactive Protein"],
+      "domain": "inflammatory",
+      "whatItMeasures": "Hepatic acute-phase protein; general inflammation marker.",
+      "whyItMatters": "Detects/monitors infection and inflammatory disease (RA, lupus, IBD).",
+      "unit": { "canonical": "mg/L", "conversions": [{ "code": "mg/dL", "toCanonical": 10 }] },
+      "referenceExternal": { "healthyAdult": "< 3 mg/L (0.3 mg/dL)", "bands": [
+        { "label": "Normal", "max": 3 },
+        { "label": "Minor elevation", "min": 3, "max": 10 },
+        { "label": "Moderate elevation", "min": 10, "max": 100 },
+        { "label": "Marked elevation", "min": 100, "max": 500 },
+        { "label": "Severe elevation", "min": 500 }
+      ], "note": "StatPearls interpretation bands converted from mg/dL to mg/L (×10)" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0, "max": 600 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "C-reactive protein", "url": "https://medlineplus.gov/ency/article/003356.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "StatPearls/NCBI", "title": "C-Reactive Protein: Clinical Relevance", "url": "https://www.ncbi.nlm.nih.gov/books/NBK441843/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5 (CRP separate from hs-CRP)" }
+      ]
+    },
+    {
+      "key": "esr",
+      "displayName": "ESR",
+      "altNames": ["Erythrocyte Sedimentation Rate", "sed rate"],
+      "domain": "inflammatory",
+      "whatItMeasures": "RBC settling distance in one hour (Westergren); indirect inflammation marker.",
+      "whyItMatters": "Detects/monitors inflammatory conditions; not diagnostic alone.",
+      "unit": { "canonical": "mm/hr", "conversions": [] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal", "context": { "sex": "male", "ageMax": 50 }, "max": 15 },
+        { "label": "Normal", "context": { "sex": "male", "ageMin": 50 }, "max": 20 },
+        { "label": "Normal", "context": { "sex": "female", "ageMax": 50 }, "max": 20 },
+        { "label": "Normal", "context": { "sex": "female", "ageMin": 50 }, "max": 30 }
+      ], "note": "Miller age rule (M: age/2, F: (age+10)/2) available as rule-of-thumb (BMJ 1983) — label as such if used" },
+      "sexSpecific": true, "ageSpecific": true,
+      "inputType": "number", "validation": { "min": 0, "max": 150 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "ESR", "url": "https://medlineplus.gov/ency/article/003638.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "StatPearls/NCBI", "title": "Erythrocyte Sedimentation Rate", "url": "https://www.ncbi.nlm.nih.gov/books/NBK557485/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "vitamin-d",
+      "displayName": "Vitamin D (25-OH)",
+      "altNames": ["25-hydroxyvitamin D", "25(OH)D", "calcidiol"],
+      "domain": "nutritional",
+      "whatItMeasures": "Serum 25-hydroxyvitamin D — the accepted vitamin D status indicator.",
+      "whyItMatters": "Deficiency impairs calcium absorption (rickets/osteomalacia); excess risks toxicity.",
+      "unit": { "canonical": "ng/mL", "conversions": [{ "code": "nmol/L", "toCanonical": 0.4 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Deficiency", "max": 12 },
+        { "label": "Inadequacy", "min": 12, "max": 20 },
+        { "label": "Adequate", "min": 20, "max": 50 },
+        { "label": "Potential adverse", "min": 50 }
+      ], "note": "NIH ODS/FNB framework (current). CONFLICT: Endocrine Society 2011 used <20 deficient / 21–29 insufficient / ≥30 sufficient; ES 2024 guideline no longer endorses thresholds. Surface both, label by framework." },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 1, "max": 150 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "NIH Office of Dietary Supplements", "title": "Vitamin D — Health Professional Fact Sheet, Table 1", "url": "https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/", "accessed": "2026-08-18" },
+        { "type": "external", "org": "Endocrine Society", "title": "Holick 2011 (superseded) / Demay 2024 guideline", "url": "https://www.endocrine.org/clinical-practice-guidelines/vitamin-d-for-prevention-of-disease", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "vitamin-b12",
+      "displayName": "Vitamin B12",
+      "altNames": ["Cobalamin", "Cbl"],
+      "domain": "nutritional",
+      "whatItMeasures": "Serum B12 — cofactor for DNA synthesis, RBC formation, neurological function.",
+      "whyItMatters": "Deficiency causes megaloblastic anemia and potentially irreversible neurological damage.",
+      "unit": { "canonical": "pg/mL", "conversions": [{ "code": "pmol/L", "toCanonical": 1.355 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Subnormal (ODS)", "max": 200, "note": "labs define subnormal <200–250 pg/mL" },
+        { "label": "Gray zone — confirm with MMA", "min": 150, "max": 399 },
+        { "label": "Normal (MedlinePlus)", "min": 299, "max": 1054 }
+      ], "conflict": "ODS subnormal <200–250 vs MedlinePlus normal floor 299 — recorded, both displayed" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 50, "max": 3000 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "NIH ODS", "title": "Vitamin B12 — Health Professional Fact Sheet", "url": "https://ods.od.nih.gov/factsheets/VitaminB12-HealthProfessional/", "accessed": "2026-08-18" },
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Vitamin B12 level", "url": "https://medlineplus.gov/ency/article/003705.htm", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "folate",
+      "displayName": "Folate (serum)",
+      "altNames": ["Vitamin B9", "folic acid test"],
+      "domain": "nutritional",
+      "whatItMeasures": "Circulating folate (recent intake; RBC folate = long-term status).",
+      "whyItMatters": "Deficiency causes megaloblastic anemia; low folate raises neural tube defect risk in pregnancy.",
+      "unit": { "canonical": "ng/mL", "conversions": [{ "code": "nmol/L", "toCanonical": 0.4415 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Deficiency (WHO hematologic)", "max": 3 },
+        { "label": "Possible deficiency", "min": 3, "max": 5.9 },
+        { "label": "Normal", "min": 6, "max": 20 },
+        { "label": "Elevated", "min": 20 }
+      ], "conflict": "WHO metabolic-indicator deficiency <4 ng/mL; ODS adequacy >3 ng/mL; MedlinePlus normal 2.7–17.0 — all recorded" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0.5, "max": 50 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "WHO", "title": "Serum and RBC folate concentrations (WHO/NMH/NHD/EPG/15.01)", "url": "https://www.who.int/publications/i/item/WHO-NMH-NHD-EPG-15.01", "accessed": "2026-08-18" },
+        { "type": "external", "org": "NIH ODS", "title": "Folate — Health Professional Fact Sheet", "url": "https://ods.od.nih.gov/factsheets/Folate-HealthProfessional/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "ferritin",
+      "displayName": "Ferritin",
+      "altNames": ["serum ferritin"],
+      "domain": "nutritional",
+      "whatItMeasures": "Main iron-storage protein; proxy for body iron stores (acute-phase caveat).",
+      "whyItMatters": "Most efficient single test for iron deficiency; also flags iron overload.",
+      "unit": { "canonical": "ng/mL", "conversions": [{ "code": "µg/L", "toCanonical": 1 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Iron deficiency (WHO, healthy adult)", "max": 15 },
+        { "label": "Reference (M)", "context": { "sex": "male" }, "min": 30, "max": 400 },
+        { "label": "Reference (F)", "context": { "sex": "female" }, "min": 13, "max": 150 },
+        { "label": "Overload risk (menstruating F)", "context": { "sex": "female" }, "min": 150 },
+        { "label": "Overload risk (M/non-menstruating F)", "min": 200 }
+      ], "conflict": "WHO deficiency <15 µg/L (epidemiological) vs NIH ODS <30 µg/L (clinical suggestion) — both recorded; with inflammation WHO uses <70 (adults)" },
+      "sexSpecific": true, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 1, "max": 2000 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "WHO", "title": "Guideline on use of ferritin concentrations (2020)", "url": "https://www.who.int/publications/i/item/9789240000124", "accessed": "2026-08-18" },
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Ferritin blood test", "url": "https://medlineplus.gov/ency/article/003490.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "NIH ODS", "title": "Iron — Health Professional Fact Sheet", "url": "https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "magnesium",
+      "displayName": "Magnesium (serum)",
+      "altNames": ["Mg"],
+      "domain": "nutritional",
+      "whatItMeasures": "Serum magnesium (<1% of body stores — imperfect status marker).",
+      "whyItMatters": "Cofactor in 300+ enzyme systems; low levels disturb neuromuscular and cardiac function.",
+      "unit": { "canonical": "mg/dL", "conversions": [{ "code": "mmol/L", "toCanonical": 2.43 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal (MedlinePlus)", "min": 1.7, "max": 2.2 }
+      ], "conflict": "ODS 0.75–0.95 mmol/L (≈1.82–2.31 mg/dL, hypomagnesemia <0.75 mmol/L) vs MedlinePlus 1.7–2.2 mg/dL (0.70–0.91 mmol/L) — overlapping but different; both recorded" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0.5, "max": 6 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "NIH ODS", "title": "Magnesium — Health Professional Fact Sheet", "url": "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/", "accessed": "2026-08-18" },
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Magnesium blood test", "url": "https://medlineplus.gov/ency/article/003487.htm", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "zinc",
+      "displayName": "Zinc (serum)",
+      "altNames": ["Zn"],
+      "domain": "nutritional",
+      "whatItMeasures": "Serum/plasma zinc — most common status proxy (no gold standard).",
+      "whyItMatters": "Required for immunity, wound healing, protein/DNA synthesis, growth.",
+      "unit": { "canonical": "µg/dL", "conversions": [{ "code": "µmol/L", "toCanonical": 6.54 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal", "min": 80, "max": 120 },
+        { "label": "Inadequate (F)", "context": { "sex": "female" }, "max": 70 },
+        { "label": "Inadequate (M)", "context": { "sex": "male" }, "max": 74 }
+      ], "note": "SINGLE-SOURCE anchor (NIH ODS only) — no WHO/MedlinePlus cross-check found; ODS cautions serum zinc is imperfect" },
+      "sexSpecific": true, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 10, "max": 400 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "NIH ODS", "title": "Zinc — Health Professional Fact Sheet", "url": "https://ods.od.nih.gov/factsheets/Zinc-HealthProfessional/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "alt",
+      "displayName": "ALT",
+      "altNames": ["Alanine Aminotransferase", "SGPT"],
+      "domain": "liver",
+      "whatItMeasures": "Hepatocyte enzyme released on liver-cell injury; most liver-specific aminotransferase.",
+      "whyItMatters": "Primary hepatocellular injury screen; elevated ALT associates with liver-related mortality.",
+      "unit": { "canonical": "U/L", "conversions": [] },
+      "referenceExternal": { "bands": [
+        { "label": "Typical lab range", "min": 4, "max": 36 }
+      ], "conflict": "ACG 2017 true-normal ULN: M 29–33, F 19–25 IU/L (sex-specific) vs typical lab 4–36 — both recorded. ACG elevation magnitudes: <2× / 2–5× / 5–15× / >15× ULN.", "sexNote": "ACG values sex-specific" },
+      "sexSpecific": true, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 1, "max": 2000 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "American College of Gastroenterology", "title": "ACG Clinical Guideline: Evaluation of Abnormal Liver Chemistries (2017) — summary PDF", "url": "https://acgcdn.gi.org/wp-content/uploads/2018/04/ACG-Abnormal-Liver-Chemistries-Guideline-Summary.pdf", "accessed": "2026-08-18" },
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "ALT blood test", "url": "https://medlineplus.gov/ency/article/003473.htm", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "ast",
+      "displayName": "AST",
+      "altNames": ["Aspartate Aminotransferase", "SGOT"],
+      "domain": "liver",
+      "whatItMeasures": "Enzyme in liver plus heart/muscle/kidney/brain/RBC; less liver-specific than ALT.",
+      "whyItMatters": "Interpreted with ALT to characterize liver injury; AST>ALT pattern suggests alcohol-related disease.",
+      "unit": { "canonical": "U/L", "conversions": [] },
+      "referenceExternal": { "bands": [
+        { "label": "Typical lab range", "min": 8, "max": 33 }
+      ], "conflict": "MedlinePlus 8–33 vs StatPearls 5–30 U/L — both recorded; no guideline sex-specific AST ULN" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 1, "max": 2000 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "AST blood test", "url": "https://medlineplus.gov/ency/article/003472.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "StatPearls/NCBI", "title": "Liver Function Tests", "url": "https://www.ncbi.nlm.nih.gov/books/NBK482489/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "ggt",
+      "displayName": "GGT",
+      "altNames": ["Gamma-Glutamyl Transferase", "GGTP", "gamma GT"],
+      "domain": "liver",
+      "whatItMeasures": "Liver/biliary membrane enzyme; rises with cholestasis, alcohol and many drugs.",
+      "whyItMatters": "Confirms hepatic origin of elevated ALP; not a standalone screening test (ACG).",
+      "unit": { "canonical": "U/L", "conversions": [] },
+      "referenceExternal": { "bands": [
+        { "label": "Reference (F)", "context": { "sex": "female" }, "min": 8, "max": 35 },
+        { "label": "Reference (M)", "context": { "sex": "male" }, "min": 8, "max": 50 }
+      ], "conflict": "UMich MLabs sex-specific (verified) vs MedlinePlus 5–40 (unisex) vs StatPearls 6–50 — all recorded; Mayo M 8–61 unverified (403)" },
+      "sexSpecific": true, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 1, "max": 1500 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "University of Michigan MLabs", "title": "G-Glutamyl Transpeptidase — test catalog", "url": "https://mlabs.umich.edu/tests/g-glutamyl-transpeptidase", "accessed": "2026-08-18" },
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "GGT blood test", "url": "https://medlineplus.gov/ency/article/003458.htm", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "total-bilirubin",
+      "displayName": "Total Bilirubin",
+      "altNames": ["TBIL"],
+      "domain": "liver",
+      "whatItMeasures": "Heme-breakdown pigment (conjugated + unconjugated).",
+      "whyItMatters": "Elevations indicate hemolysis, hepatocellular disease or biliary obstruction.",
+      "unit": { "canonical": "mg/dL", "conversions": [{ "code": "µmol/L", "toCanonical": 0.0585 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal", "min": 0.1, "max": 1.2 },
+        { "label": "Jaundice apparent", "min": 3 }
+      ], "conflict": "MedlinePlus 0.1–1.2 vs StatPearls ≈0.12–1.0 mg/dL — both recorded" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0, "max": 30 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Bilirubin blood test", "url": "https://medlineplus.gov/ency/article/003479.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "StatPearls/NCBI", "title": "Hyperbilirubinemia", "url": "https://www.ncbi.nlm.nih.gov/books/NBK544252/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "albumin",
+      "displayName": "Albumin (serum)",
+      "altNames": ["ALB"],
+      "domain": "liver",
+      "whatItMeasures": "Most abundant plasma protein (hepatic synthesis); oncotic balance + transport.",
+      "whyItMatters": "Marker of hepatic synthetic function and nutritional/inflammatory state.",
+      "unit": { "canonical": "g/dL", "conversions": [{ "code": "g/L", "toCanonical": 0.1 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal", "min": 3.4, "max": 5.4 }
+      ], "conflict": "MedlinePlus 3.4–5.4 vs StatPearls 3.5–5.0 g/dL — both recorded. Severity grading: needs-clarification (no official bands)" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 1, "max": 8 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Albumin blood (serum) test", "url": "https://medlineplus.gov/ency/article/003480.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "StatPearls/NCBI", "title": "Hypoalbuminemia", "url": "https://www.ncbi.nlm.nih.gov/books/NBK526080/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "egfr",
+      "displayName": "eGFR",
+      "altNames": ["Estimated Glomerular Filtration Rate"],
+      "domain": "kidney",
+      "whatItMeasures": "Estimated kidney filtration rate (CKD-EPI, from creatinine ± cystatin C, age, sex).",
+      "whyItMatters": "Primary marker for detecting and staging chronic kidney disease.",
+      "unit": { "canonical": "mL/min/1.73m²", "conversions": [] },
+      "referenceExternal": { "bands": [
+        { "label": "G1 Normal", "min": 90 },
+        { "label": "G2 Mild loss", "min": 60, "max": 90 },
+        { "label": "G3a Mild-moderate", "min": 45, "max": 60 },
+        { "label": "G3b Moderate-severe", "min": 30, "max": 45 },
+        { "label": "G4 Severe", "min": 15, "max": 30 },
+        { "label": "G5 Kidney failure", "max": 15 }
+      ], "note": "KDIGO stages via NKF (verified); G1/G2 are CKD only with kidney damage ≥3 months" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 1, "max": 200 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "National Kidney Foundation", "title": "eGFR test — kidney function levels & stages", "url": "https://www.kidney.org/kidney-topics/estimated-glomerular-filtration-rate-egfr", "accessed": "2026-08-18" },
+        { "type": "external", "org": "NIDDK (NIH)", "title": "Laboratory Evaluation of Kidney Disease", "url": "https://www.niddk.nih.gov/health-information/professionals/clinical-tools-patient-management/kidney-disease/laboratory-evaluation", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "creatinine",
+      "displayName": "Serum Creatinine",
+      "altNames": ["Cr", "SCr"],
+      "domain": "kidney",
+      "whatItMeasures": "Muscle-metabolism waste product cleared by the kidneys; eGFR input.",
+      "whyItMatters": "Elevated creatinine indicates impaired kidney function.",
+      "unit": { "canonical": "mg/dL", "conversions": [{ "code": "µmol/L", "toCanonical": 0.0113 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Reference (M)", "context": { "sex": "male" }, "min": 0.7, "max": 1.3 },
+        { "label": "Reference (F)", "context": { "sex": "female" }, "min": 0.5, "max": 0.95 }
+      ], "conflict": "MedlinePlus M 0.7–1.3 / F 0.5–0.95 vs StatPearls M 0.6–1.2 / F 0.5–1.1 — both recorded" },
+      "sexSpecific": true, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0.1, "max": 20 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Creatinine blood test", "url": "https://medlineplus.gov/ency/article/003475.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "StatPearls/NCBI", "title": "Creatinine Clearance", "url": "https://www.ncbi.nlm.nih.gov/books/NBK544228/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "bun",
+      "displayName": "BUN",
+      "altNames": ["Blood Urea Nitrogen", "urea nitrogen"],
+      "domain": "kidney",
+      "whatItMeasures": "Urea nitrogen from protein breakdown (liver produces, kidneys excrete).",
+      "whyItMatters": "Kidney function check; rises with impairment, dehydration, high catabolism.",
+      "unit": { "canonical": "mg/dL", "conversions": [{ "code": "mmol/L urea", "toCanonical": 2.8 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal", "min": 6, "max": 20 }
+      ], "conflict": "MedlinePlus 6–20 vs Clinical Methods 5–20 mg/dL — both recorded" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 1, "max": 200 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "BUN — blood test", "url": "https://medlineplus.gov/ency/article/003474.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "NCBI Bookshelf", "title": "Clinical Methods — BUN and Creatinine", "url": "https://www.ncbi.nlm.nih.gov/books/NBK305/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "uric-acid",
+      "displayName": "Uric Acid",
+      "altNames": ["serum urate", "UA"],
+      "domain": "kidney",
+      "whatItMeasures": "End product of purine metabolism.",
+      "whyItMatters": "Hyperuricemia underlies gout and urate stones; associated with kidney disease.",
+      "unit": { "canonical": "mg/dL", "conversions": [{ "code": "µmol/L", "toCanonical": 0.0168 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Reference (F)", "context": { "sex": "female" }, "min": 3.0, "max": 7.1 },
+        { "label": "Reference (M)", "context": { "sex": "male" }, "min": 4.0, "max": 8.6 },
+        { "label": "Solubility threshold", "min": 6.8, "note": "urate crystallization risk (sex-independent)" }
+      ], "conflict": "Clinical hyperuricemia >6 (F) / >7 (M) mg/dL (StatPearls) sits BELOW lab reference upper bounds — reference interval ≠ clinical threshold; both displayed" },
+      "sexSpecific": true, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0.5, "max": 20 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Uric acid — blood", "url": "https://medlineplus.gov/ency/article/003476.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "StatPearls/NCBI", "title": "Hyperuricemia / Gout", "url": "https://www.ncbi.nlm.nih.gov/books/NBK459218/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "tsh",
+      "displayName": "TSH",
+      "altNames": ["Thyroid Stimulating Hormone", "thyrotropin"],
+      "domain": "thyroid",
+      "whatItMeasures": "Pituitary hormone driving thyroid hormone production; most sensitive thyroid index.",
+      "whyItMatters": "High TSH → hypothyroidism; low TSH → hyperthyroidism.",
+      "unit": { "canonical": "mIU/L", "conversions": [{ "code": "µU/mL", "toCanonical": 1 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Reference (ATA target)", "min": 0.4, "max": 4.0 },
+        { "label": "Subclinical hypothyroid treatment threshold", "min": 10 }
+      ], "conflict": "Upper limit: 4.0 (ATA 2014, PMC-verified) vs 4.5 (StatPearls/USPSTF) vs 4.8 (MedlinePlus) — all recorded; TSH runs higher in age >80" },
+      "sexSpecific": false, "ageSpecific": true,
+      "inputType": "number", "validation": { "min": 0.01, "max": 100 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "American Thyroid Association", "title": "Jonklaas et al. 2014 hypothyroidism guideline (PMC4267409)", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4267409/", "accessed": "2026-08-18" },
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "TSH test", "url": "https://medlineplus.gov/ency/article/003684.htm", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "free-t4",
+      "displayName": "Free T4",
+      "altNames": ["FT4", "free thyroxine"],
+      "domain": "thyroid",
+      "whatItMeasures": "Unbound (biologically available) thyroxine.",
+      "whyItMatters": "With TSH, distinguishes overt from subclinical thyroid dysfunction.",
+      "unit": { "canonical": "ng/dL", "conversions": [{ "code": "pmol/L", "toCanonical": 0.0777 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal", "min": 0.8, "max": 1.9 }
+      ], "conflict": "MedlinePlus 0.8–1.9 vs Cleveland Clinic 0.9–1.7 ng/dL — both recorded (assay-dependent)" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0.1, "max": 10 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Free T4 test", "url": "https://medlineplus.gov/ency/article/003517.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "Cleveland Clinic", "title": "T4 (Thyroxine) Test", "url": "https://my.clevelandclinic.org/health/diagnostics/24235-thyroxine-t4-test", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "free-t3",
+      "displayName": "Free T3",
+      "altNames": ["FT3", "free triiodothyronine"],
+      "domain": "thyroid",
+      "whatItMeasures": "Unbound triiodothyronine — the most metabolically active thyroid hormone.",
+      "whyItMatters": "Evaluates hyperthyroidism (incl. T3 toxicosis); clarifies TSH/FT4 patterns.",
+      "unit": { "canonical": "pg/mL", "conversions": [{ "code": "pmol/L", "toCanonical": 0.651 }, { "code": "pg/dL", "toCanonical": 0.01 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Normal", "min": 2.1, "max": 4.4 }
+      ], "conflict": "MedlinePlus 2.1–4.4 vs Cleveland Clinic 2.3–4.1 pg/mL — both recorded" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0.5, "max": 30 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "T3 test", "url": "https://medlineplus.gov/ency/article/003687.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "Cleveland Clinic", "title": "Triiodothyronine (T3) Test", "url": "https://my.clevelandclinic.org/health/diagnostics/22425-triiodothyronine-t3", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "anti-tpo",
+      "displayName": "Anti-TPO",
+      "altNames": ["TPO antibodies", "TPOAb", "thyroperoxidase antibodies"],
+      "domain": "thyroid",
+      "whatItMeasures": "IgG autoantibodies against thyroid peroxidase (autoimmune thyroid disease).",
+      "whyItMatters": "High levels signal Hashimoto's; positivity predicts future hypothyroidism risk.",
+      "unit": { "canonical": "IU/mL", "conversions": [] },
+      "referenceExternal": {
+        "status": "needs-clarification",
+        "examples": [
+          { "org": "Cleveland Clinic", "value": "< 5.6 IU/mL negative", "verified": true },
+          { "org": "Mayo Clinic Labs", "value": "< 9.0 IU/mL", "verified": false, "note": "403-blocked; search-verified only" }
+        ],
+        "note": "STRONGLY lab/assay-dependent — negative/positive per performing lab's cutoff; no universal threshold"
+      },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0, "max": 10000 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "Cleveland Clinic", "title": "Thyroid Antibodies", "url": "https://my.clevelandclinic.org/health/diagnostics/thyroid-antibodies", "accessed": "2026-08-18" },
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Thyroid Antibodies (lab test)", "url": "https://medlineplus.gov/lab-tests/thyroid-antibodies/", "accessed": "2026-08-18" },
+        { "type": "needs-clarification", "note": "lab-dependent cutoff" }
+      ]
+    },
+    {
+      "key": "hemoglobin",
+      "displayName": "Hemoglobin",
+      "altNames": ["Hb", "Hgb"],
+      "domain": "hematological",
+      "whatItMeasures": "Oxygen-carrying protein concentration in whole blood.",
+      "whyItMatters": "Defines anemia (fatigue, impaired oxygen delivery) and polycythemia when high.",
+      "unit": { "canonical": "g/dL", "conversions": [{ "code": "g/L", "toCanonical": 0.1 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Anemia (WHO)", "context": { "sex": "male" }, "max": 13 },
+        { "label": "Anemia (WHO)", "context": { "sex": "female" }, "max": 12 },
+        { "label": "Reference (M)", "context": { "sex": "male" }, "min": 13.8, "max": 17.2 },
+        { "label": "Reference (F)", "context": { "sex": "female" }, "min": 12.1, "max": 15.1 }
+      ], "note": "WHO 2024 cutoffs verified from guideline PDF; severity: mild/moderate/severe at 110–129(M)/110–119(F), 80–109, <80 g/L" },
+      "sexSpecific": true, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 3, "max": 25 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "WHO", "title": "Guideline on haemoglobin cutoffs to define anaemia (2024)", "url": "https://www.who.int/publications/i/item/9789240088542", "accessed": "2026-08-18" },
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Hemoglobin", "url": "https://medlineplus.gov/ency/article/003645.htm", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5/§6 — gender-specific interpretation documented" }
+      ]
+    },
+    {
+      "key": "mcv",
+      "displayName": "MCV",
+      "altNames": ["Mean Corpuscular Volume"],
+      "domain": "hematological",
+      "whatItMeasures": "Average red blood cell volume.",
+      "whyItMatters": "Classifies anemia (microcytic/normocytic/macrocytic), steering the workup.",
+      "unit": { "canonical": "fL", "conversions": [] },
+      "referenceExternal": { "bands": [
+        { "label": "Microcytic", "max": 80 },
+        { "label": "Normocytic", "min": 80, "max": 100 },
+        { "label": "Macrocytic", "min": 100 }
+      ], "conflict": "StatPearls 80–100 (standard clinical classification) vs MedlinePlus 79–95 fL — both recorded" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 50, "max": 150 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "StatPearls/NCBI", "title": "Mean Corpuscular Volume", "url": "https://www.ncbi.nlm.nih.gov/books/NBK545275/", "accessed": "2026-08-18" },
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "RBC indices", "url": "https://medlineplus.gov/ency/article/003648.htm", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "wbc",
+      "displayName": "WBC",
+      "altNames": ["White Blood Cell count", "leukocyte count"],
+      "domain": "hematological",
+      "whatItMeasures": "Total white blood cells per volume of blood.",
+      "whyItMatters": "High = infection/inflammation/malignancy signal; low = marrow suppression, infection risk.",
+      "unit": { "canonical": "×10⁹/L", "conversions": [{ "code": "cells/µL", "toCanonical": 0.001 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Leukopenia", "max": 4.5 },
+        { "label": "Normal", "min": 4.5, "max": 11.0 },
+        { "label": "Leukocytosis", "min": 11.0 }
+      ], "note": "MedlinePlus + StatPearls agree" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0.5, "max": 200 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "WBC count", "url": "https://medlineplus.gov/ency/article/003643.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "StatPearls/NCBI", "title": "Leukocytosis", "url": "https://www.ncbi.nlm.nih.gov/books/NBK560882/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "platelets",
+      "displayName": "Platelets",
+      "altNames": ["PLT", "thrombocyte count"],
+      "domain": "hematological",
+      "whatItMeasures": "Platelet count per volume of blood.",
+      "whyItMatters": "Low = bleeding risk; high = reactive states or myeloproliferative disease.",
+      "unit": { "canonical": "×10⁹/L", "conversions": [{ "code": "/µL", "toCanonical": 0.001 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Thrombocytopenia", "max": 150 },
+        { "label": "Normal", "min": 150, "max": 450 },
+        { "label": "Thrombocytosis", "min": 450 }
+      ], "conflict": "Upper normal: MedlinePlus 400 vs StatPearls 450 ×10⁹/L (current hematology practice) — both recorded. Severity: mild 100–150, moderate 50–100, severe <50" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 5, "max": 2000 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Platelet count", "url": "https://medlineplus.gov/ency/article/003647.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "StatPearls/NCBI", "title": "Thrombocytopenia / Thrombocytosis", "url": "https://www.ncbi.nlm.nih.gov/books/NBK542208/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5" }
+      ]
+    },
+    {
+      "key": "cortisol",
+      "displayName": "Cortisol (morning serum)",
+      "altNames": ["serum cortisol", "hydrocortisone"],
+      "domain": "hormonal",
+      "whatItMeasures": "Adrenal glucocorticoid — strongly time-of-day dependent (peak early morning).",
+      "whyItMatters": "Detects abnormal production (Cushing syndrome, adrenal insufficiency).",
+      "unit": { "canonical": "µg/dL", "conversions": [{ "code": "nmol/L", "toCanonical": 0.0362 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Morning reference (8 a.m.)", "min": 5, "max": 25 }
+      ], "conflict": "MedlinePlus 5–25 (8 a.m.) vs Cleveland Clinic 10–20 (6–8 a.m.) µg/dL — both recorded. Draw-time capture REQUIRED (context rule).", "contextRequirement": "sample time" },
+      "sexSpecific": false, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0.5, "max": 80 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification", "note": "Niro brief §6 documents context-specific handling for hormonal measurements" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Cortisol blood test", "url": "https://medlineplus.gov/ency/article/003693.htm", "accessed": "2026-08-18" },
+        { "type": "external", "org": "Cleveland Clinic", "title": "Cortisol Test", "url": "https://my.clevelandclinic.org/health/diagnostics/22417-cortisol-test", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5/§6" }
+      ]
+    },
+    {
+      "key": "testosterone",
+      "displayName": "Testosterone (total)",
+      "altNames": ["TT", "serum testosterone"],
+      "domain": "hormonal",
+      "whatItMeasures": "Total testosterone in blood (both sexes produce it).",
+      "whyItMatters": "Low in men → hypogonadism symptoms; elevated in women → PCOS workup.",
+      "unit": { "canonical": "ng/dL", "conversions": [{ "code": "nmol/L", "toCanonical": 28.8 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Reference (M 17–50y)", "context": { "sex": "male", "ageMin": 17, "ageMax": 50 }, "min": 249, "max": 836 },
+        { "label": "Reference (M >50y)", "context": { "sex": "male", "ageMin": 50 }, "min": 193, "max": 740 },
+        { "label": "Reference (F 17–50y)", "context": { "sex": "female", "ageMin": 17, "ageMax": 50 }, "min": 8.4, "max": 48.1 },
+        { "label": "Reference (F >50y)", "context": { "sex": "female", "ageMin": 50 }, "min": 2.9, "max": 40.1 },
+        { "label": "Low-T threshold (AUA)", "context": { "sex": "male" }, "max": 300, "note": "supports diagnosis with symptoms, 2 early-morning draws" }
+      ], "conflict": "Low-T cutoff: AUA 300 (verified) vs Endocrine Society 264 ng/dL (harmonized range verified; diagnostic use search-verified) — both displayed, labeled by organization" },
+      "sexSpecific": true, "ageSpecific": true,
+      "inputType": "number", "validation": { "min": 1, "max": 2000 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification" },
+      "sources": [
+        { "type": "external", "org": "American Urological Association", "title": "Evaluation and Management of Testosterone Deficiency", "url": "https://www.auanet.org/guidelines-and-quality/guidelines/testosterone-deficiency-guideline", "accessed": "2026-08-18" },
+        { "type": "external", "org": "Endocrine Society", "title": "Harmonized testosterone reference ranges (2017)", "url": "https://www.endocrine.org/news-and-advocacy/news-room/2017/landmark-study-defines-normal-ranges-for-testosterone-levels", "accessed": "2026-08-18" },
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Testosterone", "url": "https://medlineplus.gov/ency/article/003707.htm", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §5/§6 — gender-specific rules documented" }
+      ]
+    },
+    {
+      "key": "estradiol",
+      "displayName": "Estradiol (E2)",
+      "altNames": ["E2", "17β-estradiol", "oestradiol"],
+      "domain": "hormonal",
+      "whatItMeasures": "Most potent estrogen; dominant during female reproductive years.",
+      "whyItMatters": "Evaluates ovarian function, fertility, menopausal status; gynecomastia workup in men.",
+      "unit": { "canonical": "pg/mL", "conversions": [{ "code": "pmol/L", "toCanonical": 0.2725 }] },
+      "referenceExternal": { "bands": [
+        { "label": "Reference (M)", "context": { "sex": "male" }, "min": 10, "max": 50 },
+        { "label": "Reference (F premenopausal)", "context": { "sex": "female", "menopausal": false }, "min": 30, "max": 400 },
+        { "label": "Reference (F postmenopausal)", "context": { "sex": "female", "menopausal": true }, "min": 0, "max": 30 }
+      ], "note": "Menstrual-phase-specific ranges: NEEDS CLARIFICATION — no verifiable universal phase table (Mayo catalog blocked); phase interpretation is lab-report-dependent", "contextRequirement": "sex + menopausal status (+ cycle phase if lab-provided)" },
+      "sexSpecific": true, "ageSpecific": false,
+      "inputType": "number", "validation": { "min": 0, "max": 1000 },
+      "required": false, "usedIn": ["niro-cws"],
+      "niroScoring": { "status": "needs-clarification", "note": "Niro brief §6: context-specific handling for hormonal measurements" },
+      "sources": [
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Estradiol blood test", "url": "https://medlineplus.gov/ency/article/003711.htm", "accessed": "2026-08-18" },
+        { "type": "needs-clarification", "note": "phase-specific cutoffs unverifiable from authoritative fetchable sources" },
+        { "type": "niro", "ref": "Niro brief §5/§6" }
+      ]
+    }
+  ],
+  "adjustmentFactors": [
+    {
+      "key": "age", "displayName": "Age", "inputType": "number", "unit": "years",
+      "validation": { "min": 18, "max": 120 },
+      "niroRole": "CWS adjustment factor (Niro brief §6). Adjustment points: needs-clarification (await sheet).",
+      "sources": [{ "type": "niro", "ref": "Niro brief §6" }]
+    },
+    {
+      "key": "sex", "displayName": "Sex", "inputType": "select",
+      "options": ["male", "female"],
+      "niroRole": "Demographic context driver for sex-specific biomarker rules (Niro brief §6).",
+      "sources": [{ "type": "niro", "ref": "Niro brief §6" }]
+    },
+    {
+      "key": "bmi", "displayName": "BMI", "inputType": "derived", "unit": "kg/m²",
+      "derived": { "formula": "weightKg / (heightCm/100)^2", "dependsOn": ["weightKg", "heightCm"] },
+      "externalCategories": [
+        { "label": "Underweight", "max": 18.5 },
+        { "label": "Healthy", "min": 18.5, "max": 25 },
+        { "label": "Overweight", "min": 25, "max": 30 },
+        { "label": "Obesity", "min": 30 }
+      ],
+      "niroRole": "CWS adjustment factor. Adjustment points: needs-clarification.",
+      "sources": [
+        { "type": "external", "org": "WHO", "title": "Obesity and overweight fact sheet", "url": "https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight", "accessed": "2026-08-18" },
+        { "type": "external", "org": "MedlinePlus (NIH/NLM)", "title": "Body mass index", "url": "https://medlineplus.gov/ency/article/007196.htm", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §6" }
+      ]
+    },
+    {
+      "key": "smoking", "displayName": "Smoking Status", "inputType": "select",
+      "options": ["never", "former", "current"],
+      "externalDefinitions": "CDC NHIS: current = ≥100 lifetime cigarettes + smokes now; former = ≥100 lifetime, quit; never = <100 lifetime",
+      "niroRole": "CWS adjustment factor. Adjustment points: needs-clarification.",
+      "sources": [
+        { "type": "external", "org": "CDC/NCHS", "title": "NHIS Adult Tobacco Use Glossary", "url": "https://archive.cdc.gov/www_cdc_gov/nchs/nhis/tobacco/tobacco_glossary.htm", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §6" }
+      ]
+    },
+    {
+      "key": "physical-activity", "displayName": "Physical Activity", "inputType": "select",
+      "options": ["meets-guideline", "insufficient", "inactive"],
+      "externalDefinitions": "WHO 2020: adults 150–300 min moderate OR 75–150 min vigorous aerobic weekly (+ strength ≥2 days); insufficiently active = <150 min moderate/week",
+      "niroRole": "CWS adjustment factor. Option granularity + points: needs-clarification (await sheet).",
+      "sources": [
+        { "type": "external", "org": "WHO", "title": "2020 guidelines on physical activity and sedentary behaviour", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7719906/", "accessed": "2026-08-18" },
+        { "type": "niro", "ref": "Niro brief §6" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,333 @@
+{
+  "policy": "Documented comparisons only. A divergence is a review signal, never authority to replace the original Niro value.",
+  "publicationDecision": "No row authorizes a clinical-value change or publication. Original Niro sources remain authoritative for Niro scoring, while conflicts remain attributed and review-blocking where noted.",
+  "researchPass": "2026-08-18",
+  "rows": [
+    {
+      "calculatorSlug": "diabetes-risk",
+      "classification": "divergent-endpoint",
+      "discrepancyIds": [
+        "DIA-02"
+      ],
+      "externalAnchors": [
+        {
+          "organization": "American Diabetes Association",
+          "statement": "The documented external research records diabetes at HbA1c >=6.5 percent.",
+          "title": "Diabetes Diagnosis",
+          "url": "https://diabetes.org/about-diabetes/diagnosis",
+          "verification": "fetch-verified"
+        }
+      ],
+      "id": "DIV-001",
+      "niro": {
+        "locator": "Risk calculators.xlsx#Diabetes and diabetes-risk.config.json /scoringRules/4",
+        "statement": "The Niro sheet writes >6.5 for the highest point band."
+      },
+      "publicationImpact": "Niro/source-owner must decide exact 6.5 behavior. The external diagnostic endpoint cannot silently rewrite the scoring source.",
+      "topic": "HbA1c diagnostic endpoint"
+    },
+    {
+      "calculatorSlug": "diabetes-risk",
+      "classification": "divergent-endpoint",
+      "discrepancyIds": [
+        "DIA-03"
+      ],
+      "externalAnchors": [
+        {
+          "organization": "American Diabetes Association",
+          "statement": "The documented external research records diabetes at fasting plasma glucose >=126 mg/dL.",
+          "title": "Diabetes Diagnosis",
+          "url": "https://diabetes.org/about-diabetes/diagnosis",
+          "verification": "fetch-verified"
+        }
+      ],
+      "id": "DIV-002",
+      "niro": {
+        "locator": "Risk calculators.xlsx#Diabetes and diabetes-risk.config.json /scoringRules/5",
+        "statement": "The Niro sheet writes >126 for the highest point band."
+      },
+      "publicationImpact": "Niro/source-owner must decide exact 126 behavior. The external diagnostic endpoint cannot silently rewrite the scoring source.",
+      "topic": "Fasting blood sugar diagnostic endpoint"
+    },
+    {
+      "calculatorSlug": "heart-risk",
+      "classification": "divergent-bands",
+      "discrepancyIds": [
+        "HRT-08"
+      ],
+      "externalAnchors": [
+        {
+          "organization": "MedlinePlus",
+          "statement": "The documented external research records <150, 150-199, 200-499, and >=500 mg/dL.",
+          "title": "Triglycerides",
+          "url": "https://medlineplus.gov/triglycerides.html",
+          "verification": "fetch-verified"
+        }
+      ],
+      "id": "DIV-003",
+      "niro": {
+        "locator": "Risk calculators.xlsx#'Heart ' and heart-risk.config.json /scoringRules/6",
+        "statement": "The Niro sheet writes <150, 151-200, 201-500, and >500."
+      },
+      "publicationImpact": "The Niro endpoints and continuous gaps require source-owner approval; external categories are displayed separately.",
+      "topic": "Triglyceride bands"
+    },
+    {
+      "calculatorSlug": "heart-risk",
+      "classification": "divergent-conversion",
+      "discrepancyIds": [
+        "HRT-14",
+        "MEAS-09"
+      ],
+      "externalAnchors": [
+        {
+          "localRef": "docs/research/cardio-metabolic-research.md",
+          "organization": "Niro core measurement research",
+          "statement": "The core measurement research preserves 38.67 for the corresponding mg/dL/mmol/L conversion.",
+          "title": "Cardiovascular and metabolic research",
+          "verification": "source-provided"
+        }
+      ],
+      "id": "DIV-004",
+      "niro": {
+        "locator": "Risk calculators.xlsx#'Heart ' conversion note and heart-risk.config.json unit metadata",
+        "statement": "The Heart source uses the calculator-local factor 38.61."
+      },
+      "publicationImpact": "Keep 38.61 calculator-local in trace and obtain review before any harmonization; do not globalize either value.",
+      "topic": "Cholesterol conversion factor"
+    },
+    {
+      "calculatorSlug": "niro-cws",
+      "classification": "source-conflict",
+      "discrepancyIds": [
+        "CLN-005"
+      ],
+      "externalAnchors": [
+        {
+          "organization": "NIH Office of Dietary Supplements",
+          "statement": "The documented external research records deficiency <12, inadequacy 12-<20, adequacy >=20, and potential adverse >50 ng/mL.",
+          "title": "Vitamin D — Health Professional Fact Sheet",
+          "url": "https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/",
+          "verification": "fetch-verified"
+        },
+        {
+          "organization": "Endocrine Society",
+          "statement": "The 2024 guideline does not endorse the older universal numeric sufficiency thresholds.",
+          "title": "Vitamin D for the Prevention of Disease (2024)",
+          "url": "https://www.endocrine.org/clinical-practice-guidelines/vitamin-d-for-prevention-of-disease",
+          "verification": "fetch-verified"
+        }
+      ],
+      "id": "DIV-005",
+      "niro": {
+        "locator": "CWS PDF section 3.4 and niro-cws.config.json vitaminD rule",
+        "statement": "The Niro point rule uses >30, 20-30, and <20 ng/mL bands."
+      },
+      "publicationImpact": "Present Niro scoring and external interpretation as separately attributed claims; no synthetic merged range is allowed.",
+      "topic": "Vitamin D interpretation"
+    },
+    {
+      "calculatorSlug": "niro-cws",
+      "classification": "divergent-bands",
+      "discrepancyIds": [
+        "CWS-05",
+        "N9"
+      ],
+      "externalAnchors": [
+        {
+          "organization": "MedlinePlus",
+          "statement": "The documented external research records 1.7-2.2 mg/dL.",
+          "title": "Magnesium Blood Test",
+          "url": "https://medlineplus.gov/ency/article/003487.htm",
+          "verification": "fetch-verified"
+        },
+        {
+          "organization": "NIH Office of Dietary Supplements",
+          "statement": "The documented external research records 0.75-0.95 mmol/L and notes serum magnesium is an imperfect status marker.",
+          "title": "Magnesium — Health Professional Fact Sheet",
+          "url": "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/",
+          "verification": "fetch-verified"
+        }
+      ],
+      "id": "DIV-006",
+      "niro": {
+        "locator": "CWS PDF section 3.4 and niro-cws.config.json magnesium rule",
+        "statement": "The Niro zero-point band is 2.0-2.5 mg/dL and >2.5 is unbanded."
+      },
+      "publicationImpact": "The Niro rule remains source-specific, while >2.5 stays an explicit unresolved no-score region pending Niro review.",
+      "topic": "Serum magnesium reference interval"
+    },
+    {
+      "calculatorSlug": "niro-cws",
+      "classification": "source-conflict",
+      "discrepancyIds": [
+        "CLN-005",
+        "CWS-07"
+      ],
+      "externalAnchors": [
+        {
+          "organization": "MedlinePlus",
+          "statement": "The documented external research records 150-400 x10^9/L.",
+          "title": "Platelet Count",
+          "url": "https://medlineplus.gov/ency/article/003647.htm",
+          "verification": "fetch-verified"
+        },
+        {
+          "organization": "StatPearls",
+          "statement": "The documented external research records 150-450 x10^9/L.",
+          "title": "Thrombocytosis / Thrombocytopenia",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK542208/",
+          "verification": "fetch-verified"
+        }
+      ],
+      "id": "DIV-007",
+      "niro": {
+        "locator": "CWS PDF section 3.8 and niro-cws.config.json platelets rule",
+        "statement": "The Niro zero-point band is 150-450 x10^9/L."
+      },
+      "publicationImpact": "The external sources disagree at the upper bound; preserve attribution and do not present a merged universal interval.",
+      "topic": "Platelet upper reference bound"
+    },
+    {
+      "calculatorSlug": "niro-cws",
+      "classification": "source-conflict",
+      "discrepancyIds": [
+        "CLN-005"
+      ],
+      "externalAnchors": [
+        {
+          "organization": "American College of Gastroenterology",
+          "statement": "The documented external research records healthy ALT ranges of 29-33 U/L for males and 19-25 U/L for females.",
+          "title": "Evaluation of Abnormal Liver Chemistries",
+          "url": "https://acgcdn.gi.org/wp-content/uploads/2018/04/ACG-Abnormal-Liver-Chemistries-Guideline-Summary.pdf",
+          "verification": "fetch-verified"
+        },
+        {
+          "organization": "MedlinePlus",
+          "statement": "The documented external research records a typical lab range of 4-36 U/L without a sex split.",
+          "title": "ALT blood test",
+          "url": "https://medlineplus.gov/ency/article/003473.htm",
+          "verification": "fetch-verified"
+        }
+      ],
+      "id": "DIV-008",
+      "niro": {
+        "locator": "CWS PDF section 3.5 and niro-cws.config.json alt rule",
+        "statement": "The Niro zero-point bounds are male <30 and female <19 U/L."
+      },
+      "publicationImpact": "Keep Niro scoring distinct from external lab/guideline interpretation and require reviewed claim wording.",
+      "topic": "ALT sex-specific zero-point bounds"
+    },
+    {
+      "calculatorSlug": "niro-cws",
+      "classification": "source-conflict",
+      "discrepancyIds": [
+        "CWS-07"
+      ],
+      "externalAnchors": [
+        {
+          "organization": "American Thyroid Association",
+          "statement": "The documented external research records a 0.4-4.0 mIU/L therapeutic target.",
+          "title": "Guidelines for the Treatment of Hypothyroidism",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4267409/",
+          "verification": "fetch-verified"
+        },
+        {
+          "organization": "MedlinePlus",
+          "statement": "The documented external research records 0.4-4.8, while other recorded references use 4.5 as an upper endpoint.",
+          "title": "TSH test",
+          "url": "https://medlineplus.gov/ency/article/003684.htm",
+          "verification": "fetch-verified"
+        }
+      ],
+      "id": "DIV-009",
+      "niro": {
+        "locator": "CWS PDF section 3.7 and niro-cws.config.json tsh rule",
+        "statement": "The Niro zero-point band is 0.4-4.0 mIU/L, with an unresolved 4.0-4.1 seam under the continuous contract."
+      },
+      "publicationImpact": "The external references are context-dependent and disagree; they do not resolve the Niro scoring seam.",
+      "topic": "TSH upper reference endpoint"
+    },
+    {
+      "calculatorSlug": "niro-cws",
+      "classification": "not-directly-comparable",
+      "discrepancyIds": [
+        "CLN-005",
+        "CLN-006"
+      ],
+      "externalAnchors": [
+        {
+          "organization": "American Urological Association",
+          "statement": "The documented external research records <300 ng/dL as a male diagnostic-support cutoff requiring symptoms and repeat morning testing.",
+          "title": "Testosterone Deficiency Guideline",
+          "url": "https://www.auanet.org/guidelines-and-quality/guidelines/testosterone-deficiency-guideline",
+          "verification": "fetch-verified"
+        },
+        {
+          "organization": "MedlinePlus",
+          "statement": "The documented external research records age- and sex-specific laboratory intervals rather than a universal scoring band.",
+          "title": "Testosterone test",
+          "url": "https://medlineplus.gov/ency/article/003707.htm",
+          "verification": "fetch-verified"
+        }
+      ],
+      "id": "DIV-010",
+      "niro": {
+        "locator": "CWS PDF section 3.9 and niro-cws.config.json testosterone rule",
+        "statement": "The Niro zero-point bands are male 300-1000 and female 15-70 ng/dL."
+      },
+      "publicationImpact": "A Niro score band, a diagnostic-support cutoff, and age-specific laboratory references must remain separately labeled.",
+      "topic": "Testosterone scoring versus diagnostic/reference contexts"
+    },
+    {
+      "calculatorSlug": "hypothyroid-risk",
+      "classification": "not-directly-comparable",
+      "discrepancyIds": [
+        "HYP-01",
+        "HYP-04"
+      ],
+      "externalAnchors": [
+        {
+          "organization": "StatPearls",
+          "statement": "The documented external research records 0.4-4.5 mU/L as one reference interval and notes context dependence.",
+          "title": "Thyroid Stimulating Hormone",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK499850/",
+          "verification": "fetch-verified"
+        },
+        {
+          "organization": "American Thyroid Association",
+          "statement": "The documented external research records 0.4-4.0 mIU/L as a therapeutic target, not a standalone risk-score validation.",
+          "title": "Guidelines for the Treatment of Hypothyroidism",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4267409/",
+          "verification": "fetch-verified"
+        }
+      ],
+      "id": "DIV-011",
+      "niro": {
+        "locator": "Risk calculators.xlsx#Hypothyroid and hypothyroid-risk.config.json tsh rule",
+        "statement": "The Niro risk sheet assigns points above 4.5 mIU/L."
+      },
+      "publicationImpact": "External reference/therapeutic contexts do not validate the Niro point weight or resolve broader symptom/missing-data blockers.",
+      "topic": "TSH point threshold versus reference/diagnostic context"
+    }
+  ],
+  "schemaVersion": "niro-external-divergence-report.v1",
+  "sourceCanonicalSha256": "a10b08e7653a0c66cd27c920d3be0fa34600cb01e7a979432c1e624137da857e",
+  "sourceSchemaVersion": "niro-external-divergence-source.v1",
+  "summary": {
+    "byCalculator": {
+      "diabetes-risk": 2,
+      "heart-risk": 2,
+      "hypothyroid-risk": 1,
+      "niro-cws": 6
+    },
+    "byClassification": {
+      "divergent-bands": 2,
+      "divergent-conversion": 1,
+      "divergent-endpoint": 2,
+      "not-directly-comparable": 2,
+      "source-conflict": 4
+    },
+    "rowCount": 11
+  }
+}

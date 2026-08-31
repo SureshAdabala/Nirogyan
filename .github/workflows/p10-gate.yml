@@ -1,0 +1,57 @@
+name: P10 hardening and reusability gate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: p10-reusability-gate
+  cancel-in-progress: false
+
+jobs:
+  p10-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: p10-test
+    env:
+      MONGODB_URI: ${{ secrets.P10_MONGODB_URI }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.6.1
+      - run: npm ci
+      - run: npm run build
+      - name: Install the pinned official Grafana k6 CLI
+        uses: grafana/setup-k6-action@v1
+        with:
+          k6-version: '1.7.1'
+      - run: npm run p10:browsers:install -- --with-deps
+      - name: P10 repository hardening tests
+        run: >-
+          npx vitest run
+          packages/engine/src/p10-fixture-matrices.test.ts
+          apps/server/src/p10-hardening.test.ts
+          scripts/p10-reusability-fixture.test.ts
+          scripts/p10-reusability-gate.test.ts
+          scripts/p10-performance.test.ts
+          scripts/p10-link-check.test.ts
+          scripts/p10-validation-wiring.test.ts
+          --testTimeout=30000 --maxWorkers=1 --fileParallelism=false
+      - name: Studio-only Atlas and browser gate
+        env:
+          P10_RUN_K6: 'true'
+        run: npm run p10:e2e
+      - name: Archive traces, recordings, and hash evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p10-reusability-evidence
+          path: |
+            tmp/p10-evidence
+          if-no-files-found: warn
+          retention-days: 30

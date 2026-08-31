@@ -1,0 +1,38 @@
+{
+  "name": "@niro/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./analytics-api": {
+      "types": "./dist/analytics-api.d.ts",
+      "require": "./dist/analytics-api.js",
+      "default": "./dist/analytics-api.js"
+    }
+  },
+  "files": [
+    "dist",
+    "schemas",
+    "specs",
+    "registers",
+    "reports",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "tsc -p tsconfig.build.json --build --clean",
+    "test": "vitest run --config ../../vitest.config.ts --no-file-parallelism --testTimeout 30000",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}

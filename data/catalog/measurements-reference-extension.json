@@ -1,0 +1,2633 @@
+{
+  "$schema": "niro-platform/measurements-reference-extension.v1",
+  "generatedAt": "2026-08-20",
+  "extends": "config-samples/biomarker-dataset.json (the existing 40-biomarker library)",
+  "sourcingPolicy": "All medical values sourced ONLY from: WHO, CDC, NIH family (MedlinePlus/ODS/NIDDK/NHLBI), NCBI (StatPearls/PMC), AHA/ACC, ADA, NKF/KDIGO, ATA, ACOG, USPSTF, FDA, NHS, NICE, Mayo Clinic, Cleveland Clinic, health.gov, MDCalc (with primary citations). verification: fetch-verified > search-verified > blocked-cited. Entries or values marked needs-verification are BLOCKED from publish until re-verified. Conflicting authorities recorded side-by-side, never merged.",
+  "counts": {
+    "measurements": 79,
+    "genuinelyNew": 65,
+    "libraryEnrichments": 14
+  },
+  "measurements": [
+    {
+      "key": "height",
+      "name": "Standing height",
+      "unit": "cm",
+      "panel": "anthropometry",
+      "referenceRanges": "No risk bands; input variable. Typical adult validation bounds suggested: 100-250 cm.",
+      "conversions": [
+        {
+          "code": "in",
+          "factor": 2.54
+        },
+        {
+          "code": "ft+in",
+          "factor": 2.54
+        },
+        {
+          "code": "m",
+          "factor": 100
+        }
+      ],
+      "notes": "Measured without shoes. Used by BMI, BSA, WHtR, Navy body fat, IBW, LBM, BMR.",
+      "sources": [
+        {
+          "org": "CDC",
+          "title": "Adult BMI Calculator (height/weight inputs)",
+          "url": "https://www.cdc.gov/bmi/adult-calculator/index.html",
+          "accessed": "2026-08-20",
+          "verification": "search-verified"
+        }
+      ],
+      "contributedBy": "anthropometric",
+      "panelOriginal": "anthropometry-core"
+    },
+    {
+      "key": "weight",
+      "name": "Body weight",
+      "unit": "kg",
+      "panel": "anthropometry",
+      "referenceRanges": "No standalone bands (interpreted via BMI/IBW). Suggested validation 30-300 kg.",
+      "conversions": [
+        {
+          "code": "lb",
+          "factor": 0.45359237
+        },
+        {
+          "code": "st+lb",
+          "factor": 0.45359237
+        }
+      ],
+      "sources": [
+        {
+          "org": "NIH/NLM MedlinePlus",
+          "title": "Body mass index (Medical Encyclopedia)",
+          "url": "https://medlineplus.gov/ency/article/007196.htm",
+          "accessed": "2026-08-20",
+          "verification": "search-verified"
+        }
+      ],
+      "contributedBy": "anthropometric",
+      "panelOriginal": "anthropometry-core"
+    },
+    {
+      "key": "waist-circumference",
+      "name": "Waist circumference",
+      "unit": "cm",
+      "panel": "anthropometry",
+      "referenceRanges": "NIH/NHLBI (verbatim): elevated cardiometabolic risk if 'more than 35 inches' (women) or 'more than 40 inches' (men); the NHLBI clinical-guidelines table uses >102 cm (>40 in) men and >88 cm (>35 in) women as the high-risk column. WHO 2008 expert consultation (as quoted in PMC9224732): 'normal risk: <=80 cm in females and <=94 cm in males; increased risk: >80 cm in females and >94 cm in males; greatly increased risk: >88 cm in females and >102 cm in males'. Asian populations (IDF ethnic-specific values recorded in the 2009 harmonizing statement): >=90 cm men, >=80 cm women. CONFLICT: NIH single-threshold (102/88) vs WHO two-tier (94/80 and 102/88) vs Asian 90/80 — surface all, labeled by org.",
+      "conflicts": "NIH/NHLBI uses one action threshold (102 cm men / 88 cm women); WHO 2008 adds a lower 'increased risk' tier (94/80); IDF Asian cutoffs are 90/80. Platform must show per-organization, never merge.",
+      "conversions": [
+        {
+          "code": "in",
+          "factor": 2.54
+        }
+      ],
+      "derivedFormula": "none (direct measurement)",
+      "notes": "WHO protocol (via PMC9224732 quoting WHO 2008 report): 'waist circumference is measured midway between the highest point of the iliac crest and the bottom of the ribcage'. US Navy/DoD protocol for the body-fat calculator differs: men at the umbilicus (abdomen), women at the narrowest part of the torso — keep the two waist definitions distinct in UI copy.",
+      "sources": [
+        {
+          "org": "NIH/NHLBI",
+          "title": "Assessing Your Weight and Health Risk",
+          "url": "https://www.nhlbi.nih.gov/health/educational/lose_wt/risk.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NIH/NCBI Bookshelf (NHLBI)",
+          "title": "Clinical Guidelines on Overweight and Obesity in Adults — Table IV-2",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK2004/table/A242/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "WHO",
+          "title": "Waist circumference and waist-hip ratio: report of a WHO expert consultation, 8-11 December 2008",
+          "url": "https://www.who.int/publications/i/item/9789241501491",
+          "accessed": "2026-08-20",
+          "verification": "blocked-cited"
+        },
+        {
+          "org": "NIH/PMC (secondary quoting WHO 2008)",
+          "title": "Digital Anthropometry for Body Circumference Measurements (Nutrients 2022)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9224732/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "AHA/IDF/NHLBI et al.",
+          "title": "Harmonizing the Metabolic Syndrome: a Joint Interim Statement (Alberti et al., Circulation 2009)",
+          "url": "https://www.ahajournals.org/doi/10.1161/circulationaha.109.192644",
+          "accessed": "2026-08-20",
+          "verification": "search-verified"
+        }
+      ],
+      "contributedBy": "anthropometric",
+      "panelOriginal": "anthropometry-central-adiposity"
+    },
+    {
+      "key": "hip-circumference",
+      "name": "Hip circumference",
+      "unit": "cm",
+      "panel": "anthropometry",
+      "referenceRanges": "No standalone bands; used in waist-to-hip ratio and female Navy body fat. Suggested validation 50-200 cm.",
+      "conversions": [
+        {
+          "code": "in",
+          "factor": 2.54
+        }
+      ],
+      "notes": "Measured at the widest portion of the buttocks (Navy protocol: 'greatest protrusion of the buttocks', per PMC9008774/PMC10282178).",
+      "sources": [
+        {
+          "org": "NIH/PMC",
+          "title": "Circumference-Based Predictions of Body Fat Revisited (PMC9008774)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9008774/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "anthropometric",
+      "panelOriginal": "anthropometry-central-adiposity"
+    },
+    {
+      "key": "neck-circumference",
+      "name": "Neck circumference",
+      "unit": "cm",
+      "panel": "anthropometry",
+      "referenceRanges": "No standalone bands; input to Navy body fat. Suggested validation 20-60 cm.",
+      "conversions": [
+        {
+          "code": "in",
+          "factor": 2.54
+        }
+      ],
+      "notes": "Measured just below the larynx per DoD protocol.",
+      "sources": [
+        {
+          "org": "NIH/PMC",
+          "title": "Body composition changes during 8 weeks of military training... (PMC10282178)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10282178/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "anthropometric",
+      "panelOriginal": "anthropometry-central-adiposity"
+    },
+    {
+      "key": "systolic-bp",
+      "name": "Systolic blood pressure",
+      "unit": "mmHg",
+      "panel": "vitals",
+      "referenceRanges": "AHA (heart.org, reviewed 2025-08-14): Normal LESS THAN 120; Elevated 120-129; Stage 1 hypertension 130-139; Stage 2 hypertension 140 OR HIGHER; Severe hypertension/Hypertensive emergency HIGHER THAN 180 (with the paired diastolic conditions as in the calculator).",
+      "conversions": [
+        {
+          "code": "mmHg",
+          "factor": 1
+        },
+        {
+          "code": "kPa",
+          "factor": 7.50062
+        }
+      ],
+      "sources": [
+        {
+          "org": "American Heart Association",
+          "title": "Understanding Blood Pressure Readings",
+          "url": "https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "notes": "kPa factor is the physical constant (1 kPa = 7.50062 mmHg), not a medical claim.",
+      "contributedBy": "cardiovascular",
+      "mergedFrom": [
+        {
+          "key": "blood-pressure-mets",
+          "name": "Blood pressure (metabolic-syndrome component)",
+          "unit": "mmHg",
+          "panel": "Vitals (self-service)",
+          "referenceRanges": "Metabolic-syndrome component threshold (StatPearls verbatim): \"systolic 130 mm Hg or higher or diastolic 85 mm Hg or higher\"; NHLBI consumer page: \"consistently 130/85 mmHg or higher\"; antihypertensive drug treatment counts as meeting the component (Endotext).",
+          "sources": [
+            {
+              "org": "NCBI Bookshelf (StatPearls)",
+              "title": "Metabolic Syndrome",
+              "url": "https://www.ncbi.nlm.nih.gov/books/NBK459248/",
+              "accessed": "2026-08-20",
+              "verification": "fetch-verified"
+            },
+            {
+              "org": "NHLBI (NIH)",
+              "title": "Metabolic Syndrome — Diagnosis",
+              "url": "https://www.nhlbi.nih.gov/health/metabolic-syndrome/diagnosis",
+              "accessed": "2026-08-20",
+              "verification": "fetch-verified"
+            }
+          ],
+          "notes": "This 130/85 threshold is specific to metabolic-syndrome criteria and is NOT the ACC/AHA hypertension staging system — do not conflate on the results page.",
+          "contributedBy": "metabolic"
+        }
+      ],
+      "mergeNote": "Metabolic-syndrome BP component (SBP >=130 OR DBP >=85, or on antihypertensive treatment) kept as a context; applies jointly with diastolic-bp.",
+      "libraryMerge": true,
+      "libraryKey": "systolic-bp",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Vitals"
+    },
+    {
+      "key": "diastolic-bp",
+      "name": "Diastolic blood pressure",
+      "unit": "mmHg",
+      "panel": "vitals",
+      "referenceRanges": "AHA: Normal/Elevated LESS THAN 80; Stage 1 hypertension 80-89; Stage 2 hypertension 90 OR HIGHER; Severe/Emergency HIGHER THAN 120.",
+      "conversions": [
+        {
+          "code": "mmHg",
+          "factor": 1
+        },
+        {
+          "code": "kPa",
+          "factor": 7.50062
+        }
+      ],
+      "sources": [
+        {
+          "org": "American Heart Association",
+          "title": "Understanding Blood Pressure Readings",
+          "url": "https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "cardiovascular",
+      "panelOriginal": "Vitals"
+    },
+    {
+      "key": "resting-heart-rate",
+      "name": "Resting heart rate (pulse)",
+      "unit": "bpm",
+      "panel": "vitals",
+      "referenceRanges": "AHA: adults 60-100 bpm normal; athletes as low as 40. MedlinePlus (by age): newborn 0-1 mo 70-190; infant 1-11 mo 80-160; 1-2 y 80-130; 3-4 y 80-120; 5-6 y 75-115; 7-9 y 70-110; 10+ y and adults 60-100; well-trained athletes 40-60.",
+      "sources": [
+        {
+          "org": "American Heart Association",
+          "title": "Target Heart Rates Chart",
+          "url": "https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NIH MedlinePlus",
+          "title": "Pulse (ency 003399)",
+          "url": "https://medlineplus.gov/ency/article/003399.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "cardiovascular",
+      "panelOriginal": "Vitals"
+    },
+    {
+      "key": "total-cholesterol",
+      "name": "Total cholesterol",
+      "unit": "mg/dL",
+      "panel": "lipid",
+      "referenceRanges": "MedlinePlus: age <=19 less than 170 mg/dL; men 20+ less than 200; women 20+ less than 200. Cleveland Clinic: Normal below 200; Borderline high 200-239; High 240 or higher.",
+      "conversions": [
+        {
+          "code": "mg/dL",
+          "factor": 1
+        },
+        {
+          "code": "mmol/L",
+          "factor": 38.67
+        }
+      ],
+      "conflicts": "MedlinePlus publishes only the healthy threshold (<200); Cleveland Clinic adds borderline-high (200-239) and high (>=240) grading - attribute grading to Cleveland Clinic.",
+      "sources": [
+        {
+          "org": "NIH MedlinePlus",
+          "title": "Cholesterol Levels: What You Need to Know",
+          "url": "https://medlineplus.gov/cholesterollevelswhatyouneedtoknow.html",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Cleveland Clinic",
+          "title": "What Should My Cholesterol Levels Be? (article 11920)",
+          "url": "https://my.clevelandclinic.org/health/articles/11920-cholesterol-numbers-what-do-they-mean",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "cardiovascular",
+      "libraryMerge": true,
+      "libraryKey": "total-cholesterol",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Lipid panel"
+    },
+    {
+      "key": "hdl-cholesterol",
+      "name": "HDL cholesterol",
+      "unit": "mg/dL",
+      "panel": "lipid",
+      "referenceRanges": "MedlinePlus: age <=19 more than 45; adults - >=60 mg/dL is best; low is <40 (men) / <50 (women). Cleveland Clinic: males low below 40, normal 40-80, high above 80; females low below 50, normal 50-80, high above 80; children/teens normal 45-80; 'An HDL over 80 is too high and may not be healthy.'",
+      "conversions": [
+        {
+          "code": "mg/dL",
+          "factor": 1
+        },
+        {
+          "code": "mmol/L",
+          "factor": 38.67
+        }
+      ],
+      "conflicts": "MedlinePlus treats >=60 as unambiguously best; Cleveland Clinic flags HDL above 80 as possibly unhealthy - surface both attributions.",
+      "sources": [
+        {
+          "org": "NIH MedlinePlus",
+          "title": "Cholesterol Levels: What You Need to Know",
+          "url": "https://medlineplus.gov/cholesterollevelswhatyouneedtoknow.html",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Cleveland Clinic",
+          "title": "What Is HDL Cholesterol? (article 24395) + article 11920",
+          "url": "https://my.clevelandclinic.org/health/articles/24395-hdl-cholesterol",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "cardiovascular",
+      "libraryMerge": true,
+      "libraryKey": "hdl-cholesterol",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Lipid panel"
+    },
+    {
+      "key": "ldl-cholesterol",
+      "name": "LDL cholesterol",
+      "unit": "mg/dL",
+      "panel": "lipid",
+      "referenceRanges": "MedlinePlus: age <=19 less than 110; adults 20+ less than 100. Cleveland Clinic: Normal below 100; Elevated 100-129; Borderline high 130-159; High 160-189; Very high 190 or higher.",
+      "conversions": [
+        {
+          "code": "mg/dL",
+          "factor": 1
+        },
+        {
+          "code": "mmol/L",
+          "factor": 38.67
+        }
+      ],
+      "conflicts": "Grading above 100 mg/dL is Cleveland Clinic's; MedlinePlus gives only the <100 healthy level.",
+      "sources": [
+        {
+          "org": "NIH MedlinePlus",
+          "title": "Cholesterol Levels: What You Need to Know",
+          "url": "https://medlineplus.gov/cholesterollevelswhatyouneedtoknow.html",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Cleveland Clinic",
+          "title": "What Should My Cholesterol Levels Be? (article 11920)",
+          "url": "https://my.clevelandclinic.org/health/articles/11920-cholesterol-numbers-what-do-they-mean",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "cardiovascular",
+      "libraryMerge": true,
+      "libraryKey": "ldl-cholesterol",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Lipid panel"
+    },
+    {
+      "key": "non-hdl-cholesterol",
+      "name": "Non-HDL cholesterol",
+      "unit": "mg/dL",
+      "panel": "lipid",
+      "derivedFormula": "nonHDL = totalCholesterol - HDL",
+      "referenceRanges": "MedlinePlus: age <=19 less than 120 mg/dL; men and women 20+ less than 130 mg/dL. Mayo: optimal for most people less than 130 mg/dL (3.37 mmol/L); lower desired after heart attack.",
+      "conversions": [
+        {
+          "code": "mg/dL",
+          "factor": 1
+        },
+        {
+          "code": "mmol/L",
+          "factor": 38.67
+        }
+      ],
+      "sources": [
+        {
+          "org": "NIH MedlinePlus",
+          "title": "Cholesterol Levels: What You Need to Know",
+          "url": "https://medlineplus.gov/cholesterollevelswhatyouneedtoknow.html",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Mayo Clinic",
+          "title": "Cholesterol ratio or non-HDL cholesterol: Which is most important?",
+          "url": "https://www.mayoclinic.org/diseases-conditions/high-blood-cholesterol/expert-answers/cholesterol-ratio/faq-20058006",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "cardiovascular",
+      "panelOriginal": "Lipid panel (derived)"
+    },
+    {
+      "key": "triglycerides",
+      "name": "Triglycerides (fasting)",
+      "unit": "mg/dL",
+      "panel": "lipid",
+      "referenceRanges": "MedlinePlus: Normal below 150 mg/dL; Borderline high 150-199; High 200 mg/dL or more (all ages).",
+      "conversions": [
+        {
+          "code": "mg/dL",
+          "factor": 1
+        },
+        {
+          "code": "mmol/L",
+          "factor": 88.57
+        }
+      ],
+      "sources": [
+        {
+          "org": "NIH MedlinePlus",
+          "title": "Cholesterol Levels: What You Need to Know",
+          "url": "https://medlineplus.gov/cholesterollevelswhatyouneedtoknow.html",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NCBI Bookshelf (StatPearls)",
+          "title": "Metabolic Syndrome",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK459248/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NCBI PMC",
+          "title": "Bangladesh waist-circumference study (TG >=1.7 mmol/L criterion)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11938217/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Triglyceride level",
+          "url": "https://medlineplus.gov/ency/article/003493.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Cholesterol Levels",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK542294/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "notes": "MedlinePlus lists 'very high' >=500 on related pages but that value was not on the fetched page - not recorded (no guessing).",
+      "contributedBy": "cardiovascular",
+      "mergedFrom": [
+        {
+          "key": "fasting-triglycerides",
+          "name": "Fasting triglycerides",
+          "unit": "mg/dL",
+          "panel": "Lipid",
+          "referenceRanges": "Metabolic-syndrome component threshold: >=150 mg/dL (Endotext/StatPearls verbatim \"150 mg/dL or greater\"); SI equivalent >=1.7 mmol/L (PMC11938217). Full NCEP triglyceride banding (borderline-high/high/very-high) not verified in this pass — do not ship those bands without a source.",
+          "conversions": [
+            {
+              "code": "mmol/L->mg/dL",
+              "factor": 88.5
+            }
+          ],
+          "sources": [
+            {
+              "org": "NCBI Bookshelf (StatPearls)",
+              "title": "Metabolic Syndrome",
+              "url": "https://www.ncbi.nlm.nih.gov/books/NBK459248/",
+              "accessed": "2026-08-20",
+              "verification": "fetch-verified"
+            },
+            {
+              "org": "NCBI PMC",
+              "title": "Bangladesh waist-circumference study (TG >=1.7 mmol/L criterion)",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11938217/",
+              "accessed": "2026-08-20",
+              "verification": "fetch-verified"
+            }
+          ],
+          "contributedBy": "metabolic"
+        },
+        {
+          "key": "triglycerides-categories",
+          "name": "Triglycerides (category bands — supplements existing biomarker)",
+          "unit": "mg/dL",
+          "panel": "Lipids",
+          "referenceRanges": "MedlinePlus (Triglyceride level, ency/003493): Normal \"Less than 150 mg/dL (1.69 mmol/L)\"; Borderline high \"150 to 199 mg/dL (1.69 to 2.25 mmol/L)\"; High \"200 to 499 mg/dL (2.26 to 5.64 mmol/L)\"; Very high \"500 mg/dL or above (5.65 mmol/L)\". StatPearls (NBK542294, ATP III): Normal <150; Hypertriglyceridemia 150-499; Very high/severe >500 mg/dL.",
+          "conversions": [
+            {
+              "code": "mmol/L",
+              "factor": 0.01129
+            }
+          ],
+          "notes": "Provided because the Friedewald calculator needs TG bands for its validity gate; merge with existing TG biomarker entry if present.",
+          "sources": [
+            {
+              "org": "MedlinePlus (NIH/NLM)",
+              "title": "Triglyceride level",
+              "url": "https://medlineplus.gov/ency/article/003493.htm",
+              "accessed": "2026-08-20",
+              "verification": "fetch-verified"
+            },
+            {
+              "org": "StatPearls / NCBI Bookshelf (NIH)",
+              "title": "Cholesterol Levels",
+              "url": "https://www.ncbi.nlm.nih.gov/books/NBK542294/",
+              "accessed": "2026-08-20",
+              "verification": "fetch-verified"
+            }
+          ],
+          "contributedBy": "lab-panel-extension"
+        }
+      ],
+      "mergeNote": "Single triglycerides record: fasting context, NCEP category bands, and metabolic-syndrome threshold (>=150 mg/dL) consolidated; verbatim originals in mergedFrom.",
+      "libraryMerge": true,
+      "libraryKey": "triglycerides",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Lipid panel"
+    },
+    {
+      "key": "mean-arterial-pressure",
+      "name": "Mean arterial pressure (derived)",
+      "unit": "mmHg",
+      "panel": "vitals",
+      "derivedFormula": "MAP = DBP + (SBP - DBP)/3 = (SBP + 2*DBP)/3",
+      "referenceRanges": "StatPearls: minimum MAP of 60 mmHg required to perfuse vital organs; no authoritative consumer normal range published. Research bands (Kandil 2023 citing Kundu 2017, research-only): optimal <93.33; normal 93.33-99.00; high normal 99.01-105.67; grade 1 105.68-119.00; grade 2 119.01-132.33; grade 3 >=132.34.",
+      "sources": [
+        {
+          "org": "NCBI StatPearls",
+          "title": "Physiology, Mean Arterial Pressure (NBK538226)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK538226/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "PMC (peer-reviewed)",
+          "title": "Kandil H et al. Biomedicines 2023 (PMC10046034)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10046034/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "cardiovascular",
+      "panelOriginal": "Vitals (derived)"
+    },
+    {
+      "key": "pulse-pressure",
+      "name": "Pulse pressure (derived)",
+      "unit": "mmHg",
+      "panel": "vitals",
+      "derivedFormula": "PP = SBP - DBP",
+      "referenceRanges": "StatPearls: normal approximately 40 mmHg; narrow if <25% of systolic; 'high or widened' if >100 mmHg. Mayo: 40 is healthy; generally >40 is unhealthy; >60 is a heart-disease risk factor, especially in older adults.",
+      "conflicts": "High threshold: Mayo >60 (risk factor) vs StatPearls >100 (widened) - both surfaced with attribution, never merged.",
+      "sources": [
+        {
+          "org": "NCBI StatPearls",
+          "title": "Physiology, Pulse Pressure (NBK482408)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK482408/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Mayo Clinic",
+          "title": "Pulse pressure: An indicator of heart health?",
+          "url": "https://www.mayoclinic.org/diseases-conditions/high-blood-pressure/expert-answers/pulse-pressure/faq-20058189",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "cardiovascular",
+      "panelOriginal": "Vitals (derived)"
+    },
+    {
+      "key": "fasting-glucose",
+      "name": "Fasting plasma glucose",
+      "unit": "mg/dL",
+      "panel": "glycemic",
+      "referenceRanges": "ADA (diabetes.org, verbatim): Normal \"less than 100 mg/dL\"; Prediabetes \"100 mg/dl to 125 mg/dL\"; Diabetes \"126 mg/dL or higher\". Metabolic-syndrome component threshold (harmonized/Endotext): >=100 mg/dL or drug treatment.",
+      "conversions": [
+        {
+          "code": "mmol/L->mg/dL",
+          "factor": 18.016
+        }
+      ],
+      "sources": [
+        {
+          "org": "American Diabetes Association",
+          "title": "Diagnosis",
+          "url": "https://diabetes.org/about-diabetes/diagnosis",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NCBI Bookshelf (Endotext)",
+          "title": "Metabolic Syndrome",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK278936/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "notes": "Requires >=8-hour fast for diagnostic categories.",
+      "contributedBy": "metabolic",
+      "formerKey": "fasting-plasma-glucose",
+      "libraryMerge": true,
+      "libraryKey": "fasting-glucose",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Basic metabolic / glucose"
+    },
+    {
+      "key": "ogtt-2h-plasma-glucose",
+      "name": "2-hour plasma glucose (75-g OGTT)",
+      "unit": "mg/dL",
+      "panel": "glycemic",
+      "referenceRanges": "ADA (diabetes.org, verbatim): Normal \"less than 140 mg/dL\"; Prediabetes \"140 to 199 mg/dL\"; Diabetes \"200 mg/dL or higher\".",
+      "conversions": [
+        {
+          "code": "mmol/L->mg/dL",
+          "factor": 18.016
+        }
+      ],
+      "sources": [
+        {
+          "org": "American Diabetes Association",
+          "title": "Diagnosis",
+          "url": "https://diabetes.org/about-diabetes/diagnosis",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "notes": "Non-pregnant adults; gestational OGTT uses different thresholds.",
+      "contributedBy": "metabolic",
+      "panelOriginal": "Glucose tolerance"
+    },
+    {
+      "key": "hba1c",
+      "name": "Hemoglobin A1C",
+      "unit": "%",
+      "panel": "glycemic",
+      "referenceRanges": "ADA (diabetes.org, verbatim): Normal \"less than 5.7%\"; Prediabetes \"5.7% to 6.4%\"; Diabetes \"6.5% or higher\".",
+      "sources": [
+        {
+          "org": "American Diabetes Association",
+          "title": "Diagnosis",
+          "url": "https://diabetes.org/about-diabetes/diagnosis",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "metabolic",
+      "libraryMerge": true,
+      "libraryKey": "hba1c",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Glycemic"
+    },
+    {
+      "key": "fasting-insulin",
+      "name": "Fasting insulin",
+      "unit": "uU/mL",
+      "panel": "glycemic",
+      "referenceRanges": "No standardized universal reference range (insulin assays are not harmonized between laboratories); used as an input to HOMA-IR and QUICKI rather than interpreted against a single range. Do not display a 'normal range' without the reporting lab's own range.",
+      "conversions": [
+        {
+          "code": "pmol/L->uU/mL (CONFLICTED: divide by 6.00 vs 6.945 depending on source)",
+          "factor": 0
+        }
+      ],
+      "sources": [
+        {
+          "org": "MDCalc",
+          "title": "HOMA-IR calculator (accepts pmol/L input)",
+          "url": "https://www.mdcalc.com/calc/3120/homa-ir-homeostatic-model-assessment-insulin-resistance",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "conflicts": "pmol/L-to-uU/mL conversion factor differs across sources (6.00 per WHO IS-based convention vs 6.945 in older SI tables) — unresolved here; factor field set to 0 as a sentinel. See openIssues.",
+      "notes": "Must be fasting; hemolysis degrades insulin.",
+      "contributedBy": "metabolic",
+      "libraryMerge": true,
+      "libraryKey": "fasting-insulin",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Metabolic (add-on)"
+    },
+    {
+      "key": "creatinine",
+      "name": "Serum creatinine",
+      "unit": "mg/dL",
+      "panel": "renal",
+      "referenceRanges": "MedlinePlus: men '0.7 to 1.3 mg/dL (62 to 115 µmol/L)'; women '0.5 to 0.95 mg/dL (44 to 84 µmol/L)'. StatPearls (NBK544228) / NCBI Clinical Methods (NBK305, enzymatic method): men 'approximately 0.6 to 1.2 mg/dL'; women 'between 0.5 and 1.1 mg/dL'.",
+      "conversions": [
+        {
+          "code": "µmol/L→mg/dL",
+          "factor": 0.011312
+        },
+        {
+          "code": "mg/dL→µmol/L",
+          "factor": 88.4
+        }
+      ],
+      "conflicts": "Male lower/upper bounds differ: MedlinePlus 0.7–1.3 vs StatPearls/Clinical Methods 0.6–1.2 mg/dL; female upper bound: MedlinePlus 0.95 vs StatPearls/Clinical Methods 1.1 mg/dL. Lab-specific ranges govern; surface both labeled by org.",
+      "notes": "Affected by muscle mass, diet (vegetarian, creatine supplements), amputation, malnutrition (StatPearls). CKD-EPI 2021 requires standardized (IDMS-traceable) creatinine.",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH)",
+          "title": "Creatinine blood test",
+          "url": "https://medlineplus.gov/ency/article/003475.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Creatinine Clearance (NBK544228)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK544228/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NCBI Bookshelf — Clinical Methods",
+          "title": "BUN and Creatinine (NBK305)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK305/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "kidney-hydration",
+      "formerKey": "serum-creatinine",
+      "libraryMerge": true,
+      "libraryKey": "creatinine",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Basic/Comprehensive Metabolic Panel; Renal panel"
+    },
+    {
+      "key": "bun",
+      "name": "Blood urea nitrogen (BUN)",
+      "unit": "mg/dL",
+      "panel": "renal",
+      "referenceRanges": "NCBI Clinical Methods (NBK305): '5 to 20 mg/dl, or 1.8 to 7.1 mmol urea per liter'. Cleveland Clinic: children 1–17 y '7 and 20 mg/dL'; adult females '6 and 21 mg/dL'; adult males '8 and 24 mg/dL'.",
+      "conversions": [
+        {
+          "code": "urea mmol/L→BUN mg/dL",
+          "factor": 2.801
+        },
+        {
+          "code": "BUN mg/dL→urea mmol/L",
+          "factor": 0.357
+        }
+      ],
+      "conflicts": "NBK305 gives a single adult range 5–20 mg/dL; Cleveland Clinic gives sex/age-specific ranges (F 6–21, M 8–24). Label per org.",
+      "notes": "BUN is 'far more variable than sCr due to diet, hydration, and metabolic factors' (NBK305). High values: kidney dysfunction, dehydration, high-protein intake, GI bleeding, some drugs. Low: low protein intake, overhydration, liver disease, small body size (Cleveland Clinic).",
+      "sources": [
+        {
+          "org": "NCBI Bookshelf — Clinical Methods",
+          "title": "BUN and Creatinine (NBK305)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK305/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Cleveland Clinic",
+          "title": "Blood Urea Nitrogen (BUN) Test",
+          "url": "https://my.clevelandclinic.org/health/diagnostics/17684-blood-urea-nitrogen-bun-test",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "kidney-hydration",
+      "libraryMerge": true,
+      "libraryKey": "bun",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Basic/Comprehensive Metabolic Panel"
+    },
+    {
+      "key": "bun-creatinine-ratio",
+      "name": "BUN-to-creatinine ratio",
+      "unit": "ratio (both mg/dL)",
+      "panel": "renal",
+      "derivedFormula": "ratio = BUN(mg/dL) / serum creatinine(mg/dL)",
+      "referenceRanges": "StatPearls (NBK560678): normal 'Typically, this ratio is 10'; prerenal 'higher than 20:1'; ATN 'about 15:1'. Conventional interpretation band: 10:1–20:1 typical; <10:1 suggests renal/low-urea states; >20:1 suggests prerenal cause (StatPearls, search-verified corroboration).",
+      "conflicts": "None substantive among allowed sources; note the 15:1 ATN value overlaps the 'typical' 10–20 band — the ratio cannot rule kidney disease in or out.",
+      "notes": "US-convention ratio; SI urea:creatinine ratios use different cutoffs — always convert to mg/dL first.",
+      "sources": [
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Prerenal Kidney Failure (NBK560678)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK560678/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NCBI Bookshelf — Clinical Methods",
+          "title": "BUN and Creatinine (NBK305)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK305/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "kidney-hydration",
+      "panelOriginal": "Derived from metabolic panel"
+    },
+    {
+      "key": "urine-acr",
+      "name": "Urine albumin-to-creatinine ratio (ACR/UACR)",
+      "unit": "mg/g",
+      "panel": "renal",
+      "referenceRanges": "KDIGO categories via kidney.org: A1 <30 mg/g 'Normal to mildly increased'; A2 30–300 mg/g 'Moderately increased'; A3 >300 mg/g 'Severely increased'. StatPearls mg/mmol: A1 '<3.4', A2 '3.4-34', A3 '>34'. NHS/NICE rounded convention: A1 <3, A2 3–30, A3 >30 mg/mmol (search-verified).",
+      "conversions": [
+        {
+          "code": "mg/mmol→mg/g",
+          "factor": 8.84
+        },
+        {
+          "code": "mg/g→mg/mmol",
+          "factor": 0.1131
+        }
+      ],
+      "conflicts": "mg/mmol thresholds: StatPearls exact-conversion 3.4/34 vs KDIGO/NHS rounded 3/30 mg/mmol. A2 upper written as 300 (kidney.org) vs 299 (StatPearls) mg/g — band-edge convention, treat 300 as exclusive-upper for A2.",
+      "notes": "Single elevated values can be transient (exercise, fever, UTI, menstruation); persistence ≥3 months required for CKD categorization.",
+      "sources": [
+        {
+          "org": "National Kidney Foundation (kidney.org)",
+          "title": "How to Classify CKD",
+          "url": "https://www.kidney.org/professionals/explore-your-knowledge/how-to-classify-ckd",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Chronic Kidney Disease (NBK535404)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK535404/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "kidney-hydration",
+      "panelOriginal": "Urine microalbumin panel"
+    },
+    {
+      "key": "egfr",
+      "name": "Estimated glomerular filtration rate (eGFR)",
+      "unit": "mL/min/1.73 m²",
+      "panel": "renal",
+      "derivedFormula": "CKD-EPI 2021: 142 × min(Scr/κ,1)^α × max(Scr/κ,1)^−1.200 × 0.9938^Age × 1.012 [if female]; κ=0.7 F/0.9 M; α=−0.241 F/−0.302 M",
+      "referenceRanges": "NKF: '90 or higher is in the normal range'. KDIGO G-categories: G1 ≥90; G2 60–89; G3a 45–59; G3b 30–44; G4 15–29; G5 <15 (or dialysis). eGFR <60 persisting ≥3 months defines CKD irrespective of damage markers (StatPearls).",
+      "conflicts": "None among allowed sources for the 2021 equation or staging.",
+      "notes": "Normalized to 1.73 m² body surface area — differs from Cockcroft-Gault CrCl (absolute mL/min, overestimates GFR ~10–20% via tubular secretion).",
+      "sources": [
+        {
+          "org": "National Kidney Foundation (kidney.org)",
+          "title": "eGFR topic page + GFR calculator formula page",
+          "url": "https://www.kidney.org/kidney-topics/estimated-glomerular-filtration-rate-egfr",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Inker LA et al., NEJM 2021 via PMC",
+          "title": "New Creatinine- and Cystatin C–Based Equations to Estimate GFR without Race (PMC8822996)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8822996/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "kidney-hydration",
+      "libraryMerge": true,
+      "libraryKey": "egfr",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Auto-reported with metabolic panels"
+    },
+    {
+      "key": "creatinine-clearance",
+      "name": "Creatinine clearance (estimated, Cockcroft-Gault)",
+      "unit": "mL/min",
+      "panel": "renal",
+      "derivedFormula": "(140 − age) × weight(kg) / (72 × Scr mg/dL) × 0.85 if female",
+      "referenceRanges": "StatPearls (NBK544228): younger healthy adults 'about 100 to 120 mL/min in males and 90 to 110 mL/min in females'.",
+      "conflicts": "None; but note NKF position that C-G should be retired in favor of race-agnostic eGFR.",
+      "notes": "Overestimates GFR by ~10–20% (tubular secretion, StatPearls); accuracy degrades with obesity/body-size extremes (NKF).",
+      "sources": [
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Creatinine Clearance (NBK544228)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK544228/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "National Kidney Foundation (kidney.org)",
+          "title": "Cockcroft-Gault Equation for Estimating Creatinine Clearance",
+          "url": "https://www.kidney.org/professionals/kdoqi/cockcroft-gault-equation-estimating-creatinine-clearance",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "kidney-hydration",
+      "panelOriginal": "Derived (drug-dosing context)"
+    },
+    {
+      "key": "total-water-intake",
+      "name": "Total daily water intake (Adequate Intake)",
+      "unit": "L/day",
+      "panel": "lifestyle-reference",
+      "referenceRanges": "US National Academies/IOM 2005 AI (adults 19–50, extended to older adults in practice): men '3.7 L (131 oz)'/day; women '2.7 L (95 oz)/day' total water; 'Approximately 80 percent of total water intake comes from drinking beverages and water' (PMC7692653). MedlinePlus: DRI 'between 91 and 125 fluid ounces (2.7 to 3.7 liters)... per day for adults'. Pregnancy 3.0 L/day, lactation 3.8 L/day (IOM AI, search-verified via PMC3929375). NHS (different construct — drinks only): '6 to 8 cups or glasses of fluid a day'.",
+      "conversions": [
+        {
+          "code": "L→fl oz",
+          "factor": 33.814
+        },
+        {
+          "code": "L→US cups (8 fl oz)",
+          "factor": 4.227
+        }
+      ],
+      "conflicts": "US AI (total water incl. ~20% food moisture) vs NHS 6–8 cups (beverages only) — different constructs, label per org and never merge. Pregnancy/lactation values verified only at search tier.",
+      "notes": "AI ≠ requirement; thirst-guided intake is adequate for most healthy people (MedlinePlus). Fluid restriction conditions override.",
+      "sources": [
+        {
+          "org": "PMC (reporting IOM 2005)",
+          "title": "PMC7692653 — IOM water AI values",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7692653/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "MedlinePlus (NIH)",
+          "title": "Water in diet",
+          "url": "https://medlineplus.gov/ency/article/002471.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NHS",
+          "title": "Water, drinks and hydration",
+          "url": "https://www.nhs.uk/live-well/eat-well/food-guidelines-and-food-labels/water-drinks-nutrition/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "kidney-hydration",
+      "panelOriginal": "Lifestyle/hydration"
+    },
+    {
+      "key": "ast",
+      "name": "Aspartate aminotransferase (AST/SGOT)",
+      "panel": "liver",
+      "unit": "U/L",
+      "conversions": [
+        {
+          "code": "U/L",
+          "factor": 1
+        },
+        {
+          "code": "µkat/L",
+          "factor": 60
+        }
+      ],
+      "referenceRanges": "MedlinePlus (NIH): 'The normal range is 8 to 33 U/L (0.13 to 0.55 µkat/L)' (adult, not sex-split on this page); 'Normal value ranges may vary slightly among different labs.' Botros & Sikaris 2013 (NCBI PMC): upper reference limits in healthy populations 'approximately 30 IU/L to 40 IU/L for both AST and ALT.'",
+      "notes": "Input to FIB-4, APRI, De Ritis. µkat/L → U/L multiply by 60. Also elevated by muscle injury, exercise, hemolysis. AST ULN for APRI must be the reporting lab's ULN (WHO Box 4.1); 40 U/L is only a convention.",
+      "sources": [
+        {
+          "org": "NIH MedlinePlus",
+          "title": "Aspartate aminotransferase (AST) blood test",
+          "url": "https://medlineplus.gov/ency/article/003472.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NCBI PMC (Botros & Sikaris 2013)",
+          "title": "The De Ritis Ratio: The Test of Time",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3866949/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "liver-alcohol",
+      "libraryMerge": true,
+      "libraryKey": "ast",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Liver / hepatic function panel"
+    },
+    {
+      "key": "alt",
+      "name": "Alanine aminotransferase (ALT/SGPT)",
+      "panel": "liver",
+      "unit": "U/L",
+      "conversions": [
+        {
+          "code": "U/L",
+          "factor": 1
+        },
+        {
+          "code": "µkat/L",
+          "factor": 60
+        }
+      ],
+      "referenceRanges": "MedlinePlus (NIH): 'The normal range is 4 to 36 U/L (0.07 to 0.60 µkat/L)'; 'Normal value ranges may vary slightly among different labs.' (Page does not give sex-specific ranges.)",
+      "notes": "Input to FIB-4 (under square root) and De Ritis. More liver-specific than AST.",
+      "sources": [
+        {
+          "org": "NIH MedlinePlus",
+          "title": "Alanine transaminase (ALT) blood test",
+          "url": "https://medlineplus.gov/ency/article/003473.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "liver-alcohol",
+      "libraryMerge": true,
+      "libraryKey": "alt",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Liver / hepatic function panel"
+    },
+    {
+      "key": "platelets",
+      "name": "Platelet count",
+      "panel": "cbc",
+      "unit": "×10⁹/L",
+      "conversions": [
+        {
+          "code": "10^9/L",
+          "factor": 1
+        },
+        {
+          "code": "10^3/µL",
+          "factor": 1
+        },
+        {
+          "code": "cells/µL",
+          "factor": 0.001
+        }
+      ],
+      "referenceRanges": "MedlinePlus (NIH): 'The normal number of platelets in the blood is 150,000 to 400,000 platelets per microliter (mcL) or 150 to 400 × 10⁹/L'; 'Normal value ranges may vary slightly.'",
+      "notes": "Input to FIB-4 and APRI (denominator — falling platelets raise both scores; portal hypertension proxy). Some sources cite 150-450 ×10⁹/L; MedlinePlus verbatim is 150-400.",
+      "sources": [
+        {
+          "org": "NIH MedlinePlus",
+          "title": "Platelet count",
+          "url": "https://medlineplus.gov/ency/article/003647.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "liver-alcohol",
+      "formerKey": "platelet-count",
+      "libraryMerge": true,
+      "libraryKey": "platelets",
+      "mergeNote": "",
+      "libraryMergeNote": "Enriches the existing biomarker-dataset.json record with the same key: merge-on-import as additional per-org reference ranges / conflicts. Never overwrite library values.",
+      "panelOriginal": "Complete blood count (CBC)"
+    },
+    {
+      "key": "respiratory-rate-adult",
+      "name": "Respiratory rate (adult, at rest)",
+      "panel": "vitals",
+      "unit": "breaths/min",
+      "referenceRanges": "StatPearls (Vital Sign Assessment): normal adult range 12 to 20 breaths/min; bradypnea < 12; tachypnea > 20. MedlinePlus 007198 (Rapid shallow breathing): 'A normal breathing rate for an adult at rest is 12 to 20 breaths per minute.' MedlinePlus 002341 (Vital signs): breathing '12 to 18 breaths per minute'. Cleveland Clinic: normal 12 to 18; 'under 12 or over 25 breaths per minute while resting may be a sign of an underlying health condition.'",
+      "conflicts": "Upper bound of normal: 20 (StatPearls; MedlinePlus 007198) vs 18 (MedlinePlus 002341; Cleveland Clinic). Alert threshold: >20 (StatPearls tachypnea) vs >25 (Cleveland Clinic 'sign of an underlying health condition'). MedlinePlus is internally inconsistent across its two articles - both values recorded and labeled.",
+      "conversions": [
+        {
+          "code": "breaths_per_30s",
+          "factor": 2
+        }
+      ],
+      "sources": [
+        {
+          "org": "NCBI Bookshelf (StatPearls)",
+          "title": "Vital Sign Assessment",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK553213/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "MedlinePlus",
+          "title": "Rapid shallow breathing",
+          "url": "https://medlineplus.gov/ency/article/007198.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "MedlinePlus",
+          "title": "Vital signs",
+          "url": "https://medlineplus.gov/ency/article/002341.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Cleveland Clinic",
+          "title": "Vital Signs",
+          "url": "https://my.clevelandclinic.org/health/articles/10881-vital-signs",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "notes": "Adult only; pediatric ranges are age-banded and not covered here.",
+      "contributedBy": "respiratory",
+      "panelOriginal": "Vital signs"
+    },
+    {
+      "key": "spo2",
+      "name": "Oxygen saturation (SpO2, pulse oximeter)",
+      "panel": "vitals",
+      "unit": "%",
+      "referenceRanges": "WHO Pulse Oximetry Training Manual: healthy individual breathing air at sea level 95-100%; <=94% hypoxic, treat quickly; <90% clinical emergency (anaesthesia-monitoring context). NHS England home-oximetry leaflet: 95-100 normal for most people; 93-94 persisting on recheck within an hour -> contact NHS 111/GP as soon as possible; <=92 (retake immediately first) -> A&E immediately or 999; pregnancy: <=94 -> contact hospital immediately or 999. Cleveland Clinic: normal 95-100%; <=92% call healthcare provider; <=88% nearest emergency room. StatPearls: normal SpO2 in healthy adults 95% to 100%.",
+      "conflicts": "Emergency threshold: NHS <=92% (A&E/999) vs Cleveland Clinic <=88% (ER; <=92% = call provider) vs WHO <90% (clinical emergency). Advice-seeking threshold: NHS 93-94% vs WHO <=94% vs Cleveland Clinic <=92%. Contexts differ (NHS: COVID home monitoring; WHO: anaesthesia) - label context alongside org.",
+      "sources": [
+        {
+          "org": "World Health Organization",
+          "title": "Pulse Oximetry Training Manual (2011)",
+          "url": "https://cdn.who.int/media/docs/default-source/patient-safety/pulse-oximetry/who-ps-pulse-oxymetry-training-manual-en.pdf",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NHS England",
+          "title": "Suspected COVID-19: Important information to keep you safe while at home (V8 2022)",
+          "url": "https://www.england.nhs.uk/coronavirus/wp-content/uploads/sites/52/2020/12/C1634-suspected-Coronavirus-important-information-to-keep-you-safe-at-home-V8_210422.pdf",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Cleveland Clinic",
+          "title": "Blood Oxygen Level",
+          "url": "https://my.clevelandclinic.org/health/diagnostics/22447-blood-oxygen-level",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NCBI Bookshelf (StatPearls)",
+          "title": "Vital Sign Assessment",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK553213/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Mayo Clinic",
+          "title": "Hypoxemia (low blood oxygen)",
+          "url": "https://www.mayoclinic.org/symptoms/hypoxemia/basics/definition/sym-20050930",
+          "accessed": "2026-08-20",
+          "verification": "blocked-cited"
+        }
+      ],
+      "notes": "Device accuracy plus-or-minus 2-4% (Cleveland Clinic); may over-read on brown/black skin (NHS). Chronic lung disease patients may have individualized targets.",
+      "contributedBy": "respiratory",
+      "mergedFrom": [
+        {
+          "key": "oxygen-saturation",
+          "name": "Oxygen Saturation (SpO2, pulse oximetry)",
+          "unit": "%",
+          "panel": "Vitals",
+          "referenceRanges": "Cleveland Clinic (Blood Oxygen Level): \"For most people, a normal pulse oximeter reading for your oxygen saturation level is between 95% and 100%.\" Action threshold: call your healthcare provider if a home reading is \"92% or lower.\" Caveat: \"If you have a lung disease such as COPD or pneumonia, your normal oxygen saturation level may be lower. Your healthcare provider will let you know what levels are acceptable.\"",
+          "conversions": [
+            {
+              "code": "%",
+              "factor": 1
+            }
+          ],
+          "notes": "Context branch (condition DSL) needed for self-reported chronic lung disease — suppress 'low' alarm copy and direct to provider-set target. Mayo Clinic hypoxemia page was 403-blocked (see openIssues).",
+          "sources": [
+            {
+              "org": "Cleveland Clinic",
+              "title": "Blood Oxygen Level",
+              "url": "https://my.clevelandclinic.org/health/diagnostics/22447-blood-oxygen-level",
+              "accessed": "2026-08-20",
+              "verification": "fetch-verified"
+            },
+            {
+              "org": "Mayo Clinic",
+              "title": "Hypoxemia (low blood oxygen)",
+              "url": "https://www.mayoclinic.org/symptoms/hypoxemia/basics/definition/sym-20050930",
+              "accessed": "2026-08-20",
+              "verification": "blocked-cited"
+            }
+          ],
+          "contributedBy": "lab-panel-extension"
+        }
+      ],
+      "mergeNote": "Same measurement contributed by two research agents; records merged, sources unioned.",
+      "panelOriginal": "Vital signs"
+    },
+    {
+      "key": "fev1-fvc-ratio",
+      "name": "FEV1/FVC ratio",
+      "panel": "spirometry",
+      "unit": "ratio (0-1)",
+      "derivedFormula": "FEV1 (L) / FVC (L)",
+      "referenceRanges": "GOLD (via StatPearls): airflow obstruction/COPD pattern = post-bronchodilator FEV1/FVC < 0.70; severity by FEV1 % predicted: >=80% (GOLD 1), 50-79% (GOLD 2), 30-49% (GOLD 3), <30% (GOLD 4). ERS/ATS 2022 (via Bhatt et al., ERJ 2024): airflow limitation = FEV1/FVC '1.645z below the mean, which is approximately the 5th percentile' (LLN); FEV1 severity by z-score: > -1.645 normal; -1.65 to -2.5 mild; -2.5 to -4 moderate; < -4 severe.",
+      "conflicts": "GOLD fixed 0.70 ratio vs ERS/ATS z-score/LLN definition - a formal inter-authority disagreement; StatPearls adds LLN 'may be preferred in patients older than 70 to avoid overdiagnosis.' Platform must display both, labeled.",
+      "sources": [
+        {
+          "org": "NCBI Bookshelf (StatPearls)",
+          "title": "Chronic Obstructive Pulmonary Disease",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK559281/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "European Respiratory Journal via PMC",
+          "title": "Bhatt SP et al. ERS/ATS Spirometry Interpretation Standards: A Gap in Grading Severity of Airflow Obstruction (2024)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11608850/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "notes": "z-score pathway not executable in current engine (needs GLI lookup + exp/ln).",
+      "contributedBy": "respiratory",
+      "panelOriginal": "Spirometry"
+    },
+    {
+      "key": "peak-expiratory-flow",
+      "name": "Peak expiratory flow (PEF)",
+      "panel": "spirometry",
+      "unit": "L/min (Hankinson equations output L/s; x60)",
+      "derivedFormula": "Predicted PEF (L/s) = b0 + b1*age + b2*age^2 + b3*height_cm^2 (Hankinson NHANES III; sex/age-band/group-specific coefficients - full verbatim table in predicted-peak-expiratory-flow calculator entry). LLN: substitute HtLLN coefficient.",
+      "referenceRanges": "No fixed universal normal range - predicted value is individualized by sex/age/height (Hankinson). Zones vs personal best (StatPearls): Green 80-100%, Yellow 50-80%, Red <50%; 'a peak flow rate below 200 L/min indicates severe obstruction for most adults younger than 65' (StatPearls).",
+      "conversions": [
+        {
+          "code": "L_per_s_to_L_per_min",
+          "factor": 60
+        }
+      ],
+      "sources": [
+        {
+          "org": "NIH/NHLBI BioLINCC (Hankinson 1999 reprint)",
+          "title": "NHANES III spirometric prediction and LLN equations, Tables 4-5",
+          "url": "https://biolincc.nhlbi.nih.gov/media/studies/access/Forms/Spirometry%20data.pdf",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NCBI Bookshelf (StatPearls)",
+          "title": "Peak Flow Rate Measurement",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK459325/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "conflicts": "Alternative reference equations disagree materially: Radeos & Camargo (Am J Emerg Med 2004, PMID 15666252) showed an 18-year-old man's 100% predicted PEF ranges 501-730 L/min across published formulae (Nunn & Gregg vs Hankinson etc.). Platform should name the equation used on-screen.",
+      "contributedBy": "respiratory",
+      "panelOriginal": "Spirometry / asthma self-monitoring"
+    },
+    {
+      "key": "menstrual-cycle-length",
+      "name": "Menstrual cycle length (day 1 of period to day 1 of next period)",
+      "unit": "days",
+      "panel": "reproductive",
+      "referenceRanges": "Adults — Cleveland Clinic: 'A cycle can range in length from 21 days to about 35 days and still be normal' (average 28). NHS: 'Regular cycles that are longer or shorter than this, from 21 to 35 days, are normal' (average ~28). NICHD: 'A normal menstrual cycle can vary between 21 and 35 days; 28 days is the average.' Adolescents — ACOG CO 651: interval typically 21–45 days; 90% of adolescent cycles within 21–45 days.",
+      "conflicts": "Adult upper bound is uniformly 35 days (Cleveland Clinic, NHS, NICHD); ACOG's adolescent-specific normal range extends to 45 days — must be presented as an age-group difference, not a disagreement.",
+      "sources": [
+        {
+          "org": "Cleveland Clinic",
+          "title": "Menstrual Cycle",
+          "url": "https://my.clevelandclinic.org/health/articles/10132-menstrual-cycle",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NHS",
+          "title": "Periods and fertility in the menstrual cycle",
+          "url": "https://www.nhs.uk/conditions/periods/fertility-in-the-menstrual-cycle/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "NICHD (NIH)",
+          "title": "Ovulation infographic (text alternative)",
+          "url": "https://www.nichd.nih.gov/news/resources/links/infographics/Pages/ovulation-textalt.aspx",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "ACOG",
+          "title": "Committee Opinion No. 651",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26595586/",
+          "accessed": "2026-08-20",
+          "verification": "search-verified"
+        }
+      ],
+      "contributedBy": "womens-repro",
+      "panelOriginal": "womens-reproductive-health"
+    },
+    {
+      "key": "menstrual-bleeding-duration",
+      "name": "Menstrual bleeding duration",
+      "unit": "days",
+      "panel": "reproductive",
+      "referenceRanges": "Cleveland Clinic (adults): 'Most people have their period (bleed) for between three and seven days'; bleeding lasting longer than seven days is listed as abnormal. ACOG CO 651 (adolescents): menstrual flow length 7 days or less.",
+      "sources": [
+        {
+          "org": "Cleveland Clinic",
+          "title": "Menstrual Cycle",
+          "url": "https://my.clevelandclinic.org/health/articles/10132-menstrual-cycle",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "ACOG",
+          "title": "Committee Opinion No. 651",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26595586/",
+          "accessed": "2026-08-20",
+          "verification": "search-verified"
+        }
+      ],
+      "contributedBy": "womens-repro",
+      "panelOriginal": "womens-reproductive-health"
+    },
+    {
+      "key": "pre-pregnancy-bmi",
+      "name": "Pre-pregnancy BMI (drives IOM weight-gain category)",
+      "unit": "kg/m2",
+      "panel": "reproductive",
+      "derivedFormula": "BMI = weight_kg / (height_m * height_m)",
+      "conversions": [
+        {
+          "code": "lb",
+          "factor": 0.45359237
+        },
+        {
+          "code": "in",
+          "factor": 2.54
+        }
+      ],
+      "referenceRanges": "IOM 2009 / CDC categorization (verbatim from CDC MMWR-linked material): underweight BMI <18.5; normal weight 18.5–24.9; overweight 25.0–29.9; obese ≥30.0.",
+      "sources": [
+        {
+          "org": "CDC (MMWR)",
+          "title": "Gestational Weight Gain — United States, 2012 and 2013",
+          "url": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6443a3.htm",
+          "accessed": "2026-08-20",
+          "verification": "search-verified"
+        },
+        {
+          "org": "IOM/NAM (NCBI Bookshelf)",
+          "title": "Weight Gain During Pregnancy: Reexamining the Guidelines (2009)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK32813/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "womens-repro",
+      "panelOriginal": "womens-reproductive-health"
+    },
+    {
+      "key": "gestational-age-classification",
+      "name": "Gestational age at delivery classification",
+      "unit": "weeks",
+      "panel": "reproductive",
+      "referenceRanges": "ACOG/SMFM CO 579: early term 37 0/7–38 6/7 weeks; full term 39 0/7–40 6/7; late term 41 0/7–41 6/7; postterm ≥42 0/7. MedlinePlus: normal pregnancy 38–42 weeks; premature <37 weeks; postmature >42 weeks. Cleveland Clinic: full-term pregnancy 'between 39 weeks, 0 days and 40 weeks 6 days.'",
+      "conflicts": "MedlinePlus's consumer 'normal 38–42 weeks' vs ACOG's granular 5-category scheme — label by org; ACOG scheme is the clinical standard.",
+      "sources": [
+        {
+          "org": "ACOG/SMFM",
+          "title": "Committee Opinion No. 579: Definition of Term Pregnancy",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/24150030/",
+          "accessed": "2026-08-20",
+          "verification": "search-verified"
+        },
+        {
+          "org": "MedlinePlus (NIH)",
+          "title": "Gestational age",
+          "url": "https://medlineplus.gov/ency/article/002367.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Cleveland Clinic",
+          "title": "Pregnancy: Gestation, Trimesters & What To Expect",
+          "url": "https://my.clevelandclinic.org/health/articles/pregnancy",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "womens-repro",
+      "panelOriginal": "womens-reproductive-health"
+    },
+    {
+      "key": "sleep-duration-by-age",
+      "name": "Recommended sleep duration per 24 hours, by age",
+      "panel": "lifestyle-reference",
+      "unit": "hours/24h",
+      "referenceRanges": "AASM pediatric consensus (Paruthi 2016, verbatim): 4-12 months '12 to 16 hours per 24 hours (including naps)'; 1-2 years '11 to 14 hours per 24 hours (including naps)'; 3-5 years '10 to 13 hours per 24 hours (including naps)'; 6-12 years '9 to 12 hours per 24 hours'; 13-18 years '8 to 10 hours per 24 hours'; no recommendation <4 months. AASM/SRS adults 18-60 (Watson 2015, verbatim): 'Adults should sleep 7 or more hours per night on a regular basis'; >9 hours may be appropriate for young adults, sleep-debt recovery, and illness — otherwise uncertain. National Sleep Foundation (Hirshkowitz 2015): newborns 0-3 mo 14-17 h; infants 12-15 h; toddlers 11-14 h; preschoolers 10-13 h; school-aged 9-11 h; teens 8-10 h; young adults and adults 7-9 h; older adults 7-8 h. WHO under-5 (2019): 0-3 mo 14-17 h; 4-11 mo 12-16 h; 1-2 y 11-14 h; 3-4 y 10-13 h (quality sleep including naps).",
+      "conflicts": "AASM vs NSF: infants 4-12 mo 12-16 h (AASM) vs 12-15 h (NSF); school-age 9-12 h for 6-12 y (AASM) vs 9-11 h (NSF); adults '7 or more' open-ended (AASM/SRS, ages 18-60) vs 7-9 h bounded (NSF, incl. to 64) vs 7-8 h for 65+ (NSF only). AASM issues no <4-month range; NSF and WHO do (14-17 h). Surface per-org, never merge.",
+      "sources": [
+        {
+          "org": "AASM",
+          "title": "Paruthi et al, J Clin Sleep Med 2016;12(6):785-786 (via PMC4877308)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4877308/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "AASM/SRS",
+          "title": "Watson et al, Sleep 2015;38(6):843-844, doi:10.5665/sleep.4716 (via PMC4434546)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4434546/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "National Sleep Foundation",
+          "title": "Hirshkowitz et al, Sleep Health 2015;1(1):40-43",
+          "url": "https://www.sleephealthjournal.org/article/s2352-7218(15)00015-7/fulltext",
+          "accessed": "2026-08-20",
+          "verification": "search-verified"
+        },
+        {
+          "org": "WHO",
+          "title": "Guidelines on physical activity, sedentary behaviour and sleep for children under 5 (news release)",
+          "url": "https://www.who.int/news/item/24-04-2019-to-grow-up-healthy-children-need-to-sit-less-and-play-more",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "notes": "CDC's consumer mirror of the AASM table (cdc.gov/sleep/about) returned HTTP 403 during this pass; primary consensus statements used instead.",
+      "contributedBy": "mental-sleep",
+      "panelOriginal": "Sleep & Lifestyle"
+    },
+    {
+      "key": "caffeine-daily-limit",
+      "name": "Daily caffeine intake reference limits",
+      "panel": "lifestyle-reference",
+      "unit": "mg/day",
+      "referenceRanges": "FDA (healthy adults, verbatim): '400 milligrams a day — that's about four or five cups of coffee — as an amount not generally associated with dangerous, negative effects', with wide individual variation in sensitivity and metabolism. ACOG (pregnancy): moderate consumption = 'less than 200 mg per day', which 'does not appear to be a major contributing factor in miscarriage or preterm birth' (Committee Opinion No. 462, 2010). MedlinePlus: 'For most people, it is not harmful to consume up to 400mg of caffeine a day'; children and teens should consume less than adults. Per-beverage content — FDA: coffee 8 oz 80-100 mg; green/black tea 8 oz 30-50 mg; caffeinated soft drink 12 oz 30-40 mg; energy drinks 40-250 mg per 8 fl oz. MedlinePlus: coffee 8 oz 95-200 mg; tea 8 oz 14-60 mg; cola 12 oz 35-45 mg; energy drink 8 oz 70-100 mg.",
+      "conflicts": "Per-beverage content ranges differ between FDA (coffee 80-100 mg/8 oz; energy drinks 40-250 mg/8 oz) and MedlinePlus (coffee 95-200 mg/8 oz; energy drinks 70-100 mg/8 oz) — label by org. No allowlisted-verified numeric limit for children/adolescents was found (do not display one).",
+      "conversions": [
+        {
+          "code": "mg_per_8oz_cup_coffee_FDA_midpoint",
+          "factor": 90
+        },
+        {
+          "code": "mg_per_8oz_tea_FDA_midpoint",
+          "factor": 40
+        },
+        {
+          "code": "mg_per_12oz_soda_FDA_midpoint",
+          "factor": 35
+        },
+        {
+          "code": "mg_per_8oz_energy_drink_FDA_midpoint",
+          "factor": 145
+        },
+        {
+          "code": "floz_to_mL",
+          "factor": 29.5735
+        }
+      ],
+      "sources": [
+        {
+          "org": "FDA",
+          "title": "Spilling the Beans: How Much Caffeine is Too Much? (page 404/403 this pass; values verbatim from fda.gov-indexed results)",
+          "url": "https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much",
+          "accessed": "2026-08-20",
+          "verification": "search-verified"
+        },
+        {
+          "org": "ACOG",
+          "title": "Committee Opinion No. 462: Moderate Caffeine Consumption During Pregnancy (2010)",
+          "url": "https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2010/08/moderate-caffeine-consumption-during-pregnancy",
+          "accessed": "2026-08-20",
+          "verification": "blocked-cited"
+        },
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Caffeine",
+          "url": "https://medlineplus.gov/caffeine.html",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "mental-sleep",
+      "panelOriginal": "Sleep & Lifestyle"
+    },
+    {
+      "key": "physical-activity-weekly-target",
+      "name": "Weekly physical activity targets (WHO 2020)",
+      "panel": "lifestyle-reference",
+      "unit": "minutes/week (aerobic); days/week (strength/balance)",
+      "referenceRanges": "WHO 2020 (verbatim via NCBI Bookshelf NBK566046): adults 18-64 and 65+ — 'at least 150-300 minutes of moderate-intensity aerobic physical activity; or at least 75-150 minutes of vigorous-intensity aerobic physical activity' weekly + muscle-strengthening 'on 2 or more days a week'; 65+ additionally multicomponent balance/strength training 'on 3 or more days a week'; children/adolescents 5-17 — 'at least an average of 60 minutes per day of moderate- to vigorous-intensity' activity with vigorous + muscle/bone-strengthening 'at least 3 days a week'; pregnant/postpartum — 'at least 150 minutes of moderate-intensity aerobic physical activity throughout the week'. All groups: limit sedentary time.",
+      "derivedFormula": "moderate_equivalent_min_week = moderate_min_week + 2 * vigorous_min_week",
+      "sources": [
+        {
+          "org": "WHO (via NCBI Bookshelf)",
+          "title": "WHO Guidelines on Physical Activity and Sedentary Behaviour — Recommendations (NBK566046)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK566046/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "WHO",
+          "title": "Physical activity fact sheet",
+          "url": "https://www.who.int/news-room/fact-sheets/detail/physical-activity",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "mental-sleep",
+      "panelOriginal": "Sleep & Lifestyle"
+    },
+    {
+      "key": "child-screen-time-limits",
+      "name": "Recreational screen time limits for children",
+      "panel": "lifestyle-reference",
+      "unit": "hours/day",
+      "referenceRanges": "WHO (under-5, fetch-verified): <1 year — screen time not recommended; 1 year — sedentary screen time not recommended; 2 years — maximum 1 hour, less is better; 3-4 years — maximum 1 hour daily, less is preferable. AAP (healthychildren.org, search-verified): birth-18 months — avoid screens except video chatting with loved ones; 18-24 months — high-quality programming only, co-viewed, limited amounts; 2-5 years — 1 hour or less per day of high-quality programming; 6+ — consistent limits, no fixed cap, protect sleep and physical activity.",
+      "conflicts": "At 12-24 months: WHO recommends none at 1 year, while AAP allows limited co-viewed high-quality media from 18 months — label per org. WHO guidance stops at age 4; AAP continues through adolescence.",
+      "sources": [
+        {
+          "org": "WHO",
+          "title": "To grow up healthy, children need to sit less and play more (under-5 guidelines news release)",
+          "url": "https://www.who.int/news/item/24-04-2019-to-grow-up-healthy-children-need-to-sit-less-and-play-more",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "AAP (healthychildren.org)",
+          "title": "Where We Stand: Screen Time (page 404 this pass; statements from healthychildren.org-indexed results)",
+          "url": "https://www.healthychildren.org/English/family-life/Media/Pages/Where-We-Stand-TV-Viewing-Time.aspx",
+          "accessed": "2026-08-20",
+          "verification": "search-verified"
+        }
+      ],
+      "contributedBy": "mental-sleep",
+      "panelOriginal": "Sleep & Lifestyle"
+    },
+    {
+      "key": "rbc-count",
+      "name": "Red Blood Cell (RBC) Count",
+      "unit": "million cells/mcL (10^6/µL)",
+      "panel": "cbc",
+      "referenceRanges": "MedlinePlus (RBC count, ency/003644): Male: \"4.2 to 5.7 million cells per microliter (cells/mcL)\"; Female: \"3.8 to 5.1 million cells/mcL\". MedlinePlus note: \"Normal value ranges may vary slightly among different labs.\"",
+      "conversions": [
+        {
+          "code": "10^12/L",
+          "factor": 1
+        }
+      ],
+      "notes": "Values are the current MedlinePlus ranges; older widely quoted ranges (4.7-6.1 M / 4.2-5.4 F) are NOT used here.",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "RBC count",
+          "url": "https://medlineplus.gov/ency/article/003644.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC"
+    },
+    {
+      "key": "hematocrit",
+      "name": "Hematocrit",
+      "unit": "%",
+      "panel": "cbc",
+      "referenceRanges": "MedlinePlus (ency/003646): \"Male: 37% to 48%\"; \"Female: 34% to 43%\"; \"Newborn: 45% to 61%\"; \"Infant: 32% to 42%\".",
+      "conversions": [
+        {
+          "code": "L/L (fraction)",
+          "factor": 0.01
+        }
+      ],
+      "conflicts": "MedlinePlus adult ranges are lower than ranges commonly printed on lab reports (e.g. ~41-50% male); platform should surface MedlinePlus values with its lab-variability caveat rather than merging.",
+      "notes": "\"Normal value ranges vary slightly among different labs.\" (MedlinePlus)",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Hematocrit",
+          "url": "https://medlineplus.gov/ency/article/003646.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC"
+    },
+    {
+      "key": "mch",
+      "name": "Mean Corpuscular Hemoglobin (MCH)",
+      "unit": "pg/cell",
+      "panel": "cbc",
+      "referenceRanges": "MedlinePlus (RBC indices, ency/003648): \"26 to 33 picograms/cell (female); 27 to 33 picograms/cell (male)\". Low MCH suggests hypochromic anemia; high MCH suggests hyperchromic anemia (MedlinePlus).",
+      "conversions": [
+        {
+          "code": "pg",
+          "factor": 1
+        }
+      ],
+      "notes": "Same MedlinePlus page gives MCV \"79 to 95 femtoliter\" (MCV already in the existing 40-biomarker set; the 79-95 fL value may conflict with the value already stored — reconcile).",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "RBC indices",
+          "url": "https://medlineplus.gov/ency/article/003648.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC (RBC indices)"
+    },
+    {
+      "key": "mchc",
+      "name": "Mean Corpuscular Hemoglobin Concentration (MCHC)",
+      "unit": "g/dL",
+      "panel": "cbc",
+      "referenceRanges": "MedlinePlus (ency/003648): \"32 to 36 grams hemoglobin/deciliter (g/dL) or 320 to 360 grams hemoglobin per liter (g/L)\".",
+      "conversions": [
+        {
+          "code": "g/L",
+          "factor": 10
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "RBC indices",
+          "url": "https://medlineplus.gov/ency/article/003648.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC (RBC indices)"
+    },
+    {
+      "key": "rdw",
+      "name": "Red Cell Distribution Width (RDW)",
+      "unit": "%",
+      "panel": "cbc",
+      "referenceRanges": "Cleveland Clinic (RDW blood test): \"A normal RDW ranges from 12% to 15%.\" High: \"the sample shows 15% or more of your red blood cells are of different sizes. A high RDW may be a sign of anemia or a related condition.\" Low: \"lower than 12%... isn't a sign of an underlying condition or anemia.\" MedlinePlus (lab-tests/rdw): declines to give a numeric range — \"Results are usually shown as a percentage and compared to a reference range, which may vary depending on the lab used.\"",
+      "conversions": [
+        {
+          "code": "%",
+          "factor": 1
+        }
+      ],
+      "conflicts": "MedlinePlus deliberately gives no numeric range (lab-dependent); Cleveland Clinic gives 12-15%. Surface Cleveland Clinic range with the MedlinePlus lab-variability caveat.",
+      "notes": "High RDW associations per MedlinePlus: chronic liver disease, heart disease, diabetes, kidney disease, cancer. Direction: lower/normal is unremarkable.",
+      "sources": [
+        {
+          "org": "Cleveland Clinic",
+          "title": "RDW Blood Test",
+          "url": "https://my.clevelandclinic.org/health/diagnostics/22980-rdw-blood-test",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "RDW (Red Cell Distribution Width)",
+          "url": "https://medlineplus.gov/lab-tests/rdw-red-cell-distribution-width/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC"
+    },
+    {
+      "key": "neutrophils-percent",
+      "name": "Neutrophils (% of WBC)",
+      "unit": "%",
+      "panel": "cbc-differential",
+      "referenceRanges": "MedlinePlus (Blood differential, ency/003657): \"Neutrophils: 40% to 60%\"; \"Band (young neutrophil): 0% to 3%\".",
+      "conversions": [
+        {
+          "code": "%",
+          "factor": 1
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Blood differential test",
+          "url": "https://medlineplus.gov/ency/article/003657.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC differential"
+    },
+    {
+      "key": "neutrophils-absolute",
+      "name": "Absolute Neutrophil Count (ANC)",
+      "unit": "cells/µL",
+      "panel": "cbc-differential",
+      "referenceRanges": "Cleveland Clinic (Neutrophils): normal for healthy adults \"between 2,500 and 7,000 neutrophils per microliter of blood\". StatPearls Neutropenia (NBK507702): \"The standard circulating neutrophil count should be greater than 1.5 x 10^9/L\"; neutropenia severity: Mild \"1.0 to 1.5 x 10^9/L\", Moderate \"0.5 to 1.0 x 10^9/L\", Severe \"less than 0.5 x 10^9/L\", Agranulocytosis \"less than 0.2 x 10^9/L with absence of neutrophil precursors\".",
+      "conversions": [
+        {
+          "code": "10^9/L",
+          "factor": 0.001
+        }
+      ],
+      "conflicts": "Lower bound of normal: Cleveland Clinic 2,500/µL vs StatPearls 1,500/µL (1.5x10^9/L). Both recorded per org; do not merge.",
+      "notes": "Neutrophilia per Cleveland Clinic: above 7,000/µL.",
+      "sources": [
+        {
+          "org": "Cleveland Clinic",
+          "title": "Neutrophils",
+          "url": "https://my.clevelandclinic.org/health/body/22313-neutrophils",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Neutropenia",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK507702/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC differential"
+    },
+    {
+      "key": "lymphocytes-percent",
+      "name": "Lymphocytes (% of WBC)",
+      "unit": "%",
+      "panel": "cbc-differential",
+      "referenceRanges": "MedlinePlus (ency/003657): \"Lymphocytes: 20% to 40%\".",
+      "conversions": [
+        {
+          "code": "%",
+          "factor": 1
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Blood differential test",
+          "url": "https://medlineplus.gov/ency/article/003657.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC differential"
+    },
+    {
+      "key": "lymphocytes-absolute",
+      "name": "Absolute Lymphocyte Count",
+      "unit": "cells/µL",
+      "panel": "cbc-differential",
+      "referenceRanges": "Cleveland Clinic (Lymphocytes): \"In adults, the normal range of lymphocytes is between 1,000 and 4,800 lymphocytes in every 1 microliter of blood.\" Children: \"between 3,000 and 9,500 lymphocytes in every 1 microliter of blood.\" High = lymphocytosis; low = lymphocytopenia (lymphopenia) — Cleveland Clinic gives no numeric pathological cutoffs beyond the normal range.",
+      "conversions": [
+        {
+          "code": "10^9/L",
+          "factor": 0.001
+        }
+      ],
+      "sources": [
+        {
+          "org": "Cleveland Clinic",
+          "title": "Lymphocytes",
+          "url": "https://my.clevelandclinic.org/health/body/23342-lymphocytes",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC differential"
+    },
+    {
+      "key": "monocytes-percent",
+      "name": "Monocytes (% of WBC)",
+      "unit": "%",
+      "panel": "cbc-differential",
+      "referenceRanges": "MedlinePlus (ency/003657): \"Monocytes: 2% to 8%\". Cleveland Clinic concurs: \"A normal monocyte count is between 2% and 8% of your white blood cell count.\"",
+      "conversions": [
+        {
+          "code": "%",
+          "factor": 1
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Blood differential test",
+          "url": "https://medlineplus.gov/ency/article/003657.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Cleveland Clinic",
+          "title": "Monocytes",
+          "url": "https://my.clevelandclinic.org/health/body/22110-monocytes",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC differential"
+    },
+    {
+      "key": "monocytes-absolute",
+      "name": "Absolute Monocyte Count",
+      "unit": "cells/µL",
+      "panel": "cbc-differential",
+      "referenceRanges": "Cleveland Clinic (Monocytes): \"This equals about 200 to 800 monocytes per microliter of blood in healthy adults.\" No numeric monocytosis/monocytopenia thresholds are given.",
+      "conversions": [
+        {
+          "code": "10^9/L",
+          "factor": 0.001
+        }
+      ],
+      "sources": [
+        {
+          "org": "Cleveland Clinic",
+          "title": "Monocytes",
+          "url": "https://my.clevelandclinic.org/health/body/22110-monocytes",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC differential"
+    },
+    {
+      "key": "eosinophils-percent",
+      "name": "Eosinophils (% of WBC)",
+      "unit": "%",
+      "panel": "cbc-differential",
+      "referenceRanges": "MedlinePlus (ency/003657): \"Eosinophils: 1% to 4%\".",
+      "conversions": [
+        {
+          "code": "%",
+          "factor": 1
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Blood differential test",
+          "url": "https://medlineplus.gov/ency/article/003657.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC differential"
+    },
+    {
+      "key": "eosinophils-absolute",
+      "name": "Absolute Eosinophil Count",
+      "unit": "cells/µL",
+      "panel": "cbc-differential",
+      "referenceRanges": "MedlinePlus (Eosinophil count, ency/003649): \"Normal eosinophil count is less than 500 cells per microliter (cells/mcL).\"",
+      "conversions": [
+        {
+          "code": "10^9/L",
+          "factor": 0.001
+        }
+      ],
+      "notes": "One-sided range: only an upper bound is defined (higher-is-worse direction).",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Eosinophil count - absolute",
+          "url": "https://medlineplus.gov/ency/article/003649.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC differential"
+    },
+    {
+      "key": "basophils-percent",
+      "name": "Basophils (% of WBC)",
+      "unit": "%",
+      "panel": "cbc-differential",
+      "referenceRanges": "MedlinePlus (ency/003657): \"Basophils: 0.5% to 1%\". Cleveland Clinic (Basophils): \".5% to 1% of your total white blood cells\".",
+      "conversions": [
+        {
+          "code": "%",
+          "factor": 1
+        }
+      ],
+      "notes": "Extremely narrow verbatim band; many labs report 0-1% or 0-2%. Only verbatim sourced values are recorded.",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Blood differential test",
+          "url": "https://medlineplus.gov/ency/article/003657.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Cleveland Clinic",
+          "title": "Basophils",
+          "url": "https://my.clevelandclinic.org/health/body/23256-basophils",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC differential"
+    },
+    {
+      "key": "basophils-absolute",
+      "name": "Absolute Basophil Count",
+      "unit": "cells/µL",
+      "panel": "cbc-differential",
+      "referenceRanges": "Cleveland Clinic (Basophils): \"about 0 to 300 basophils per microliter of blood in healthy adults\".",
+      "conversions": [
+        {
+          "code": "10^9/L",
+          "factor": 0.001
+        }
+      ],
+      "sources": [
+        {
+          "org": "Cleveland Clinic",
+          "title": "Basophils",
+          "url": "https://my.clevelandclinic.org/health/body/23256-basophils",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "CBC differential"
+    },
+    {
+      "key": "serum-iron",
+      "name": "Serum Iron",
+      "unit": "mcg/dL",
+      "panel": "iron-studies",
+      "referenceRanges": "MedlinePlus (Serum iron test, ency/003488): \"Males: 59 to 158 mcg/dL (10.6 to 28.3 micromol/L); Females: 37 to 145 mcg/dL (6.6 to 25.9 micromol/L)\".",
+      "conversions": [
+        {
+          "code": "µmol/L",
+          "factor": 0.179
+        }
+      ],
+      "notes": "Conversion factor 0.179 is consistent with MedlinePlus's own paired values (59→10.6).",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Serum iron test",
+          "url": "https://medlineplus.gov/ency/article/003488.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Iron studies"
+    },
+    {
+      "key": "tibc",
+      "name": "Total Iron-Binding Capacity (TIBC)",
+      "unit": "mcg/dL",
+      "panel": "iron-studies",
+      "referenceRanges": "MedlinePlus (ency/003488): \"Males: 171 to 505 mcg/dL (30.6 to 90.3 micromol/L); Females: 149 to 492 mcg/dL (26.7 to 88.0 micromol/L)\". StatPearls Iron-Binding Capacity (NBK559119): TIBC \"240 to 450 mcg/dL\" (\"normal values vary among laboratories\"); UIBC \"111 to 343 mcg/dL\".",
+      "conversions": [
+        {
+          "code": "µmol/L",
+          "factor": 0.179
+        }
+      ],
+      "conflicts": "MedlinePlus sex-specific TIBC (171-505 M / 149-492 F) vs StatPearls 240-450 mcg/dL. Both recorded per org; both sources warn of lab variation.",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Serum iron test",
+          "url": "https://medlineplus.gov/ency/article/003488.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Iron-Binding Capacity",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK559119/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Iron studies"
+    },
+    {
+      "key": "transferrin-saturation",
+      "name": "Transferrin Saturation (TSAT)",
+      "unit": "%",
+      "panel": "iron-studies",
+      "derivedFormula": "TSAT % = (serum iron / TIBC) x 100 (StatPearls: \"Percentage transferrin saturation is calculated by dividing serum iron by TIBC and multiplying the result by 100.\")",
+      "referenceRanges": "MedlinePlus (ency/003488, 'Iron Saturation'): \"Males: 20% to 50%; Females: 15% to 45%\". StatPearls (NBK559119): \"Transferrin-iron saturation percentage: 25% to 35%\"; iron deficiency: \"The total transferrin saturation falls to 16% or less during iron-deficient states.\"",
+      "conversions": [
+        {
+          "code": "%",
+          "factor": 1
+        }
+      ],
+      "conflicts": "Normal band: MedlinePlus sex-specific 20-50%/15-45% vs StatPearls 25-35%. Both recorded per org.",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Serum iron test",
+          "url": "https://medlineplus.gov/ency/article/003488.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Iron-Binding Capacity",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK559119/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Iron studies"
+    },
+    {
+      "key": "sodium",
+      "name": "Sodium (Na)",
+      "unit": "mEq/L",
+      "panel": "electrolytes",
+      "referenceRanges": "MedlinePlus (ency/003481): \"The normal range for blood sodium levels is 135 to 145 milliequivalents per liter (mEq/L).\" High = hypernatremia; low = hyponatremia (MedlinePlus).",
+      "conversions": [
+        {
+          "code": "mmol/L",
+          "factor": 1
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Sodium blood test",
+          "url": "https://medlineplus.gov/ency/article/003481.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Electrolytes"
+    },
+    {
+      "key": "potassium",
+      "name": "Potassium (K)",
+      "unit": "mEq/L",
+      "panel": "electrolytes",
+      "referenceRanges": "MedlinePlus (ency/003484): \"The normal range is 3.7 to 5.2 milliequivalents per liter (mEq/L) 3.70 to 5.20 millimoles per liter (millimol/L).\" NKF kidney.org (High Potassium/Hyperkalemia): \"For most healthy people, the level of potassium in the blood should be between 3.5 and 5.0, depending on the laboratory that is used\"; \"High potassium is usually defined as a blood potassium level above 5.0.\"",
+      "conversions": [
+        {
+          "code": "mmol/L",
+          "factor": 1
+        }
+      ],
+      "conflicts": "MedlinePlus 3.7-5.2 mEq/L vs NKF 3.5-5.0. Both recorded per org.",
+      "notes": "NKF page does not explicitly print the unit next to the numbers (contextually mEq/L).",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Potassium blood test",
+          "url": "https://medlineplus.gov/ency/article/003484.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "National Kidney Foundation",
+          "title": "High Potassium (Hyperkalemia)",
+          "url": "https://www.kidney.org/kidney-topics/high-potassium-hyperkalemia",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Electrolytes"
+    },
+    {
+      "key": "chloride",
+      "name": "Chloride (Cl)",
+      "unit": "mEq/L",
+      "panel": "electrolytes",
+      "referenceRanges": "MedlinePlus (ency/003485): \"98 to 107 milliequivalents per liter (mEq/L) or 98 to 107 millimoles per liter (millimol/L)\".",
+      "conversions": [
+        {
+          "code": "mmol/L",
+          "factor": 1
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Chloride test - blood",
+          "url": "https://medlineplus.gov/ency/article/003485.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Electrolytes"
+    },
+    {
+      "key": "co2-bicarbonate",
+      "name": "Carbon Dioxide (CO2 / Bicarbonate)",
+      "unit": "mEq/L",
+      "panel": "electrolytes",
+      "referenceRanges": "MedlinePlus (CO2 blood test, ency/003469): \"The normal range is 23 to 29 milliequivalents per liter (mEq/L) or 23 to 29 millimoles per liter (mmol/L).\"",
+      "conversions": [
+        {
+          "code": "mmol/L",
+          "factor": 1
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "CO2 blood test",
+          "url": "https://medlineplus.gov/ency/article/003469.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Electrolytes"
+    },
+    {
+      "key": "calcium-total",
+      "name": "Calcium, Total Serum",
+      "unit": "mg/dL",
+      "panel": "minerals",
+      "referenceRanges": "MedlinePlus (ency/003477): \"Normal values range from 8.8 to 10.3 mg/dL (2.20 and 2.58 mmol/L).\" StatPearls Hypocalcemia (NBK430912): total serum calcium \"8.5 to 10.5 mg/dL (2.12-2.62 mmol/L)\"; ionized calcium \"4.65 to 5.25 mg/dL (1.16-1.31 mmol/L)\"; \"Values below this range indicate hypocalcemia.\"",
+      "conversions": [
+        {
+          "code": "mmol/L",
+          "factor": 0.2495
+        }
+      ],
+      "conflicts": "MedlinePlus 8.8-10.3 mg/dL vs StatPearls 8.5-10.5 mg/dL. Both recorded per org.",
+      "notes": "MedlinePlus: \"About one half of the calcium in the blood is attached to proteins, mainly albumin\" — low albumin lowers measured total calcium; see corrected-calcium calculator.",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Calcium blood test",
+          "url": "https://medlineplus.gov/ency/article/003477.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Hypocalcemia",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK430912/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Minerals / CMP"
+    },
+    {
+      "key": "phosphate",
+      "name": "Phosphorus / Phosphate, Serum",
+      "unit": "mg/dL",
+      "panel": "minerals",
+      "referenceRanges": "MedlinePlus (ency/003478): Adults \"2.8 to 4.5 mg/dL\"; Children \"4.0 to 7.0 mg/dL\". NKF kidney.org: \"A normal phosphorus level is 2.5 to 4.5 mg/dL.\"",
+      "conversions": [
+        {
+          "code": "mmol/L",
+          "factor": 0.3229
+        }
+      ],
+      "conflicts": "Adult lower bound: MedlinePlus 2.8 vs NKF 2.5 mg/dL. Both recorded per org.",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Phosphorus blood test",
+          "url": "https://medlineplus.gov/ency/article/003478.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "National Kidney Foundation",
+          "title": "Phosphorus and Your Diet",
+          "url": "https://www.kidney.org/kidney-topics/phosphorus-and-your-diet",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Minerals"
+    },
+    {
+      "key": "vldl-cholesterol",
+      "name": "VLDL Cholesterol (estimated)",
+      "unit": "mg/dL",
+      "panel": "lipid",
+      "derivedFormula": "VLDL ≈ triglycerides / 5 (mg/dL). Implied by StatPearls NBK542294 Friedewald discussion (fixed TG:VLDL ratio of 5 in mg/dL); MedlinePlus confirms labs estimate VLDL from triglycerides.",
+      "referenceRanges": "MedlinePlus (Cholesterol testing and results, 000386): \"Normal VLDL levels are less than 30 mg/dL (0.78 mmol/L).\"",
+      "conversions": [
+        {
+          "code": "mmol/L",
+          "factor": 0.02586
+        }
+      ],
+      "notes": "Estimate invalid at TG >400 mg/dL for the same reason Friedewald LDL is (fixed ratio assumption).",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Cholesterol testing and results",
+          "url": "https://medlineplus.gov/ency/patientinstructions/000386.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Cholesterol Levels",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK542294/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Lipids (derived)"
+    },
+    {
+      "key": "alp",
+      "name": "Alkaline Phosphatase (ALP)",
+      "unit": "IU/L",
+      "panel": "liver",
+      "referenceRanges": "MedlinePlus (ency/003470): \"40 to 129 international units per liter (IU/L) or 0.68 to 2.19 microkatal per liter (µkat/L)\". \"Normal values may vary slightly from laboratory to laboratory. They also can vary with age and sex.\" \"High levels of ALP are normally seen in children undergoing growth spurts and in pregnant women.\"",
+      "conversions": [
+        {
+          "code": "µkat/L",
+          "factor": 0.0167
+        }
+      ],
+      "notes": "Do not flag high ALP as abnormal for users self-identifying as pregnant or under 18 — use condition DSL context branch.",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "ALP - blood test",
+          "url": "https://medlineplus.gov/ency/article/003470.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Liver panel"
+    },
+    {
+      "key": "bilirubin-direct",
+      "name": "Bilirubin, Direct (Conjugated)",
+      "unit": "mg/dL",
+      "panel": "liver",
+      "referenceRanges": "MedlinePlus (Bilirubin blood test, ency/003479): Direct bilirubin \"less than 0.3 mg/dL (less than 5.1 µmol/L)\"; Total bilirubin \"0.1 to 1.2 mg/dL (1.71 to 20.5 µmol/L)\". Cleveland Clinic (Bilirubin): \"total bilirubin levels between 0.2 and 1.3 mg/dL are considered normal for children and adults\" (no separate direct range given).",
+      "conversions": [
+        {
+          "code": "µmol/L",
+          "factor": 17.104
+        }
+      ],
+      "conflicts": "Total bilirubin normal: MedlinePlus 0.1-1.2 mg/dL vs Cleveland Clinic 0.2-1.3 mg/dL (relevant to the existing total-bilirubin biomarker).",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Bilirubin blood test",
+          "url": "https://medlineplus.gov/ency/article/003479.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "Cleveland Clinic",
+          "title": "Bilirubin Test",
+          "url": "https://my.clevelandclinic.org/health/diagnostics/17845-bilirubin",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Liver panel"
+    },
+    {
+      "key": "bilirubin-indirect",
+      "name": "Bilirubin, Indirect (Unconjugated) — derived",
+      "unit": "mg/dL",
+      "panel": "liver",
+      "derivedFormula": "indirect = total bilirubin - direct bilirubin (Cleveland Clinic: unconjugated bilirubin \"can't be measured directly. It's measured by subtracting the value of conjugated bilirubin from the value of total bilirubin in your blood.\")",
+      "referenceRanges": "No standalone verbatim indirect-bilirubin normal range was verifiable from an allowed source (see openIssues). Display as derived value against total/direct ranges only.",
+      "conversions": [
+        {
+          "code": "µmol/L",
+          "factor": 17.104
+        }
+      ],
+      "sources": [
+        {
+          "org": "Cleveland Clinic",
+          "title": "Bilirubin Test",
+          "url": "https://my.clevelandclinic.org/health/diagnostics/17845-bilirubin",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Liver panel"
+    },
+    {
+      "key": "total-protein",
+      "name": "Total Protein, Serum",
+      "unit": "g/dL",
+      "panel": "proteins",
+      "referenceRanges": "MedlinePlus (Total protein, ency/003483): \"The normal range is 6.5 to 8.1 grams per deciliter (g/dL) or 65 to 81 g/L.\"",
+      "conversions": [
+        {
+          "code": "g/L",
+          "factor": 10
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Total protein",
+          "url": "https://medlineplus.gov/ency/article/003483.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Proteins / CMP"
+    },
+    {
+      "key": "globulin",
+      "name": "Globulin (calculated)",
+      "unit": "g/dL",
+      "panel": "proteins",
+      "derivedFormula": "globulin = total protein - albumin (standard panel derivation; Cleveland Clinic reports globulin on the protein panel with the range below)",
+      "referenceRanges": "Cleveland Clinic (Globulin Blood Test): \"Globulin: 2.0 to 3.5 g/dL.\"",
+      "conversions": [
+        {
+          "code": "g/L",
+          "factor": 10
+        }
+      ],
+      "sources": [
+        {
+          "org": "Cleveland Clinic",
+          "title": "Globulin Blood Test",
+          "url": "https://my.clevelandclinic.org/health/diagnostics/22365-globulin-blood-test",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Proteins"
+    },
+    {
+      "key": "ag-ratio",
+      "name": "Albumin/Globulin (A/G) Ratio",
+      "unit": "ratio (dimensionless)",
+      "panel": "proteins",
+      "derivedFormula": "A/G = albumin / globulin = albumin / (total protein - albumin)",
+      "referenceRanges": "Cleveland Clinic (Globulin Blood Test): \"A normal A/G ratio is slightly more than 1.\" \"Typically, your body has slightly more albumin than globulins.\" No numeric band from an allowed source (see openIssues).",
+      "conversions": [
+        {
+          "code": "ratio",
+          "factor": 1
+        }
+      ],
+      "sources": [
+        {
+          "org": "Cleveland Clinic",
+          "title": "Globulin Blood Test",
+          "url": "https://my.clevelandclinic.org/health/diagnostics/22365-globulin-blood-test",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Proteins"
+    },
+    {
+      "key": "amylase",
+      "name": "Amylase, Blood",
+      "unit": "U/L",
+      "panel": "pancreatic-enzymes",
+      "referenceRanges": "MedlinePlus (ency/003464): \"40 to 140 units per liter (U/L) or 0.67 to 2.34 micro-katal/liter (µkat/L)\".",
+      "conversions": [
+        {
+          "code": "µkat/L",
+          "factor": 0.0167
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Amylase blood test",
+          "url": "https://medlineplus.gov/ency/article/003464.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Pancreatic enzymes"
+    },
+    {
+      "key": "lipase",
+      "name": "Lipase, Blood",
+      "unit": "U/L",
+      "panel": "pancreatic-enzymes",
+      "referenceRanges": "MedlinePlus (ency/003465): \"0 to 160 units per liter (U/L) or 0 to 2.67 microkat/L (µkat/L)\".",
+      "conversions": [
+        {
+          "code": "µkat/L",
+          "factor": 0.0167
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Lipase test",
+          "url": "https://medlineplus.gov/ency/article/003465.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Pancreatic enzymes"
+    },
+    {
+      "key": "ldh",
+      "name": "Lactate Dehydrogenase (LDH)",
+      "unit": "IU/L",
+      "panel": "general-chemistry",
+      "referenceRanges": "MedlinePlus (ency/003471): \"The normal value range is 125 to 220 international units per liter (IU/L).\" \"Normal value ranges may vary slightly among different laboratories.\"",
+      "conversions": [
+        {
+          "code": "µkat/L",
+          "factor": 0.0167
+        }
+      ],
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Lactate dehydrogenase test",
+          "url": "https://medlineplus.gov/ency/article/003471.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "General chemistry"
+    },
+    {
+      "key": "creatine-kinase",
+      "name": "Creatine Kinase (CK / CPK)",
+      "unit": "U/L",
+      "panel": "muscle-enzymes",
+      "referenceRanges": "StatPearls Creatine Kinase (NBK546624), IFCC 37°C method: \"In white subjects, the reference interval is 46 to 171 U/L for males and 34 to 145 U/L for females\"; \"Sex, age, muscle mass, physical activity, and race all interact to affect measured serum activity\"; \"the mean activity in white individuals is 66% of the activity in black individuals.\" MedlinePlus (CPK test, ency/003503): \"10 to 120 micrograms per liter (mcg/L)\" (mass units, not activity units).",
+      "conversions": [
+        {
+          "code": "U/L",
+          "factor": 1
+        }
+      ],
+      "conflicts": "MedlinePlus reports CPK in mcg/L (mass concentration) while StatPearls and most labs report enzymatic activity in U/L — these are NOT interconvertible by a fixed factor; surface both labeled by org and unit. Reference intervals are also population-dependent (race/muscle mass).",
+      "notes": "Recent strenuous exercise markedly elevates CK; interpretation copy should say results after hard workouts may be transiently high.",
+      "sources": [
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Creatine Kinase",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK546624/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Creatine phosphokinase test",
+          "url": "https://medlineplus.gov/ency/article/003503.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Muscle enzymes"
+    },
+    {
+      "key": "fructosamine",
+      "name": "Fructosamine",
+      "unit": "µmol/L",
+      "panel": "glycemic",
+      "referenceRanges": "StatPearls (NBK470185): \"The reference range for fructosamine in non-diabetic individuals is typically 200 to 285 μmol/L.\" Caveats: \"Unlike HbA1c, there is a serious lack of standardization across the different fructosamine assays\"; \"Fructosamine is unreliable when serum albumin is less than 3.0 g/dL.\"",
+      "conversions": [
+        {
+          "code": "µmol/L",
+          "factor": 1
+        }
+      ],
+      "notes": "Use case: alternative to HbA1c with hemoglobin variants / altered RBC lifespan, or when short-term (2-3 week) glycemic control matters (pregnancy, medication changes) — per StatPearls. Display prominent lab-specific-range caveat.",
+      "sources": [
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Clinical Utility of Fructosamine and Glycated Albumin",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK470185/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Glycemic (HbA1c-adjacent)"
+    },
+    {
+      "key": "psa",
+      "name": "Prostate-Specific Antigen (PSA), Total",
+      "unit": "ng/mL",
+      "panel": "mens-health",
+      "referenceRanges": "MedlinePlus (PSA blood test, ency/003346): \"A normal PSA level is considered to be up to 4.0 nanograms per milliliter (ng/mL) of blood\"; \"For men in their 50s or younger, a PSA level should be below 2.5 ng/mL in most cases.\" StatPearls PSA (NBK557495), age-specific 95th-percentile values: \"40-49: ≤2.5 ng/mL\"; \"50-59: ≤3.5 ng/mL\"; \"60-69: ≤4.5 ng/mL\"; \"70-79: ≤6.5 ng/mL\"; and \"A PSA value of greater than or equal to 4.0 ng/mL is the consensus standard for further prostate cancer evaluation.\" USPSTF (2018): men 55-69 — Grade C, \"The decision to undergo periodic prostate-specific antigen (PSA)-based screening for prostate cancer should be an individual one\"; men 70+ — Grade D, \"The USPSTF recommends against PSA-based screening for prostate cancer in men 70 years and older.\"",
+      "conversions": [
+        {
+          "code": "µg/L",
+          "factor": 1
+        }
+      ],
+      "conflicts": "Fixed cutoff (4.0 ng/mL consensus) vs age-specific 95th-percentile ranges (StatPearls; underlying literature is Oesterling 1993, not fetch-verified). Screening value itself is contested — MedlinePlus: \"there is debate over the value of the PSA test for detecting prostate cancer. No single answer fits all men.\"",
+      "notes": "PSA can be transiently raised by large prostate, prostatitis, UTI, recent urologic procedures, catheter, intercourse, colonoscopy (MedlinePlus). Interpretation copy must state elevated PSA is not a cancer diagnosis and must reference the USPSTF shared-decision framing. Sex/age condition DSL: male only, age-branched bands.",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Prostate-specific antigen (PSA) blood test",
+          "url": "https://medlineplus.gov/ency/article/003346.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "StatPearls / NCBI Bookshelf (NIH)",
+          "title": "Prostate Specific Antigen",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK557495/",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "USPSTF",
+          "title": "Prostate Cancer: Screening (2018)",
+          "url": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/prostate-cancer-screening",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Men's health"
+    },
+    {
+      "key": "body-temperature",
+      "name": "Body Temperature",
+      "unit": "°F",
+      "panel": "vitals",
+      "referenceRanges": "MedlinePlus (Body temperature norms, ency/001982): \"The average normal body temperature is generally accepted as 98.6°F (37°C)\"; \"The normal body temperature can have a wide range, from 97°F (36.1°C) to 99°F (37.2°C)\"; \"A temperature over 100.4°F (38°C) most often means you have a fever caused by an infection or illness.\" MedlinePlus (Hypothermia, ency/000038): \"Hypothermia is a dangerously low body temperature, below 95°F (35°C).\"",
+      "conversions": [
+        {
+          "code": "°C",
+          "factor": 0.5556
+        }
+      ],
+      "conflicts": "",
+      "notes": "ENGINE CAPABILITY AVAILABLE: engine v1 supports explicit affine factor+offset conversions. This legacy record still stores only the 0.5556 slope under an ambiguous direction and is NOT importable as-is; migrate to explicit from/to units, factor, and offset and reverify before authoring or import.",
+      "sources": [
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Body temperature norms",
+          "url": "https://medlineplus.gov/ency/article/001982.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        },
+        {
+          "org": "MedlinePlus (NIH/NLM)",
+          "title": "Hypothermia",
+          "url": "https://medlineplus.gov/ency/article/000038.htm",
+          "accessed": "2026-08-20",
+          "verification": "fetch-verified"
+        }
+      ],
+      "contributedBy": "lab-panel-extension",
+      "panelOriginal": "Vitals"
+    }
+  ],
+  "cleanedAt": "2026-08-20",
+  "cleanupBasis": "Catalog-Structure-and-Dedup-Review.md (confirmed actions only); backup in backup-2026-08-20/; details in Cleanup-Report.md"
+}

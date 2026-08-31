@@ -1,0 +1,342 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:niro:schema:measurement-definition:v1",
+  "title": "Niro Measurement Definition v1",
+  "description": "Canonical definition for a versioned biomarker, vital, anthropometric measurement, derived measurement, or contextual input.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "key",
+    "version",
+    "status",
+    "displayName",
+    "kind",
+    "valueType",
+    "canonicalUnit",
+    "inputBounds",
+    "referenceRanges",
+    "sources",
+    "governance"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "measurement-definition.v1" },
+    "key": { "$ref": "#/$defs/slug" },
+    "version": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["draft", "in-review", "approved", "retired"] },
+    "displayName": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "aliases": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 200 }
+    },
+    "formerKeys": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/slug" }
+    },
+    "kind": {
+      "enum": [
+        "laboratory-biomarker",
+        "vital",
+        "anthropometric",
+        "derived-measurement",
+        "questionnaire-response",
+        "context"
+      ]
+    },
+    "panels": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/slug" }
+    },
+    "domainKeys": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/slug" }
+    },
+    "valueType": { "enum": ["number", "integer", "boolean", "coded-value"] },
+    "canonicalUnit": { "$ref": "#/$defs/unit" },
+    "acceptedUnits": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/unit" }
+    },
+    "conversions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/conversion" }
+    },
+    "inputBounds": { "$ref": "#/$defs/inputBounds" },
+    "referenceRanges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/referenceRange" }
+    },
+    "derived": { "$ref": "#/$defs/derivedMeasurement" },
+    "description": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "whatItMeasures": { "type": "string", "minLength": 1, "maxLength": 5000 },
+        "whyItMatters": { "type": "string", "minLength": 1, "maxLength": 5000 },
+        "collectionNotes": { "type": "string", "maxLength": 5000 },
+        "limitations": { "type": "string", "maxLength": 5000 }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "governance": { "$ref": "#/$defs/governance" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "kind": { "const": "derived-measurement" } },
+        "required": ["kind"]
+      },
+      "then": { "required": ["derived"] }
+    },
+    {
+      "if": {
+        "properties": { "status": { "const": "approved" } },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "governance": {
+            "properties": {
+              "reviewStatus": { "const": "approved" }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "dimension", "display"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "dimension": {
+          "enum": [
+            "dimensionless",
+            "mass",
+            "length",
+            "time",
+            "temperature",
+            "pressure",
+            "substance-concentration",
+            "mass-concentration",
+            "count-concentration",
+            "enzyme-activity-concentration",
+            "rate",
+            "area",
+            "volume",
+            "energy",
+            "composite"
+          ]
+        },
+        "display": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "ucum": { "type": "string", "minLength": 1, "maxLength": 80 }
+      }
+    },
+    "affineConversion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "fromUnit", "toUnit", "factor", "offset"],
+      "properties": {
+        "kind": { "const": "affine" },
+        "fromUnit": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "toUnit": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "factor": { "type": "number", "exclusiveMinimum": 0 },
+        "offset": { "type": "number" },
+        "sourceClaimIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/slug" }
+        }
+      }
+    },
+    "compositeConversion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "adapter", "from", "toUnit"],
+      "properties": {
+        "kind": { "const": "composite" },
+        "adapter": {
+          "enum": ["feet-inches-to-centimetres", "stone-pounds-to-kilograms"]
+        },
+        "from": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["field", "unit"],
+            "properties": {
+              "field": { "$ref": "#/$defs/slug" },
+              "unit": { "type": "string", "minLength": 1, "maxLength": 40 }
+            }
+          }
+        },
+        "toUnit": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "sourceClaimIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/slug" }
+        }
+      }
+    },
+    "conversion": {
+      "oneOf": [
+        { "$ref": "#/$defs/affineConversion" },
+        { "$ref": "#/$defs/compositeConversion" }
+      ]
+    },
+    "inputBounds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hard"],
+      "properties": {
+        "hard": { "$ref": "#/$defs/interval" },
+        "soft": { "$ref": "#/$defs/interval" },
+        "integerOnly": { "type": "boolean" },
+        "displayDecimals": { "type": "integer", "minimum": 0, "maximum": 8 },
+        "note": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    "interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "minInclusive": { "type": "boolean", "default": true },
+        "maxInclusive": { "type": "boolean", "default": true }
+      },
+      "anyOf": [{ "required": ["min"] }, { "required": ["max"] }]
+    },
+    "rangeContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sexAtBirth": { "enum": ["female", "male", "intersex", "not-specified"] },
+        "ageMinYears": { "type": "number", "minimum": 0 },
+        "ageMaxYears": { "type": "number", "minimum": 0 },
+        "pregnancyStatus": { "enum": ["pregnant", "not-pregnant", "unknown"] },
+        "menopausalStatus": { "enum": ["pre", "peri", "post", "unknown"] },
+        "fastingStatus": { "enum": ["fasting", "non-fasting", "unknown"] },
+        "specimen": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "sampleTiming": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "population": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "method": { "type": "string", "minLength": 1, "maxLength": 300 }
+      }
+    },
+    "referenceRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "unit", "interval", "context", "interpretationOnly", "sourceClaimIds"],
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "unit": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "interval": { "$ref": "#/$defs/interval" },
+        "context": { "$ref": "#/$defs/rangeContext" },
+        "interpretation": { "type": "string", "maxLength": 2000 },
+        "interpretationOnly": { "const": true },
+        "sourceClaimIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/slug" }
+        },
+        "conflictGroup": { "$ref": "#/$defs/slug" },
+        "reviewExpiresAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "derivedMeasurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expression", "dependsOn", "semanticVersion"],
+      "properties": {
+        "expression": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "dependsOn": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/slug" }
+        },
+        "semanticVersion": { "type": "string", "pattern": "^[1-9][0-9]*\\.[0-9]+\\.[0-9]+$" },
+        "sourceClaimIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/slug" }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "title", "verification"],
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "type": { "enum": ["niro", "external", "internal"] },
+        "org": { "type": "string", "maxLength": 300 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "url": { "type": "string", "format": "uri", "maxLength": 2000 },
+        "ref": { "type": "string", "maxLength": 1000 },
+        "accessed": { "type": "string", "format": "date" },
+        "verification": {
+          "enum": ["fetch-verified", "source-provided", "search-verified", "blocked-cited", "needs-verification"]
+        },
+        "claimIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/slug" }
+        },
+        "note": { "type": "string", "maxLength": 2000 }
+      },
+      "anyOf": [{ "required": ["url"] }, { "required": ["ref"] }]
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewStatus", "reviewedAt", "reviewerId", "publishBlockers"],
+      "properties": {
+        "reviewStatus": { "enum": ["unreviewed", "in-review", "approved", "changes-requested", "expired"] },
+        "reviewedAt": { "type": ["string", "null"], "format": "date-time" },
+        "reviewerId": { "type": ["string", "null"], "maxLength": 200 },
+        "reviewExpiresAt": { "type": ["string", "null"], "format": "date-time" },
+        "publishBlockers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 500 }
+        },
+        "conflictIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/slug" }
+        },
+        "legacyRecordRefs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 500 }
+        }
+      }
+    }
+  }
+}

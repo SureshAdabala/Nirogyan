@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.next/
+apps/client/next-env.d.ts
+coverage/
+docs/archive/
+docs/history/
+docs/research/
+data/
+packages/contracts/schemas/
+packages/contracts/specs/
+packages/contracts/registers/
+packages/contracts/reports/

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "niro-source-extract.v1",
+  "authority": "Original Niro artifacts outrank derived configs and external reference ranges. External anchors may expose divergence but may not overwrite Niro clinical values.",
+  "artifacts": [
+    {
+      "path": "data/sources/risk-analysis/Comprehensive Wellness Score Framework_ A Point-Based Assessment of Health Parameters.pdf",
+      "sha256": "4754b17e16e8f029a912462847ec47568a7b4bd0e547433b13692742fdb21ee3",
+      "calculators": ["niro-cws"]
+    },
+    {
+      "path": "data/sources/risk-analysis/Risk calculators.xlsx",
+      "sha256": "f1d808861d61b1a4e748a2c079c0cafae521a3c1e0ef01c84cd015ac293fc089",
+      "calculators": ["diabetes-risk", "heart-risk", "hypothyroid-risk"]
+    }
+  ],
+  "calculatorEvidence": [
+    {
+      "calculatorSlug": "diabetes-risk",
+      "locator": "Risk calculators.xlsx#Diabetes!B5:I27",
+      "confirmed": [
+        "The sheet supplies source point rows, a maximum glycemic-component rule, a missing-waist trigger, and result categories.",
+        "The sheet writes HbA1c >6.5 and fasting blood sugar >126; the exact endpoints therefore remain source-owner questions rather than ADA substitutions."
+      ],
+      "unresolved": [
+        "Age 35 appears in overlapping source bands.",
+        "PP Sugar is categorical without numeric criteria.",
+        "No complete source worked example establishes a final result."
+      ]
+    },
+    {
+      "calculatorSlug": "heart-risk",
+      "locator": "Risk calculators.xlsx#'Heart '!A1:V66",
+      "confirmed": [
+        "The sheet supplies one displayed base-point table, a points-to-risk lookup, adjustment/floor material, and a worked base-stage example.",
+        "For the source example inputs age 58, total cholesterol 168, HDL 38, SBP 124, untreated BP, current smoker, and normal glycemic status, base points are 13 and base risk is 10 percent."
+      ],
+      "unresolved": [
+        "The source example omits LDL and triglycerides and therefore does not establish the final adjusted/floor result.",
+        "Sex applicability, interval-valued lookup/floor outputs, complete floor eligibility, endpoints, and vascular-age/non-HDL scope remain unresolved."
+      ]
+    },
+    {
+      "calculatorSlug": "hypothyroid-risk",
+      "locator": "Risk calculators.xlsx#Hypothyroid!A2:E49",
+      "confirmed": [
+        "The sheet supplies age, sex, history, thyroid laboratory, and result-category point rows."
+      ],
+      "unresolved": [
+        "Merged symptom formatting does not establish whether five points apply once to the cluster or per symptom row.",
+        "Unknown input, partial-assessment, score maximum/lattice, and population semantics remain unapproved.",
+        "No complete source worked example establishes a final result."
+      ]
+    },
+    {
+      "calculatorSlug": "niro-cws",
+      "locator": "Comprehensive Wellness Score Framework PDF sections 2–6 and page 18",
+      "confirmed": [
+        "The PDF contains point tables, domains, formulas, adjustments, and result text.",
+        "The source explicitly records that the framework was rejected because client-stratified ranges were unavailable."
+      ],
+      "unresolved": [
+        "N1 is an absolute publication blocker until Niro supplies or explicitly approves a replacement.",
+        "Missing-domain/denominator semantics, all recorded band gaps, cortisol/estradiol contexts, category seams, reachable extrema, and complete worked examples remain unresolved."
+      ]
+    }
+  ],
+  "excluded": {
+    "covidFixture": "Internal nonclinical demonstration fixture; not a Niro source-derived calculator and never clinically publishable through this reconciliation.",
+    "catalog": "The quarantined 62-calculator/79-measurement catalog is outside this extract and must not be imported by P8 tooling."
+  }
+}

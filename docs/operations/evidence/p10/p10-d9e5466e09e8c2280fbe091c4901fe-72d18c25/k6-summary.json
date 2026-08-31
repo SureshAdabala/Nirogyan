@@ -1,0 +1,160 @@
+{
+    "metrics": {
+        "http_req_duration{expected_response:true}": {
+            "med": 98.5214,
+            "max": 110.2951,
+            "p(90)": 106.53814,
+            "p(95)": 106.91101,
+            "avg": 89.97731,
+            "min": 2.026
+        },
+        "http_req_duration": {
+            "med": 98.5214,
+            "max": 110.2951,
+            "p(90)": 106.53814,
+            "p(95)": 106.91101,
+            "avg": 89.97731,
+            "min": 2.026
+        },
+        "data_received": {
+            "count": 30456,
+            "rate": 48913.86046894092
+        },
+        "http_req_tls_handshaking": {
+            "avg": 0,
+            "min": 0,
+            "med": 0,
+            "max": 0,
+            "p(90)": 0,
+            "p(95)": 0
+        },
+        "http_req_waiting": {
+            "avg": 89.48700999999998,
+            "min": 1.6691,
+            "med": 97.9269,
+            "max": 109.3191,
+            "p(90)": 105.77508,
+            "p(95)": 106.298385
+        },
+        "http_reqs": {
+            "count": 20,
+            "rate": 32.12100109596856
+        },
+        "http_req_sending": {
+            "avg": 0.121,
+            "min": 0,
+            "med": 0,
+            "max": 0.6141,
+            "p(90)": 0.5998800000000001,
+            "p(95)": 0.6141
+        },
+        "http_req_receiving": {
+            "max": 0.976,
+            "p(90)": 0.87297,
+            "p(95)": 0.881285,
+            "avg": 0.3693,
+            "min": 0,
+            "med": 0.33665
+        },
+        "http_req_failed": {
+            "passes": 0,
+            "fails": 20,
+            "thresholds": {
+                "rate==0": false
+            },
+            "value": 0
+        },
+        "iterations": {
+            "count": 18,
+            "rate": 28.9089009863717
+        },
+        "http_req_duration{operation:assess}": {
+            "max": 110.2951,
+            "p(90)": 106.58142,
+            "p(95)": 107.26723,
+            "avg": 99.7005388888889,
+            "min": 91.138,
+            "med": 99.25375,
+            "thresholds": {
+                "p(95)<300": false
+            }
+        },
+        "data_sent": {
+            "count": 5526,
+            "rate": 8875.032602816113
+        },
+        "http_req_connecting": {
+            "max": 1.8948,
+            "p(90)": 1.2853,
+            "p(95)": 1.3157750000000006,
+            "avg": 0.28416,
+            "min": 0,
+            "med": 0
+        },
+        "http_req_blocked": {
+            "avg": 0.34314999999999996,
+            "min": 0,
+            "med": 0,
+            "max": 1.8948,
+            "p(90)": 1.8752,
+            "p(95)": 1.87618
+        },
+        "checks": {
+            "passes": 20,
+            "fails": 0,
+            "thresholds": {
+                "rate==1": false
+            },
+            "value": 1
+        },
+        "iteration_duration": {
+            "avg": 100.51201666666667,
+            "min": 92.7974,
+            "med": 100.01735,
+            "max": 110.8496,
+            "p(90)": 107.12274000000001,
+            "p(95)": 107.83991999999999
+        }
+    },
+    "setup_data": {
+        "slug": "p10-d9e5466e09e8c2280fbe091c4901fe-calculator"
+    },
+    "root_group": {
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {
+            "setup": {
+                "groups": {},
+                "checks": {
+                        "cold config is 200": {
+                            "name": "cold config is 200",
+                            "path": "::setup::cold config is 200",
+                            "id": "a75d283a5aedf946d4fb083450aafefb",
+                            "passes": 1,
+                            "fails": 0
+                        },
+                        "warm config is 304": {
+                            "passes": 1,
+                            "fails": 0,
+                            "name": "warm config is 304",
+                            "path": "::setup::warm config is 304",
+                            "id": "09c2cadc496a381da27f26368558a40f"
+                        }
+                    },
+                "name": "setup",
+                "path": "::setup",
+                "id": "5c0f8025f7e0b6654089e5b00e950f1a"
+            }
+        },
+        "checks": {
+            "assessment is 200": {
+                "passes": 18,
+                "fails": 0,
+                "name": "assessment is 200",
+                "path": "::assessment is 200",
+                "id": "5499c44ecd0e16c31c25fdfdcd2dab23"
+            }
+        },
+        "name": ""
+    }
+}

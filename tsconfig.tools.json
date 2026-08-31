@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "CommonJS",
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@niro/contracts": ["packages/contracts/src/index.ts"],
+      "@niro/engine": ["packages/engine/src/index.ts"]
+    }
+  },
+  "include": ["scripts/**/*.ts", "tests/e2e/**/*.ts", "playwright.config.ts", "vitest.config.ts"],
+  "exclude": ["node_modules", "**/dist/**", "apps/client/.next*/**", "tmp/**"]
+}

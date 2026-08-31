@@ -1,0 +1,55 @@
+﻿[1] moderate | verify:numbers | C:\athnect\Implementation-Plan.md
+  CLAIM: R13 (Â§2, line 49): "26-row pointsâ†’risk% lookup" â€” repeated in Claude-Context.md Â§3.4 (line 51) as "26-row lookup"
+  PROBLEM: The heart pointsâ†’risk lookup table has 24 rows, not 26. heart-risk.config.json `lookupTables[0].map` contains exactly 24 entries (points âˆ’2 orBelow, âˆ’1 through 20, 21 orAbove). The digest's own detailed XLSX enumeration ("Heart CVD Risk lookup": â‰¤âˆ’2â†’<1 â€¦ 21+â†’>30) lists 24 mappings, as does niro-risk-logic-extraction.md Â§D.2. The "26-row" figure appears only in the digest's summary lines and propagated unverified into both deliverables; a validator 'lookup completeness' check or golden-test author expecting 26 rows would falsely conclude two rows are missing.
+  FIX: Change "26-row" to "24-row" in Implementation-Plan.md Â§2 R13 and in Claude-Context.md Â§3.4 (and anywhere else the count is cited).
+
+[2] minor | verify:numbers | C:\athnect\Claude-Context.md
+  CLAIM: Â§9 XLSX-defects row (line 114): "heart TG/FBS/HbA1c band seams"
+  PROBLEM: The FBS (100â€“125 vs >126) and HbA1c (5.7â€“6.4 vs >6.5) numeric band seams are defects of the Diabetes sheet, not the Heart sheet â€” per the digest's XLSX section: "Diabetes: HbA1c gap between 6.4 and 6.5; FBS boundary 126 undefined" and "Heart: Triglycerides bands leave 150â€“151 undefined". The Heart sheet takes glycemic status only as a categorical Normal/Borderline/High input with no numeric HbA1c/FBS bands, so attributing those seams to "heart" points a future reader at the wrong sheet/config when resolving them.
+  FIX: Reword to "heart TG band seam (150â€“151); diabetes FBS/HbA1c band seams (125â€“126, 6.4â€“6.5)".
+
+[3] minor | verify:numbers | C:\athnect\Implementation-Plan.md
+  CLAIM: Â§6.4 representative `results` schema (lines 262â€“270): hdl value 38 â†’ "points:3, maxPoints:3" and "adjustments: [{key:'smoking-adjustment', applied:true, delta:10}]", introduced by "Representative schemas (abridged â€” full field lists live in 09-mongodb-data-model.md and match the config samples)"
+  PROBLEM: These example values are copied from 09-mongodb-data-model.md Â§7, which predates the Risk Analysis folder's arrival and uses interim non-Niro scoring. Under the authoritative Niro CWS scoring (niro-risk-logic-extraction.md Â§A.1/Â§A.10 and niro-cws.config.json v2), HDL 38 mg/dL scores 1 point (band 30â€“39) with a parameter max of 2, and the smoking adjustment ranges 0â€“4 â€” a delta of 10 is impossible. The plan flags files 01/04/05/06 as stale but reproduces 09's stale numbers with no caveat, in a section that claims to "match the config samples"; a reader could seed golden tests or docs from them.
+  FIX: Either annotate the example as "illustrative values from 09 Â§7, pre-Niro-scoring â€” do not use as scoring truth" or replace with values consistent with niro-cws.config.json v2 (e.g. hdl 38 â†’ points:1, maxPoints:2; smoking adjustment delta â‰¤4).
+
+[4] moderate | verify:consistency | C:\athnect\Implementation-Plan.md
+  CLAIM: Â§14: "Total: ~8â€“10 working weeks for one developer" (with per-phase durations P0â€“P12), and Â§21 roadmap fitting all phases into Weeks 1â€“10
+  PROBLEM: The plan's own phase durations contradict its stated total. Summing Â§14's ranges (P0 2â€“3, P1 4â€“5, P2 6â€“8, P3 3â€“4, P4 4â€“5, P5 6â€“8, P6 3â€“4, P7 7â€“9, P8 3â€“4, P9 5â€“6, P10 5â€“6, P11 2â€“3, P12 2â€“3) gives 52â€“68 working days â‰ˆ 10.5â€“13.5 weeks. The plan explicitly assumes one full-time developer, and its own risk #8 says P5/P6/P9 are parallelizable only "if a second dev joins" â€” so for the stated solo case the phases are serial and even the all-minimum sum (52 days) exceeds 10 weeks (50 days). The Â§21 roadmap also packs P0+P1 (6â€“8 days) into Week 1. The 8-week low end is unreachable under the plan's own numbers.
+  FIX: Restate the total as ~10.5â€“13.5 working weeks solo (or ~8â€“10 weeks only with a second developer on P5/P6/P9, stated explicitly), and stretch the Â§21 week map accordingly. Also update Claude-Context.md Â§8, which repeats "~8â€“10 weeks solo."
+
+[5] minor | verify:consistency | C:\athnect\Implementation-Plan.md
+  CLAIM: R13 (Â§2): Heart risk uses a "26-row pointsâ†’risk% lookup"
+  PROBLEM: The actual lookup table has 24 rows, not 26: research/niro-risk-logic-extraction.md Â§D.2 lists â‰¤âˆ’2, âˆ’1, 0â€¦20, 21+ (24 entries), and deliverables/config-samples/heart-risk.config.json's points-to-risk map contains exactly 24 riskPct entries. The "26-row" figure is inherited from deliverables 02/13, but it contradicts the sources this plan itself designates as authoritative for scoring (the extraction doc and the config samples).
+  FIX: Change "26-row" to "24-row" in R13 (and anywhere else it appears in the plan).
+
+[6] minor | verify:consistency | C:\athnect\Claude-Context.md
+  CLAIM: Â§3.4: "Then 26-row lookup pointsâ†’10-yr risk%"
+  PROBLEM: Same defect as in the Implementation Plan: the lookup table in Risk calculators.xlsx / niro-risk-logic-extraction.md Â§D.2 / heart-risk.config.json has 24 rows (â‰¤âˆ’2, âˆ’1, 0â€“20, 21+), not 26. Since this file positions itself as ground truth for future sessions, the wrong row count would propagate.
+  FIX: Change "26-row" to "24-row" in Â§3.4.
+
+[7] minor | verify:consistency | C:\athnect\Implementation-Plan.md
+  CLAIM: Â§7 RBAC table labeled "(from 12)" including rows "Analytics dashboard (read): editor âœ… / admin âœ…" and "Audit log viewer: editor âŒ / admin âœ…"
+  PROBLEM: Deliverable 12-admin-calculator-builder.md's role table defines only: editor = create/edit drafts, validate, preview, run test cases; admin = everything + publish/retire, biomarker library edits, user management. The analytics-dashboard and audit-viewer rows are this plan's own additions (analytics is new R21 scope), but the table's "(from 12)" attribution presents them as source-defined â€” exactly the over-attribution pattern the plan otherwise avoids.
+  FIX: Mark the two added rows as new, e.g. "RBAC (from 12, extended for R21)" or footnote the analytics and audit-viewer rows as additions of this plan.
+
+[8] minor | verify:consistency | C:\athnect\Implementation-Plan.md
+  CLAIM: Â§6.4: "Representative schemas (abridged â€” full field lists live in 09-mongodb-data-model.md and match the config samples)" â€” followed by a calculator_versions schema containing "content?: { intro, body, faq, seo: {â€¦} }"
+  PROBLEM: The content/SEO block exists in neither source: 09-mongodb-data-model.md's calculator_versions embeds only parameters/scoringRules/domains/adjustmentRules/formulas/resultCategories/uiConfig (grep confirms no "content" field), and none of the five config-samples JSONs contains a "content" key. It is a new addition of this plan (motivated by R2/R3, and correctly listed as new work in P1 task 2), but the framing sentence claims the shown fields match those sources.
+  FIX: Amend the framing to flag the extension, e.g. "â€¦match the config samples, except the content/SEO block, which this plan adds per R2/R3 (not present in 09 or the samples)."
+
+[9] minor | verify:coverage | C:\athnect\Implementation-Plan.md
+  CLAIM: Â§8 grounding rule: "items from your wishlist that only make sense with registered members are mapped to their honest equivalents or explicitly deferred" â€” followed by panels Aâ€“F and a "Deliberately NOT built" list naming registered-member counts, per-member session history, and member retention cohorts.
+  PROBLEM: Two items from the user's analytics wishlist are never named anywhere in Â§8 (or in Claude-Context.md Â§7): "most active users" and "new registrations". Grep confirms neither phrase (nor an explicit equivalent mapping such as "most-active sessions" or "new registrations â†’ new first-seen visitors / leads") appears in either deliverable. The deferral list's wording ("registered-member counts", "per-member session history") does not name these two items, so they are handled only by implication, breaking the section's own each-item-is-mapped-or-deferred promise. All other wishlist items (total users, DAU/WAU/MAU, session duration, device/browser, search trends, user-wise activity history, failed logins, app health, etc.) are explicitly designed or mapped.
+  FIX: In Â§8.1 (and mirrored in Claude-Context Â§7), add explicit dispositions: "most active users" â†’ most-active anonymous sessions is deliberately not surfaced (privacy/meaninglessness for anonymous visitors) while per-admin activity covers admin users; "new registrations" â†’ mapped to new first-seen sessionIds and leads captured, with member registrations deferred under the optional accounts module.
+
+[10] minor | verify:coverage | C:\athnect\Claude-Context.md
+  CLAIM: Header: "Reliable, self-contained project context... Any AI or developer can use this file as ground truth for continuing the work."
+  PROBLEM: The user demanded Claude-Context.md contain (among others) requirements, features, and assumptions. The file has no Requirements or Features section (requirement/feature content is scattered across Â§1/Â§3/Â§4/Â§7 and otherwise delegated to Implementation-Plan Â§2â€“3), and no Assumptions coverage at all: the five explicit assumptions recorded in Implementation-Plan Â§20 â€” first-party cookieless analytics with no Google Analytics dependency, admin users provisioned by seed with no self-registration, English-first UI (en-IN), "2â€“3 live" satisfied by the 3 ACTIVE calculators, C11 outside the build path â€” appear nowhere in Claude-Context.md (grep for "registration"/"assumption"/GA terms returns nothing). A future session relying on this "self-contained" file would miss those assumptions.
+  FIX: Add a short "Assumptions" block (mirroring Implementation-Plan Â§20) and either a compact Requirements/Features summary or explicit pointers stating that R1â€“R21 and the feature list live in Implementation-Plan Â§2â€“3.
+
+[11] minor | verify:coverage | C:\athnect\Implementation-Plan.md
+  CLAIM: Line 3: "Derived from: complete analysis of every file in C:\athnect (54 files: ...)" â€” repeated in Claude-Context.md header and Â§13 ("all 54 files covered").
+  PROBLEM: The folder listing does not substantiate 54: it contains 55 files today, of which 2 are the deliverables produced this session (Implementation-Plan.md, Claude-Context.md) and 2 are zero-content Office lock artifacts (~$-architecture-diagram.docx, ~$-execution-plan.docx). Pre-existing analyzable source files = 51 (53 if the lock artifacts are counted). The plan's own parenthetical enumeration also fails to sum to 54 (brief 1 + transcripts 6 + PDF/XLSX 2 + 17 numbered deliverables + 6 config-samples JSONs + 5 research docs + 2 Word docs + 3 scripts = 42; adding the 3 .ogg audio files and the 6 alternate 08/14 formats reaches 51).
+  FIX: Correct the count to 51 source files (or state the counting convention, e.g. "53 including Office lock artifacts") in Implementation-Plan.md line 3 and both places in Claude-Context.md.
+

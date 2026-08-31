@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "niro-partial-stage-golden.v1",
+  "key": "heart-base-stage-13-to-10",
+  "calculatorSlug": "heart-risk",
+  "calculatorFixture": "data/fixtures/config-samples/heart-risk.config.json",
+  "calculatorFixtureSha256": "2c4c70c6b1264abbe2db2c12638052abbc83255fab76ef7bc06968d76c802f93",
+  "engineSemanticVersion": "1.0.0",
+  "source": {
+    "type": "niro",
+    "ref": "data/sources/risk-analysis/Risk calculators.xlsx#'Heart '! worked base-stage example",
+    "verification": "source-provided"
+  },
+  "scope": "partial-stage-only",
+  "sourceInputs": {
+    "age": 58,
+    "totalCholesterol": 168,
+    "hdl": 38,
+    "sbp": 124,
+    "bpTreated": false,
+    "smoker": true,
+    "glycemicStatus": "normal"
+  },
+  "executionOnlySupplementalInputs": {
+    "ldl": {
+      "value": 100,
+      "reason": "The source omits required LDL. A neutral supplemental value permits engine execution, but no assertion is made about any later adjustment, floor, score, or category."
+    }
+  },
+  "expectedIntermediate": {
+    "formulas": {
+      "base-points": 13,
+      "base-risk": 10
+    }
+  },
+  "publishGate": {
+    "satisfiesPUB007": false,
+    "reason": "This is not a complete saved calculator test: the source omits LDL and triglycerides and supplies no expected final score/category. It verifies only the base stage and cannot authorize publication."
+  }
+}

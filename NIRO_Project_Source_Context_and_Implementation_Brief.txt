@@ -1,0 +1,474 @@
+NIRO PROJECT — SOURCE CONTEXT & IMPLEMENTATION BRIEF
+
+Purpose
+-------
+Build the Niro health/wellness assessment experience using the MERN stack:
+MongoDB + Express.js + React.js + Node.js.
+
+IMPORTANT
+---------
+This document consolidates the context already established from the provided Niro references and risk-logic material. It is intended to be given to an implementation agent before development.
+
+Do not invent or modify Niro's clinical/business rules. Exact rules, thresholds, weights, formulas, and terminology must come from the provided source files.
+
+1. REFERENCE SOURCES
+--------------------
+
+Niro UI / UX references:
+- https://www.niroggyan.com/biomarkers/
+- https://niro.health
+
+General interaction reference:
+- https://www.omnicalculator.com/health
+
+Niro Risk Logic:
+- Google Sheet: Niro Risk Logic / scoring rules
+- Google Doc: Niro Risk Logic / functional requirements
+
+The Niro websites are UI/UX references. Omni Calculator is an interaction/calculator reference. The Niro risk documents are the source of truth for the actual scoring logic.
+
+2. CORE PRODUCT UNDERSTANDING
+-----------------------------
+
+Niro is intended to take health/lab information, interpret biomarkers, calculate a comprehensive wellness/risk score, and present the result in a simple, understandable way.
+
+High-level flow:
+
+User
+  ↓
+Health / Lab Data
+  ↓
+Biomarker Identification & Normalization
+  ↓
+Biomarker Interpretation
+  ↓
+Health Domain Scoring
+  ↓
+Weighted Wellness Calculation
+  ↓
+Demographic / Lifestyle Adjustments
+  ↓
+Final Wellness Score
+  ↓
+Wellness Category
+  ↓
+Explanation / Key Contributors
+  ↓
+Recommendations / Next Steps
+
+Important distinction:
+- Biomarker = what the measurement is.
+- Biomarker result = the user's actual value.
+- Interpretation = what that value means according to the configured rule.
+- Wellness/Risk score = combined result from multiple parameters.
+- Recommendation = user-facing action/explanation based on the calculated result.
+
+3. NIRO UI CONTEXT
+------------------
+
+NirogGyan is useful as a biomarker knowledge/reference model:
+- Biomarker browsing
+- Search/categories
+- Individual biomarker information
+- Meaning and interpretation of biomarkers
+
+Niro Health is useful as the product experience reference:
+- Health/lab report analysis
+- Health profiles
+- Biomarker-level results
+- Insights
+- Recommendations
+- Risk/wellness assessment
+
+Omni Calculator is useful mainly for interaction patterns:
+- Clear input collection
+- Calculate/action step
+- Result
+- Explanation
+
+Do not blindly copy any of these sites. Use them as references for structure, usability, and presentation.
+
+4. COMPREHENSIVE WELLNESS SCORE (CWS)
+--------------------------------------
+
+The provided Niro risk-logic material defines a Comprehensive Wellness Score (CWS).
+
+The score combines:
+- Biomarker results
+- Demographic factors
+- Lifestyle factors
+- Multiple health domains
+
+The documented health domains and weights are:
+
+1. Cardiovascular      — 25%
+2. Metabolic           — 20%
+3. Inflammatory        — 15%
+4. Nutritional         — 10%
+5. Liver               — 10%
+6. Kidney              — 5%
+7. Thyroid             — 5%
+8. Hematological       — 5%
+9. Hormonal            — 5%
+
+Total = 100%.
+
+5. DOCUMENTED HEALTH-DOMAIN PARAMETERS
+--------------------------------------
+
+Cardiovascular:
+- Total Cholesterol
+- HDL
+- LDL
+- Triglycerides
+- Systolic Blood Pressure
+- hsCRP
+- ApoB:ApoA Ratio
+
+Metabolic:
+- Fasting Glucose
+- HbA1c
+- Fasting Insulin
+- Estimated Average Glucose
+
+Inflammatory:
+- IL-6
+- CRP
+- ESR
+
+Nutritional:
+- Vitamin D
+- Vitamin B12
+- Folate
+- Ferritin
+- Magnesium
+- Zinc
+
+Liver:
+- ALT
+- AST
+- GGT
+- Total Bilirubin
+- Albumin
+
+Kidney:
+- eGFR
+- Serum Creatinine
+- BUN
+- Uric Acid
+
+Thyroid:
+- TSH
+- Free T4
+- Free T3
+- Anti-TPO
+
+Hematological:
+- Hemoglobin
+- MCV
+- WBC
+- Platelets
+
+Hormonal:
+- Cortisol
+- Testosterone
+- Estradiol
+
+The exact scoring thresholds/points for each parameter must be taken from the source risk-logic files. Do not replace them with generic medical thresholds.
+
+6. DEMOGRAPHIC / LIFESTYLE ADJUSTMENTS
+---------------------------------------
+
+The documented CWS logic includes adjustments related to:
+- Age
+- BMI
+- Smoking
+- Physical activity
+
+Some scoring is demographic/context dependent. For example, documented rules include gender-specific interpretation for certain biomarkers and context-specific handling for some hormonal measurements.
+
+Therefore the implementation must support:
+- Required demographic inputs
+- Appropriate gender/sex-dependent rules where defined
+- Units
+- Context-dependent values where required
+- Exact source-defined thresholds
+
+7. SCORE CALCULATION MODEL
+--------------------------
+
+The documented model follows this structure:
+
+Parameter values
+  ↓
+Parameter points
+  ↓
+Domain score
+
+Domain Score:
+Sum of parameter points / Maximum possible points × 100
+
+Then apply domain weights:
+
+Raw Wellness Score =
+  Cardiovascular × 0.25
++ Metabolic × 0.20
++ Inflammatory × 0.15
++ Nutritional × 0.10
++ Liver × 0.10
++ Kidney × 0.05
++ Thyroid × 0.05
++ Hematological × 0.05
++ Hormonal × 0.05
+
+Then:
+
+Final Wellness Score =
+Raw Wellness Score + Sum of documented adjustment points
+
+The exact parameter points and thresholds must come from the source files.
+
+8. DOCUMENTED WELLNESS CATEGORIES
+---------------------------------
+
+The documented score interpretation is:
+
+< 10       → Optimal
+10–20      → Good
+21–30      → Fair
+31–50      → Suboptimal
+> 50       → Poor
+
+These categories should be treated as the documented Niro CWS interpretation, not replaced by another model.
+
+9. EXPECTED USER EXPERIENCE
+---------------------------
+
+The user should be able to:
+- Provide/submit relevant health information
+- Provide or have relevant biomarker values available
+- Run the wellness assessment
+- See the final wellness score
+- See the wellness category
+- Understand the major contributing health domains
+- Drill into relevant biomarker/domain details
+- Understand why the score was produced
+- See appropriate recommendations/next steps supported by the source requirements
+
+Preferred information hierarchy:
+
+RESULT
+  ↓
+CATEGORY
+  ↓
+WHY / KEY CONTRIBUTORS
+  ↓
+DOMAIN DETAILS
+  ↓
+BIOMARKER DETAILS
+  ↓
+RECOMMENDATIONS
+
+10. IMPORTANT TECHNICAL PRINCIPLE
+---------------------------------
+
+Keep the deterministic wellness/risk calculation separate from any AI explanation layer.
+
+Preferred concept:
+
+Structured User Data
+  ↓
+Deterministic Risk / Wellness Engine
+  ↓
+Score + Category + Contributors
+  ↓
+Explanation / Presentation Layer
+  ↓
+React UI
+
+The calculation engine should be auditable, predictable, testable, and based on the source-defined rules.
+
+11. SUGGESTED MERN ARCHITECTURE
+------------------------------
+
+Frontend:
+- React
+- UI components
+- Forms / input validation
+- Wellness dashboard
+- Biomarker/domain detail views
+- Result visualization
+
+Backend:
+- Node.js
+- Express.js
+- REST APIs
+- Input validation
+- Wellness calculation service
+- Biomarker/rule services
+
+Database:
+- MongoDB
+- User/profile data
+- Biomarker data
+- Assessment inputs/results
+- Risk/wellness configurations if appropriate
+
+Logical architecture:
+
+User
+  ↓
+React Frontend
+  ↓
+Express / Node API
+  ↓
+Validation + Business Services
+  ↓
+Wellness / Risk Calculation Engine
+  ↓
+MongoDB
+
+12. IMPLEMENTATION ORDER
+------------------------
+
+Phase 1 — Source & Requirement Analysis
+- Analyze all documents, spreadsheets, audio files, and references.
+- Extract exact requirements.
+- Resolve the complete input/output list.
+- Confirm every risk rule from the source.
+
+Definition of Done:
+Requirements and source rules are documented and understood.
+
+Phase 2 — Data & Rule Model
+- Define MongoDB models.
+- Define biomarker structure.
+- Define assessment input structure.
+- Define domain/rule configuration.
+- Map source rules into implementable structures.
+
+Definition of Done:
+Data model and rule model are reviewed and traceable to source material.
+
+Phase 3 — Wellness Calculation Engine
+- Implement parameter scoring.
+- Implement domain scoring.
+- Implement domain weighting.
+- Implement documented adjustments.
+- Implement final score and category mapping.
+
+Definition of Done:
+Known source examples can be reproduced exactly.
+
+Phase 4 — Backend APIs
+- Assessment input API
+- Calculation API
+- Result API
+- Biomarker/domain details API as required
+- Validation and error handling
+
+Definition of Done:
+APIs return deterministic, tested results.
+
+Phase 5 — React UI/UX
+- Build Niro-inspired health assessment flow.
+- Build input screens.
+- Build calculation/result experience.
+- Build score/category presentation.
+- Build domain and biomarker details.
+- Build recommendations/next steps where supported.
+
+Definition of Done:
+Complete user journey works from input to final result.
+
+Phase 6 — Integration
+- Connect React with Express APIs.
+- Connect MongoDB.
+- Verify end-to-end data flow.
+- Handle loading, empty, invalid, and missing-data states.
+
+Definition of Done:
+Full assessment works end-to-end.
+
+Phase 7 — Testing & QA
+- Unit-test every scoring rule.
+- Test domain calculations.
+- Test weighting.
+- Test adjustments.
+- Test category boundaries.
+- Test demographic/context-specific rules.
+- Test API validation.
+- Test frontend flows.
+- Run end-to-end QA.
+
+Definition of Done:
+Results match source-defined rules and critical flows pass.
+
+Phase 8 — Final Polish & Release Readiness
+- UI polish
+- Accessibility/usability checks
+- Error handling
+- Performance checks
+- Documentation
+- Final QA
+
+13. CRITICAL DEPENDENCIES
+-------------------------
+
+Phase 1 must be completed before implementation decisions.
+
+Phase 2 depends on Phase 1.
+
+Phase 3 depends on Phase 2.
+
+Phase 4 depends on the rule/data model from Phase 2 and calculation engine design from Phase 3.
+
+Phase 5 can begin UI exploration/design after Phase 1, but final integration depends on Phase 4.
+
+Phase 6 starts only when the required frontend/backend contracts are stable.
+
+Phase 7 starts after the integrated flow is available.
+
+Phase 8 starts only after QA issues are resolved.
+
+Parallel work is allowed only where dependencies are satisfied; do not start downstream implementation based on assumptions.
+
+14. REQUIRED ARCHITECTURE DELIVERABLES
+--------------------------------------
+
+Create a clean, professional architecture diagram that is easy to understand.
+
+Provide the SAME architecture in:
+1. A standalone HTML page
+2. A matching PDF
+
+The diagram should show:
+- User
+- React frontend
+- Major UI modules
+- Node/Express API layer
+- Business/validation services
+- Wellness/risk engine
+- Biomarker/rule layer
+- MongoDB
+- Main data flow
+
+Keep the diagram simple, readable, and practical. Avoid unnecessary microservices or over-engineering.
+
+15. FINAL EXPECTED OUTPUT
+-------------------------
+
+Before writing code, produce:
+- Complete project understanding
+- Source-derived requirements
+- Module breakdown
+- MERN architecture
+- Architecture diagram HTML
+- Matching architecture PDF
+- Priority-wise execution plan
+- Phase dependencies
+- Critical path
+- Definition of Done for every phase
+- End-to-end implementation flow
+
+Do not invent requirements, formulas, thresholds, medical rules, or product behavior. If something is not supported by the provided sources, explicitly mark it as "Needs clarification" instead of assuming it.

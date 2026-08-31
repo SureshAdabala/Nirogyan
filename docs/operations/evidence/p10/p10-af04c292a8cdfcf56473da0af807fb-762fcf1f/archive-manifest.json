@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "niro-p10-evidence-archive.v1",
+  "executionId": "p10-af04c292a8cdfcf56473da0af807fb-762fcf1f",
+  "status": "ok",
+  "completedAtUtc": "2026-08-29T20:17:40Z",
+  "owner": "local workspace operator",
+  "sourceRevision": "unavailable-no-git-metadata",
+  "releaseId": "p10-af04c292a8cdfcf56473da0af807fb-762fcf1f",
+  "deploymentShape": "native Node API plus staged Next.js standalone server",
+  "runtime": {
+    "node": "24.11.0",
+    "npm": "11.6.1",
+    "playwright": "1.62.1",
+    "browser": "bundled Chromium"
+  },
+  "k6": {
+    "version": "k6.exe v1.7.1 (commit/9f82e6f1fc, go1.26.1, windows/amd64)",
+    "officialReleaseArchiveSha256": "1a4dc636eb195002d314b3813aeef8c63896e7fea0e81ac10a820aee4fd63a37"
+  },
+  "performance": {
+    "k6AssessP95Ms": 158.69,
+    "nodeAssessP95Ms": 233.83,
+    "budgetMs": 300,
+    "checks": 20,
+    "failedRequests": 0
+  },
+  "protectedImplementationSha256": "5c6316d822616fdf802610ff3b54f998fadf900bb90e3401d3f04f8f4b27eb4b",
+  "artifacts": [
+    { "path": "summary.json", "bytes": 2185, "sha256": "492d1536860cd3b5040d47709ae9920d8cddca34090f598ac86d8e319caf3563" },
+    { "path": "k6-summary.json", "bytes": 4646, "sha256": "1ae74ff5f6c677ff2ca45afc8f6dde4a6a9380e4e4e661e6cc606210a24c9b64" },
+    { "path": "protected-before.json", "bytes": 41027, "sha256": "6420e03e06f798239a5c8e2794c6b7f32faedadf0ec72b2737aaf0fa574e07e6" },
+    { "path": "protected-after.json", "bytes": 41027, "sha256": "6420e03e06f798239a5c8e2794c6b7f32faedadf0ec72b2737aaf0fa574e07e6" },
+    { "path": "atlas-cleanup-verification.json", "bytes": 384, "sha256": "c18b3ab6a8b493ede91a24d9cbf6aea80469d37221d45b6d23dc2e40e6faefd7" },
+    { "path": "logs/playwright.stdout.log", "bytes": 250, "sha256": "30568f3ce4d32333ff502154b0e3cb94ca8fe73642016c6de264e2b5158d78d2" },
+    { "path": "logs/playwright.stderr.log", "bytes": 163, "sha256": "881e02749993a07a1905a8ec112932f07c4b1f6f41771c0f30320a13e4d60233" },
+    { "path": "logs/k6.stdout.log", "bytes": 1838, "sha256": "c7118a452e4639e191baaa3f4ba8a9bb3104666aac0719df25816eea63fde9d6" },
+    { "path": "logs/k6.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "logs/api-server-node-performance.stdout.log", "bytes": 59, "sha256": "f0c26c52d5de80b916e74d32c469594df898a2ae4bf3e427dfbf6639cf9b1c2c" },
+    { "path": "logs/api-server-node-performance.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "logs/api-server.stdout.log", "bytes": 59, "sha256": "f0c26c52d5de80b916e74d32c469594df898a2ae4bf3e427dfbf6639cf9b1c2c" },
+    { "path": "logs/api-server.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "logs/next-client-build.stdout.log", "bytes": 1184, "sha256": "a868fe515017245e0ba9a11a35ad72144a491125b8f8e413cfe3563240ffeb8e" },
+    { "path": "logs/next-client-build.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "logs/next-client-standalone-stage.stdout.log", "bytes": 152, "sha256": "a9135ed7e62603d23a4f60852e491f120cc560ef46ee31a83bfa9ae434bf7e11" },
+    { "path": "logs/next-client-standalone-stage.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "logs/next-client.stdout.log", "bytes": 150, "sha256": "c41f481a36b62f49c90896b7fdb0a04c17c8c6fd8c0389a82636ceafe9051976" },
+    { "path": "logs/next-client.stderr.log", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    { "path": "playwright-artifacts/p10-reusability-P10-Studio-dddbf-nd-hardens-a-new-calculator-chromium/trace.zip", "bytes": 41683144, "sha256": "76b0c98c5f6202d2372ddf737034e578f5260d5dc68a3df7d3cc47cb87f8aae4" },
+    { "path": "playwright-artifacts/p10-reusability-P10-Studio-dddbf-nd-hardens-a-new-calculator-chromium/video.webm", "bytes": 6923913, "sha256": "18b8bb9f78e5d4a0293fd1a782750f600c2a72ca8f7daa5b92d15d2b36227ef4" }
+  ]
+}

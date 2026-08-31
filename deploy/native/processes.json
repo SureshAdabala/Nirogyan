@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "selectedDeploymentMode": "native-node",
+  "containersRequired": false,
+  "runtime": {
+    "node": "24.x",
+    "packageManager": "npm@11.6.1"
+  },
+  "processes": {
+    "api": {
+      "buildCommand": "npm ci --include=dev && npm run deploy:build:server-native && npm run deploy:native:verify -- --scope=server && npm prune --omit=dev --no-audit --no-fund",
+      "startCommand": "npm run deploy:start:server-native",
+      "healthPath": "/readyz",
+      "binding": {
+        "hostVariable": "HOST",
+        "hostValue": "0.0.0.0",
+        "portVariable": "PORT"
+      }
+    },
+    "web": {
+      "buildCommand": "npm ci --include=dev && npm run deploy:build:client-native && npm run deploy:native:verify -- --scope=client && npm prune --omit=dev --no-audit --no-fund",
+      "startCommand": "npm run deploy:start:client-native",
+      "healthPath": "/api/healthz",
+      "binding": {
+        "hostVariable": "HOSTNAME",
+        "hostValue": "0.0.0.0",
+        "portVariable": "PORT"
+      },
+      "replicas": {
+        "maximumUntilCacheCoherenceProven": 1
+      }
+    },
+    "analyticsPartial": {
+      "buildCommand": "npm ci --include=dev && npm run deploy:build:server-native && npm run deploy:native:verify -- --scope=server && npm prune --omit=dev --no-audit --no-fund",
+      "startCommand": "npm run deploy:job:analytics-partial",
+      "schedule": {
+        "cron": "*/5 * * * *",
+        "timeZone": "Etc/UTC"
+      }
+    },
+    "analyticsFinal": {
+      "buildCommand": "npm ci --include=dev && npm run deploy:build:server-native && npm run deploy:native:verify -- --scope=server && npm prune --omit=dev --no-audit --no-fund",
+      "startCommand": "npm run deploy:job:analytics-final",
+      "schedule": {
+        "cron": "15 0 * * *",
+        "timeZone": "Asia/Kolkata"
+      }
+    },
+    "cacheInvalidation": {
+      "buildCommand": "npm ci --include=dev && npm run deploy:build:server-native && npm run deploy:native:verify -- --scope=server && npm prune --omit=dev --no-audit --no-fund",
+      "startCommand": "npm run deploy:job:cache",
+      "schedule": {
+        "cron": "* * * * *",
+        "timeZone": "Etc/UTC"
+      }
+    }
+  }
+}

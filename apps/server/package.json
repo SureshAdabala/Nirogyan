@@ -1,0 +1,37 @@
+{
+  "name": "@niro/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "tsc -p tsconfig.build.json --build --clean",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "analytics:rollup": "node dist/ops/analytics-rollup-cli.js",
+    "cache:dispatch": "node dist/ops/cache-invalidation-cli.js",
+    "test": "vitest run --config ../../vitest.config.ts --no-file-parallelism --testTimeout 30000",
+    "db:ping": "tsx src/db/ping.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@niro/contracts": "0.1.0",
+    "@niro/engine": "0.1.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.19.1",
+    "pino": "^9.6.0",
+    "pino-http": "^10.4.0",
+    "prom-client": "^15.1.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.10"
+  }
+}

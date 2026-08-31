@@ -1,0 +1,1058 @@
+{
+  "schemaVersion": "p10-reusability-protected-tree.v1",
+  "algorithm": "sha256",
+  "trees": [
+    {
+      "path": "packages/engine/src",
+      "sha256": "3f46b5c9bf0e7abc8ead554884f536c8e3823b3b9054ea63813122de6f9d8f0a",
+      "files": [
+        {
+          "path": "packages/engine/src/engine.test.ts",
+          "sha256": "d89a5f043b747925ecde2ee6348e57695b450309fbe8ad760d832bac2d5c09d7",
+          "bytes": 7443
+        },
+        {
+          "path": "packages/engine/src/expression.ts",
+          "sha256": "676ecea06a2f4386b64f634ce4e3cf3a70408a62cf1feb4d5f66dedcd9fbce94",
+          "bytes": 13850
+        },
+        {
+          "path": "packages/engine/src/index.test.ts",
+          "sha256": "0cdd8d7b8a452666e8506ff168d5e46ad4801d0365d7ed2a4efd731746155bee",
+          "bytes": 363
+        },
+        {
+          "path": "packages/engine/src/index.ts",
+          "sha256": "a6e33981d6073348b069286931ce328b3b44c3606ccda4c66542072c9d3afe13",
+          "bytes": 51785
+        },
+        {
+          "path": "packages/engine/src/p10-fixture-matrices.test.ts",
+          "sha256": "3387547cf5531e5fc373efe62242365448eb612076ce18495a695c9343b83a58",
+          "bytes": 41612
+        },
+        {
+          "path": "packages/engine/src/p2.test.ts",
+          "sha256": "abcf4302397ce350aa64eab85d36c442dbfc4ae219b52a8928f72c2dd6be5923",
+          "bytes": 18349
+        },
+        {
+          "path": "packages/engine/src/stages.ts",
+          "sha256": "7ea8bbbf5609918db47c608f836db13eb315084d2513a14775afe7c685d1b9b8",
+          "bytes": 10607
+        },
+        {
+          "path": "packages/engine/src/types.ts",
+          "sha256": "6975985849904ba91cf51a514ea5c1a996589c7e376ab17b39efd0bf609c7f9c",
+          "bytes": 3873
+        }
+      ]
+    },
+    {
+      "path": "packages/contracts/src",
+      "sha256": "f10ec77c8596b2f4d00784d659b5d8a7501fcbee21450173b14d707b10c16a82",
+      "files": [
+        {
+          "path": "packages/contracts/src/admin-api.test.ts",
+          "sha256": "dd522b1331d7fd00bc653d5e4b047e3bc0c658ed648cf82ae8e47c2995f4ff13",
+          "bytes": 1431
+        },
+        {
+          "path": "packages/contracts/src/admin-api.ts",
+          "sha256": "c647085a14d8744839eb1c55dc6570fdd2801d62bd95ec184c3b5e03dca9c4aa",
+          "bytes": 3791
+        },
+        {
+          "path": "packages/contracts/src/analytics-api.ts",
+          "sha256": "e189459340f71a6899ab19b0e8efeb366649dc4679b838dd5b15d139c80a6fe4",
+          "bytes": 6857
+        },
+        {
+          "path": "packages/contracts/src/generated/calculator-version.v1.ts",
+          "sha256": "403149afbd60422c1aaf117e982e18ec61de1455315fc80bb0494d95c8b7da25",
+          "bytes": 20868
+        },
+        {
+          "path": "packages/contracts/src/generated/content-page.v1.ts",
+          "sha256": "b7c05bf30872ad3df9690ca25f8986aa5b65688b7201625dd48eafa84a298b63",
+          "bytes": 5798
+        },
+        {
+          "path": "packages/contracts/src/generated/measurement-definition.v1.ts",
+          "sha256": "c12864424097413cb57134d3acfd6c86278d9709d9aa481c90dcf8ccc0762393",
+          "bytes": 4687
+        },
+        {
+          "path": "packages/contracts/src/index.test.ts",
+          "sha256": "8bfe104d521c074949f6a4b5c9554c03e4bd596fd80ad7d90527749896e6a63c",
+          "bytes": 375
+        },
+        {
+          "path": "packages/contracts/src/index.ts",
+          "sha256": "36b8dc850496be0b53ffc96b660e34ae223fdc03351dde2153a5790edcf7321f",
+          "bytes": 3575
+        },
+        {
+          "path": "packages/contracts/src/measurement-seed.test.ts",
+          "sha256": "64da3559ad30b3117e2c0f980e14dab75a59520576000db7871d53290ebae308",
+          "bytes": 10656
+        },
+        {
+          "path": "packages/contracts/src/measurement-seed.ts",
+          "sha256": "2f2a7ef0f57874d0f6d805427fb633540c1be29e2b860c5b3f2e5570c9ad2c30",
+          "bytes": 37922
+        },
+        {
+          "path": "packages/contracts/src/public-api.test.ts",
+          "sha256": "c58fde8770757e3a14cd05f9309c4e6fd41d977f0842a6cb251d33700116968b",
+          "bytes": 2500
+        },
+        {
+          "path": "packages/contracts/src/public-api.ts",
+          "sha256": "fb94c48f18f33976fcfbb5a5a0b671a6317c53e808e564fff29672ab7d6d5693",
+          "bytes": 10634
+        },
+        {
+          "path": "packages/contracts/src/validation/calculator.test.ts",
+          "sha256": "6a4378a8c469776160988743a5a728a2dc5cd1543d0fe3cd826b49de2f7e175f",
+          "bytes": 10613
+        },
+        {
+          "path": "packages/contracts/src/validation/calculator.ts",
+          "sha256": "be58f991b6e1ace0c248f4be5ff3afe2a8a256df8e05b13db4240dab7ee15c10",
+          "bytes": 46558
+        },
+        {
+          "path": "packages/contracts/src/validation/invalid-fixtures.test.ts",
+          "sha256": "c44472b40abff1fc0218bc8f90c2cae9624ef4e339f948b88ecf63637d022c51",
+          "bytes": 5347
+        },
+        {
+          "path": "packages/contracts/src/validation/measurement.test.ts",
+          "sha256": "5635629b14c3664cb86a52030fba3145db594b95efddeeea1f70a18169910242",
+          "bytes": 2910
+        },
+        {
+          "path": "packages/contracts/src/validation/measurement.ts",
+          "sha256": "928948acb6f8b293be77a38fe1825061845a69a1c75b834e6c4164feccb1fdea",
+          "bytes": 1753
+        },
+        {
+          "path": "packages/contracts/src/validation/types.ts",
+          "sha256": "649d021bd3968b51aeaca930d6edb29676b14a8df267cefaa8aad40c35d1505c",
+          "bytes": 1232
+        }
+      ]
+    },
+    {
+      "path": "packages/contracts/schemas",
+      "sha256": "ae07eb5e03f4fbcfc105cc1a4652c59b3ac8c15b539ffe85aba3b6db9b347219",
+      "files": [
+        {
+          "path": "packages/contracts/schemas/calculator-version.v1.schema.json",
+          "sha256": "d8483437119cac9050cddfdf40d0108a42c35f91736f6dbfac11a9a6642c209c",
+          "bytes": 31268
+        },
+        {
+          "path": "packages/contracts/schemas/content-page.v1.schema.json",
+          "sha256": "9f8161302caf05bb2a975c0ec81c61f6ddae994ef27b9a43ee04439f791cdafd",
+          "bytes": 17697
+        },
+        {
+          "path": "packages/contracts/schemas/measurement-definition.v1.schema.json",
+          "sha256": "cbc1ccf49ab95bbdf99254e677b13df58fdbc9160309b05ee804931b89454cb6",
+          "bytes": 11418
+        }
+      ]
+    },
+    {
+      "path": "apps/server/src",
+      "sha256": "557ed8c38d103172a590a30650d6a9e5045b973049584d63c18002dac53554ce",
+      "files": [
+        {
+          "path": "apps/server/src/analytics/analytics.test.ts",
+          "sha256": "c940bd95e9fbce1b636428b27f99d920d70ac3e6eb0fe6a3cbf3ea46d7a7cf4e",
+          "bytes": 4735
+        },
+        {
+          "path": "apps/server/src/analytics/dashboard.test.ts",
+          "sha256": "7b361e6f230cb56516169d4bab19df01c1aad16373b8a6652cb3d2839fb1706d",
+          "bytes": 22320
+        },
+        {
+          "path": "apps/server/src/analytics/dashboard.ts",
+          "sha256": "c9107ffe5bf0e6f12a4cf27f326376319f5ceb2eed02e9140376f71cdd8b2d79",
+          "bytes": 40418
+        },
+        {
+          "path": "apps/server/src/analytics/hll.ts",
+          "sha256": "f2076aacb12591da6d2825944708c9566946638a852078a79cb9ea9d645a4e5a",
+          "bytes": 1398
+        },
+        {
+          "path": "apps/server/src/analytics/jobs.test.ts",
+          "sha256": "cdc0a875764d13a8ed8f95d64df6c4ea8287fde506e13d3f2b6e6bfc6b3669a8",
+          "bytes": 5391
+        },
+        {
+          "path": "apps/server/src/analytics/jobs.ts",
+          "sha256": "72b8f145ed3192536d13b7c2a7a4e63667c018290b534ca5ea5d02711dac9eb1",
+          "bytes": 8065
+        },
+        {
+          "path": "apps/server/src/analytics/metrics.ts",
+          "sha256": "3357e9bebb1efe03ea2b93eecee9ae8ec661fd9f394a573cc0c9234ac2d4ff11",
+          "bytes": 4300
+        },
+        {
+          "path": "apps/server/src/analytics/rollup.test.ts",
+          "sha256": "18f2a496824d2c6785f6d439daaf3f9ff1427eda38093a37db31fb8e296efb90",
+          "bytes": 18947
+        },
+        {
+          "path": "apps/server/src/analytics/rollup.ts",
+          "sha256": "5a304ac14377bbf4796ed545c4bc26371d5d7bfa9f64dd8f94d48becd03e125c",
+          "bytes": 33875
+        },
+        {
+          "path": "apps/server/src/analytics/scheduler.ts",
+          "sha256": "c9486b960c70e7ea88e857a4cebc96a01207eb1df93015c30140228100bdd06a",
+          "bytes": 3975
+        },
+        {
+          "path": "apps/server/src/analytics/time.ts",
+          "sha256": "48fd70b1afdb5c3d8558cd80206675b668bba9c2809bd1151d3485b6fd203b43",
+          "bytes": 4176
+        },
+        {
+          "path": "apps/server/src/analytics/ua.ts",
+          "sha256": "7a264b95cc3896d79435315f5b5a21b979dd3cbef221a1f09c52cbace7c1ca71",
+          "bytes": 2336
+        },
+        {
+          "path": "apps/server/src/app.test.ts",
+          "sha256": "7af1342f8c0a5d2664b5bedbcc0cdb617bdb4256679fca118e836ca5af80461d",
+          "bytes": 7414
+        },
+        {
+          "path": "apps/server/src/app.ts",
+          "sha256": "a2015f2962d541da8630717b969b22a782035f1146859fffd812aba3c2a7ef4d",
+          "bytes": 12197
+        },
+        {
+          "path": "apps/server/src/auth/http.test.ts",
+          "sha256": "354c09f354e61029cb1ecba44aec8068632048ce57402324f2c8813263111f58",
+          "bytes": 9564
+        },
+        {
+          "path": "apps/server/src/auth/http.ts",
+          "sha256": "6860d3ab986948aa1d0c03e5f545630e86b18bd96a12d0a8b6cf188c67fa7d3d",
+          "bytes": 9436
+        },
+        {
+          "path": "apps/server/src/auth/service.test.ts",
+          "sha256": "cfa4c98e12412c3e1ec72b2168bf19416087647a71f2ec026dd39d85b9a4c665",
+          "bytes": 9648
+        },
+        {
+          "path": "apps/server/src/auth/service.ts",
+          "sha256": "c25d9f4611beca778875d857f1e296afcd1ea6152353555a9bc060db44d4be67",
+          "bytes": 13881
+        },
+        {
+          "path": "apps/server/src/config/env.test.ts",
+          "sha256": "26f776b42abe77780ab7eb1028c61494283d4fd17eeea3da79eec683b59f4fd3",
+          "bytes": 7201
+        },
+        {
+          "path": "apps/server/src/config/env.ts",
+          "sha256": "72e8c54d2edbd44e8ffe953acc6dd22e030909dda8d45fa9ed85c4cfe399ca3a",
+          "bytes": 12652
+        },
+        {
+          "path": "apps/server/src/config/production.test.ts",
+          "sha256": "55df08c70b140fd2bc1dc7a7423f1ae15ffe4aac9a0368ac96ab187935c4a239",
+          "bytes": 4371
+        },
+        {
+          "path": "apps/server/src/config/production.ts",
+          "sha256": "91de6a095ec08516e834439430b626bbc3bd0b3dcc1485a5e2d450e25cef1d73",
+          "bytes": 8771
+        },
+        {
+          "path": "apps/server/src/db/connection.test.ts",
+          "sha256": "7f1a47b5c180c4cc3899a5e3493328c31bd239852a51dc64dd471fee71587ea2",
+          "bytes": 595
+        },
+        {
+          "path": "apps/server/src/db/connection.ts",
+          "sha256": "7b2ae497e9d9447329287966fb006a18a6aeac5ded547bb36a2a8cda93bce97d",
+          "bytes": 1740
+        },
+        {
+          "path": "apps/server/src/db/ping.ts",
+          "sha256": "14465547b4a70822cd1bf5f5b6b9b96b3ce4368412b97b893685cdb6b78d88c4",
+          "bytes": 784
+        },
+        {
+          "path": "apps/server/src/modules/admin.test.ts",
+          "sha256": "0b591e623819a7c3b5b4b34428803abffcef247f4903e45e11a3df968a07d7a4",
+          "bytes": 27397
+        },
+        {
+          "path": "apps/server/src/modules/admin.ts",
+          "sha256": "c3d7af7f97584d83f284773f4acb1474f8499a429ac0053757395c4f9867e6cf",
+          "bytes": 98850
+        },
+        {
+          "path": "apps/server/src/modules/analytics.test.ts",
+          "sha256": "69d05670589c485f4a02a3e4394945bc279438172f47f4d41efc40dbf8280e5f",
+          "bytes": 23947
+        },
+        {
+          "path": "apps/server/src/modules/analytics.ts",
+          "sha256": "7caca4b154825c12ceebaffebb7ff0bb86c78660ef5c5708d65003bf8f764536",
+          "bytes": 34520
+        },
+        {
+          "path": "apps/server/src/modules/measurement-contract.ts",
+          "sha256": "56aa0815dfdb4247fe6b87dd9c84cb9dfaebaa743f170d34c449219e18a3baf0",
+          "bytes": 23911
+        },
+        {
+          "path": "apps/server/src/modules/public.test.ts",
+          "sha256": "9737ef927f48ed0acc51c13c7e792539d38f0886018c2910cda7d4b259bfddde",
+          "bytes": 45483
+        },
+        {
+          "path": "apps/server/src/modules/public.ts",
+          "sha256": "d544fc8d9cd841a43cfbc612f88e7176d01f7949795d6e16f09a09b1a9bca989",
+          "bytes": 70850
+        },
+        {
+          "path": "apps/server/src/ops/analytics-rollup-cli.ts",
+          "sha256": "6e5b6a8926f6d19124e568dc158133ff4dfbd388221a2138ac2302c7db1151da",
+          "bytes": 7922
+        },
+        {
+          "path": "apps/server/src/ops/cache-invalidation-cli.ts",
+          "sha256": "43b43926512a08467a33cd74d03d5b21c328ea00c54268b144d4c12eee91063c",
+          "bytes": 1577
+        },
+        {
+          "path": "apps/server/src/ops/cache-invalidation.test.ts",
+          "sha256": "931b3e43c774c7e0c1fdafa6d90129b7941acbd9642e214b3d1b5e9bb45ba4b5",
+          "bytes": 3548
+        },
+        {
+          "path": "apps/server/src/ops/cache-invalidation.ts",
+          "sha256": "335e17c209fd213a7144d38462c04b3c380f4ae4f8a62f9cccb2519632abfbe1",
+          "bytes": 6985
+        },
+        {
+          "path": "apps/server/src/p10-hardening.test.ts",
+          "sha256": "e0b0e4427350cc9181959a17ee5c5221f51d59b279ac38b7498746e981d57622",
+          "bytes": 7057
+        },
+        {
+          "path": "apps/server/src/persistence/index.ts",
+          "sha256": "82fc20abe25436c67d2d789fa4a015102812ce3794e87a59ba160452c15c7cab",
+          "bytes": 112
+        },
+        {
+          "path": "apps/server/src/persistence/lifecycle.test.ts",
+          "sha256": "06829fde0a38f8777ccebe27932344235977a5a290d7cf5b2b84782858f89cef",
+          "bytes": 874
+        },
+        {
+          "path": "apps/server/src/persistence/lifecycle.ts",
+          "sha256": "d7ebda41a743da0a8cb4dad1f42475e952261fd2c99817a4cfb3980d815fe176",
+          "bytes": 1411
+        },
+        {
+          "path": "apps/server/src/persistence/models/admin-governance-lock.ts",
+          "sha256": "ac95d66c148785bb2713322425d1c15721cacec1e8e6f30a10f86dbcc4ee5474",
+          "bytes": 919
+        },
+        {
+          "path": "apps/server/src/persistence/models/admin-session.ts",
+          "sha256": "5047e42c52806c8b70d4c9c210809d4326bc288728c3173c778d6573029fb118",
+          "bytes": 1512
+        },
+        {
+          "path": "apps/server/src/persistence/models/admin-user.ts",
+          "sha256": "193c1dedeb5fb3e1a18d766c92c58efdac190bccaa43c7b059102c246222623f",
+          "bytes": 1297
+        },
+        {
+          "path": "apps/server/src/persistence/models/analytics-attribution-claim.ts",
+          "sha256": "bebd168d6190632404b72fd6dcea4bdcc91d36205335307a6a73e5ca6f516357",
+          "bytes": 1463
+        },
+        {
+          "path": "apps/server/src/persistence/models/analytics-daily.test.ts",
+          "sha256": "1b6fb22c330b6ed7627c29ed6b8f74d74d574eca48b8610b524c7ccb5c1bbe8f",
+          "bytes": 1570
+        },
+        {
+          "path": "apps/server/src/persistence/models/analytics-daily.ts",
+          "sha256": "4a3b34da0ee411f3fa49ea4dbd5f2fab580b0631edb437ce2ec8c76102689c0e",
+          "bytes": 8346
+        },
+        {
+          "path": "apps/server/src/persistence/models/analytics-event.ts",
+          "sha256": "41afc43d5d0182ff79115ce62d4296dd213e93aa8e1e546dd01550a5d1513845",
+          "bytes": 4111
+        },
+        {
+          "path": "apps/server/src/persistence/models/analytics-materialization-lock.ts",
+          "sha256": "21de74092efda628977d849a43ad287d7c884e536e0c62901d0c0b4a3fa927c6",
+          "bytes": 1007
+        },
+        {
+          "path": "apps/server/src/persistence/models/anonymous-visitor.ts",
+          "sha256": "931c541208e2c3ae52e7d25b58006b445b939dda7e10cdd9a0fdb281e887ce31",
+          "bytes": 1119
+        },
+        {
+          "path": "apps/server/src/persistence/models/assessment.ts",
+          "sha256": "685e2e7d1e6d3e93ad2ddeabf65c9062f63f5842871b896b6c8b0124b40ef071",
+          "bytes": 2060
+        },
+        {
+          "path": "apps/server/src/persistence/models/audit-log.ts",
+          "sha256": "b99bd4194bef78045d72d43483c18253f9dd3bc71e4411e44e499a7c1e3d91d0",
+          "bytes": 980
+        },
+        {
+          "path": "apps/server/src/persistence/models/cache-invalidation-event.ts",
+          "sha256": "ee37f34cecd5a73b0309ef5ab300291a4442c0ff538084147c391b70f079c730",
+          "bytes": 1942
+        },
+        {
+          "path": "apps/server/src/persistence/models/calculator-version.ts",
+          "sha256": "d8fc59524299b0bd984d687a3e43df20cab3374df372c2a26501a8079c4b738a",
+          "bytes": 10151
+        },
+        {
+          "path": "apps/server/src/persistence/models/calculator.ts",
+          "sha256": "9d62d37f25dfd58390fdcf0690ff554a1e17da62700952d48cea53bb7de985d1",
+          "bytes": 1323
+        },
+        {
+          "path": "apps/server/src/persistence/models/index.ts",
+          "sha256": "cebfb6b8dbc8712464d9cca3e65c365b808b60ca1eae8b13be374de53e758775",
+          "bytes": 1024
+        },
+        {
+          "path": "apps/server/src/persistence/models/job-run.ts",
+          "sha256": "1571ab7c71515e029d6c5e0557d1f30c335f98117aa25f82c2c030ee21357f91",
+          "bytes": 1767
+        },
+        {
+          "path": "apps/server/src/persistence/models/lead.ts",
+          "sha256": "61c65e360d2ad954b26c1cfbeb6a1113ac399dd2268ef01881d07eabfb347a36",
+          "bytes": 1013
+        },
+        {
+          "path": "apps/server/src/persistence/models/login-attempt.ts",
+          "sha256": "044fb7876e4ffcc0d0b42f1bc885f1f868750c10a3972c3c49360d3bc6620f6a",
+          "bytes": 1155
+        },
+        {
+          "path": "apps/server/src/persistence/models/measurement-revision.ts",
+          "sha256": "119a321c199551b94c3e6dcf03cdf0b9bfe67125852db4e197c3cfc8fe8234f2",
+          "bytes": 19389
+        },
+        {
+          "path": "apps/server/src/persistence/models/result.ts",
+          "sha256": "a75cc5ee279d241e08d6e2c50974e59c4fed32ac6a17c599953efa3c79751447",
+          "bytes": 1849
+        },
+        {
+          "path": "apps/server/src/persistence/models.test.ts",
+          "sha256": "fae61bbf017a7bebe3af75d5ca864f5da0a431c7a4fcedd6abae3bcc7de9f2e7",
+          "bytes": 14586
+        },
+        {
+          "path": "apps/server/src/persistence/transactions.ts",
+          "sha256": "de283fbe209b56b45016b670d2e40a353efcef930a4e5e4ac6e66b9b41f0736c",
+          "bytes": 11035
+        },
+        {
+          "path": "apps/server/src/persistence/types.ts",
+          "sha256": "3708078d023e21051ff5a445f871f071cda2a703560b66c8215dceab55757310",
+          "bytes": 282
+        },
+        {
+          "path": "apps/server/src/server.ts",
+          "sha256": "10e6882ed23918d06a6301cbc59eead8a53df552f499cc1abb9c03ba4d9dd2a8",
+          "bytes": 4230
+        }
+      ]
+    },
+    {
+      "path": "apps/client/src",
+      "sha256": "4cf7e76ae69465df54945d133e3c622bae3315b8e87511f887ad4114de279250",
+      "files": [
+        {
+          "path": "apps/client/src/admin/analytics/AdminAnalyticsDashboard.test.tsx",
+          "sha256": "921bced005c87f0a8985672203ea5f2b77f9ff613bc95547ff50f5d4fe613b17",
+          "bytes": 13719
+        },
+        {
+          "path": "apps/client/src/admin/analytics/AdminAnalyticsDashboard.tsx",
+          "sha256": "1d9e16ab16a0ef69dec425a901a9733c80d7ddbef01f490d83b95abccef6ec4c",
+          "bytes": 44318
+        },
+        {
+          "path": "apps/client/src/admin/api.test.ts",
+          "sha256": "cb9df3087bd3818a9d77db314dd16a6dff48118a96530316324c596db17fd8d1",
+          "bytes": 5261
+        },
+        {
+          "path": "apps/client/src/admin/api.ts",
+          "sha256": "f0ce30a3299c7c4f3d13d55e10dd14f3eb710a93812bfae251c1448d422e004d",
+          "bytes": 15006
+        },
+        {
+          "path": "apps/client/src/admin/auth/AdminGate.tsx",
+          "sha256": "4a172062875d37fb961a3992e3e501f097fb7a05eafee580a99ac4ef9be26815",
+          "bytes": 960
+        },
+        {
+          "path": "apps/client/src/admin/auth/AdminSessionProvider.tsx",
+          "sha256": "477e8099aed79401da01fb859ae9ceec493fd3a40fb627d868f051cedd884f62",
+          "bytes": 2853
+        },
+        {
+          "path": "apps/client/src/admin/auth/LoginForm.tsx",
+          "sha256": "9f1ba38fb1eb1cd6ea3349a623cc37e4fc7a0646b462b81d13fc9ff94f11fd52",
+          "bytes": 2141
+        },
+        {
+          "path": "apps/client/src/admin/editor-helpers.test.ts",
+          "sha256": "f8873faf2378d015c4b780b33c6260ece594d23d6fc8731d8815900b8c1db2c5",
+          "bytes": 5400
+        },
+        {
+          "path": "apps/client/src/admin/editor-helpers.ts",
+          "sha256": "1949d7e6d417f084865084c7d29ce6cabf15309242d4cb9e8213618bfe336298",
+          "bytes": 10611
+        },
+        {
+          "path": "apps/client/src/admin/editors/BandEditor.tsx",
+          "sha256": "75f10c9bc188c31b0701f7dc53d2402abd5babbc5c05af3f45d6f8c73718e84b",
+          "bytes": 12588
+        },
+        {
+          "path": "apps/client/src/admin/editors/BiomarkerPicker.tsx",
+          "sha256": "f7e32cc6392c1bda68194e91722f761335415930877dd05aaf334545e4c795bb",
+          "bytes": 3260
+        },
+        {
+          "path": "apps/client/src/admin/editors/CategoryEditor.tsx",
+          "sha256": "73ae279e429f80bf5e835ff31ebfad1eec4331dcfe97d0c152c2c96e6ad7c3d3",
+          "bytes": 9201
+        },
+        {
+          "path": "apps/client/src/admin/editors/ConditionBuilder.tsx",
+          "sha256": "3f4b3924f1aae6b2e68ee10ce9b50df62be0b472137320fd505b944365d94b3c",
+          "bytes": 11721
+        },
+        {
+          "path": "apps/client/src/admin/editors/DomainEditor.tsx",
+          "sha256": "215bf4d3b5b69f72a938e39605eb3f66f91be0a0a128fdb437cdbb891b25252f",
+          "bytes": 7343
+        },
+        {
+          "path": "apps/client/src/admin/editors/editors.test.tsx",
+          "sha256": "baaeaef8769db92950c981f285f8f078559f0dfe669ba801770403d41f3124b7",
+          "bytes": 13064
+        },
+        {
+          "path": "apps/client/src/admin/editors/index.ts",
+          "sha256": "145fb749aa0f66b9e917cb4aaea95866a891edb7b6bd8c2cb06af67402019afc",
+          "bytes": 274
+        },
+        {
+          "path": "apps/client/src/admin/editors/LayoutContentEditor.tsx",
+          "sha256": "50fe688a512363e0924362de92e0702e114895397fe88e2150d92f2cf8f06f89",
+          "bytes": 32733
+        },
+        {
+          "path": "apps/client/src/admin/editors/ParameterEditor.tsx",
+          "sha256": "2c4c3690beeefd38cf427148b8f6cd5c29dd873ffecc59e17f123326132ff17f",
+          "bytes": 14163
+        },
+        {
+          "path": "apps/client/src/admin/editors/ScoringEditor.tsx",
+          "sha256": "d5de956529e84b9c9301a6a4d4db32114e9a653402203ef29514790a9ab1f046",
+          "bytes": 15628
+        },
+        {
+          "path": "apps/client/src/admin/studio/AdminHome.tsx",
+          "sha256": "facaabca260c749e3d368dbef55cc8be4968007f0863cc14ce277bf9d8900deb",
+          "bytes": 7668
+        },
+        {
+          "path": "apps/client/src/admin/studio/draft-template.test.ts",
+          "sha256": "4c3b2e0bc258620d46342b66fdf0b217e0ffac05953839fc709408b7cbfdc228",
+          "bytes": 940
+        },
+        {
+          "path": "apps/client/src/admin/studio/draft-template.ts",
+          "sha256": "657d4c544dd83773ecfd73439ea34f7a4d4f082ee62daba6bf8aed58eb1056cc",
+          "bytes": 1531
+        },
+        {
+          "path": "apps/client/src/admin/studio/PreviewReleasePanel.test.tsx",
+          "sha256": "185f84a5df05ddce68bdbfe45f2cfe0b0b59ddc8dcef1180644a518c8b716724",
+          "bytes": 2747
+        },
+        {
+          "path": "apps/client/src/admin/studio/PreviewReleasePanel.tsx",
+          "sha256": "9ac072b821ffba6a0d3c29ccbace0cdf94ef6169024a0f86112abb97eb3ef901",
+          "bytes": 19104
+        },
+        {
+          "path": "apps/client/src/admin/studio/StudioPageLoader.tsx",
+          "sha256": "ea156dcadb761370f8b608f1adec5e9160da3513862e0e0b53971c7eeca7c3d0",
+          "bytes": 3569
+        },
+        {
+          "path": "apps/client/src/admin/studio/StudioWorkspace.tsx",
+          "sha256": "92072b58e3c617965c78bfa5d09f8425a59837fae322216cc7d0d38dada87ae2",
+          "bytes": 18564
+        },
+        {
+          "path": "apps/client/src/admin/studio/use-studio-draft.ts",
+          "sha256": "a4a73e30bf0efdac12e2293efdbe120768237e91363675e5e6244663bbbf75bb",
+          "bytes": 4807
+        },
+        {
+          "path": "apps/client/src/admin/studio/validation-navigation.test.ts",
+          "sha256": "e10c8005f3e17e0bf293f298447be19d1394c8abe55ebf90b5943a3fb01cefc8",
+          "bytes": 2122
+        },
+        {
+          "path": "apps/client/src/admin/studio/validation-navigation.ts",
+          "sha256": "12b9a9fe414b1e7cc4d34d0317f86f264e721faddeb8aa0899e9e0d8873bcad2",
+          "bytes": 1485
+        },
+        {
+          "path": "apps/client/src/analytics/AnalyticsProvider.test.tsx",
+          "sha256": "bc6d68f47d9bf7e6a0332f36f088a5710d9ff2ef06a4f7597fe89bc47498b3b8",
+          "bytes": 7850
+        },
+        {
+          "path": "apps/client/src/analytics/AnalyticsProvider.tsx",
+          "sha256": "0142fd0fc6cf526382f1dbbabc9ddbfcfbe1405c1cd95ac013176f2a8dfa6ac2",
+          "bytes": 6033
+        },
+        {
+          "path": "apps/client/src/analytics/client.test.ts",
+          "sha256": "5885e3a8fb0eb5452a468b51dbbba8d0aff1d131ff2b323a53a59d53da544fe4",
+          "bytes": 25387
+        },
+        {
+          "path": "apps/client/src/analytics/client.ts",
+          "sha256": "fb140af160395c4a31ea94c24b280cd0e93d03d93e579cfe3bd861722be0087a",
+          "bytes": 17528
+        },
+        {
+          "path": "apps/client/src/api.test.ts",
+          "sha256": "23f0ce201a9be954843e7905f9fc311d2b28f3b774a409ac29a2c1428f347ca9",
+          "bytes": 2681
+        },
+        {
+          "path": "apps/client/src/api.ts",
+          "sha256": "874cfb22cd36b118cdd3a6cae145aa07c6cea0b9510db5189638abe6182ce281",
+          "bytes": 5398
+        },
+        {
+          "path": "apps/client/src/biomarker-directory.test.tsx",
+          "sha256": "759f81a8d897c2b477a9aa5c741deb03dc8d5a4a2a13f016e8d943b65cbbaecd",
+          "bytes": 6036
+        },
+        {
+          "path": "apps/client/src/biomarker-directory.tsx",
+          "sha256": "18c6edd5c11199012125c5ae083d9d7bd498cfa4c91861cc655b172733b05391",
+          "bytes": 8321
+        },
+        {
+          "path": "apps/client/src/biomarkers/biomarker-detail.test.tsx",
+          "sha256": "bc36cc5909f0c1a31eec825fc1ad93a24a1e96158ec56c18badc94da9a2ab085",
+          "bytes": 8375
+        },
+        {
+          "path": "apps/client/src/biomarkers/biomarker-detail.tsx",
+          "sha256": "a4b0e4982f3caca87b20befa6db43d5505355e3130411cb6343f9629237e21fc",
+          "bytes": 11490
+        },
+        {
+          "path": "apps/client/src/biomarkers/range-format.test.ts",
+          "sha256": "d529a1f15bf84417ddcb260452fe24f4b91e8b104af3a91ca674fc70ddf46f6c",
+          "bytes": 2898
+        },
+        {
+          "path": "apps/client/src/biomarkers/range-format.ts",
+          "sha256": "f70731ed5fefec5506c8f53fbe1acdf19988ecd5b5740773eb9f99b6b388c29a",
+          "bytes": 3612
+        },
+        {
+          "path": "apps/client/src/calculator/CalculatorRenderer.analytics.test.tsx",
+          "sha256": "eeac8dffc6e383ca0740da16c0aee1a0f2b4def44a3894cb17ec657ba6afdd39",
+          "bytes": 2963
+        },
+        {
+          "path": "apps/client/src/calculator/CalculatorRenderer.test.tsx",
+          "sha256": "0c9557f09966ecc55e59ec539b0731bf7e351b1973b85e851e30464549448da9",
+          "bytes": 11950
+        },
+        {
+          "path": "apps/client/src/calculator/CalculatorRenderer.tsx",
+          "sha256": "0464dc151a3d1fdcd5223781575eca76ef484ac8d9d2255447f56aa7f5f8c750",
+          "bytes": 16770
+        },
+        {
+          "path": "apps/client/src/calculator/conditions.test.ts",
+          "sha256": "496fceb79a484a420ed8e6e72941f2e89cb86de148f115f72fee844204f55538",
+          "bytes": 2602
+        },
+        {
+          "path": "apps/client/src/calculator/conditions.ts",
+          "sha256": "a45803315f2fd455fefe91d0918660ca92f7390c813e0c2e48ba8c745ea7fcef",
+          "bytes": 3462
+        },
+        {
+          "path": "apps/client/src/calculator/fields/BooleanField.tsx",
+          "sha256": "a41d1e796e5897ccfe33a5db82dc3cdeaf9a8d2643612b061d91adac78547418",
+          "bytes": 1265
+        },
+        {
+          "path": "apps/client/src/calculator/fields/FieldShell.tsx",
+          "sha256": "d307b11ee0c3badcb3fb17c915a472f46d8b3327760309ee74f1de5153323140",
+          "bytes": 3294
+        },
+        {
+          "path": "apps/client/src/calculator/fields/NumberField.tsx",
+          "sha256": "070fe58259b17cef1b441ca91fc6a2c293c8cda4c7e035726fac47ae317adb56",
+          "bytes": 2133
+        },
+        {
+          "path": "apps/client/src/calculator/fields/registry.ts",
+          "sha256": "8059112b8ab83b0c417d483366d83018c1f1d8745e655455ac776b2f0c57ca8f",
+          "bytes": 669
+        },
+        {
+          "path": "apps/client/src/calculator/fields/SelectField.tsx",
+          "sha256": "c2d7add45a16ba15d69152537e21fa05692280c9739d98d8eab7e64b024c406b",
+          "bytes": 1230
+        },
+        {
+          "path": "apps/client/src/calculator/fields/types.ts",
+          "sha256": "355ce01791a1e109896090995cc0884055de5baada79d37bf66a0031eb22c802",
+          "bytes": 538
+        },
+        {
+          "path": "apps/client/src/calculator/index.ts",
+          "sha256": "ea97b86e1da427b2c8fc8d8f3891b15fb7f11e20fc90b888d2daf0056e1af290",
+          "bytes": 1009
+        },
+        {
+          "path": "apps/client/src/calculator/progress-storage.ts",
+          "sha256": "d2806e4baaae787a4ae75ad015879f0424fbe10e1d336f238a49c62263cf4970",
+          "bytes": 5501
+        },
+        {
+          "path": "apps/client/src/calculator/reducer.ts",
+          "sha256": "892d1c3ffeea565cbad3c9ec54f0d6295a38d4c48687fdda0d807eea0e964ecf",
+          "bytes": 3001
+        },
+        {
+          "path": "apps/client/src/calculator/state-submission.test.ts",
+          "sha256": "ce93fc2c0b61a756ca5074b89c7836d80b2ca043c6c122a4a1e3b9d99b3fb077",
+          "bytes": 5295
+        },
+        {
+          "path": "apps/client/src/calculator/StepNav.tsx",
+          "sha256": "0fd98641069ff6530754e711e22db561722a3b19141e9fb09e148f84021c06f8",
+          "bytes": 754
+        },
+        {
+          "path": "apps/client/src/calculator/structure.ts",
+          "sha256": "36a38c3c0bdb5dda357a594867fee1fd52f4d94454ab300d612c293edcbbcd35",
+          "bytes": 3027
+        },
+        {
+          "path": "apps/client/src/calculator/submission.ts",
+          "sha256": "3c0b77c67fc75c44cd199ff1d4afc7ac5a666d9a8330b4475e0ff682e9b43795",
+          "bytes": 5252
+        },
+        {
+          "path": "apps/client/src/calculator/test-fixture.ts",
+          "sha256": "a902b4d9576f9eb6a874a4322bdb2279a850e52363192c77e20dac956dafa51d",
+          "bytes": 4684
+        },
+        {
+          "path": "apps/client/src/calculator/types.ts",
+          "sha256": "69cc39429547c9b5af18cad378f2cf3ea05c379d28234ff09d1cb56356ccad3e",
+          "bytes": 2075
+        },
+        {
+          "path": "apps/client/src/calculator/units.test.ts",
+          "sha256": "9e57565d18d4fbde794c3df4c150614b19b8c7daea9ff6394511ce51e1e175b8",
+          "bytes": 1327
+        },
+        {
+          "path": "apps/client/src/calculator/units.ts",
+          "sha256": "e85f4d74ee3b5ca747270340de9ddfd0188cf0d67251e5d3e0b4152217df698f",
+          "bytes": 3230
+        },
+        {
+          "path": "apps/client/src/calculator/validation.test.ts",
+          "sha256": "a10439fcc34ea9ea37385df17863d0723d14f9abeb833247c81abc2d44d3aab5",
+          "bytes": 2678
+        },
+        {
+          "path": "apps/client/src/calculator/validation.ts",
+          "sha256": "e73fe009d81ee00b72a99a38b2f746ade16e0c415e1d209a76765b7051b8ec32",
+          "bytes": 3998
+        },
+        {
+          "path": "apps/client/src/content/ContentRenderer.test.tsx",
+          "sha256": "5a5d46175237a1fbfcc282b266aac4a779b0fcfa409c038171ea0c5a65283149",
+          "bytes": 9009
+        },
+        {
+          "path": "apps/client/src/content/ContentRenderer.tsx",
+          "sha256": "79e0b0e5d687477528ff9cb49cc56d3bc0920b2da6fe81af8bf59f2101be3829",
+          "bytes": 10617
+        },
+        {
+          "path": "apps/client/src/content/index.ts",
+          "sha256": "9ec9c728fa2f6de6147f517f1a7dfe0e4ac138862f33f805eb8221e84a55e21c",
+          "bytes": 699
+        },
+        {
+          "path": "apps/client/src/content/jsonLd.tsx",
+          "sha256": "7e966393644e950545fd9e276c16de9aa13136cb6bf8f0ca1870aadf00eabfa8",
+          "bytes": 3579
+        },
+        {
+          "path": "apps/client/src/content/SafeMarkdown.tsx",
+          "sha256": "e336b5140ad85c5553296373d4c4603e62f085a463953e0ed8c0c3ba139510d4",
+          "bytes": 1654
+        },
+        {
+          "path": "apps/client/src/content/types.ts",
+          "sha256": "f4e5b4b3458b3a71c55250af9a43ac0c33d0c9a5cb73e72e9003be6a4693c4aa",
+          "bytes": 4866
+        },
+        {
+          "path": "apps/client/src/content-adapter.ts",
+          "sha256": "e4ede42d5de7cc0ee15c74e66b571dbafc2bb7dd26cff9fdfe2c7529cfd3ea8f",
+          "bytes": 900
+        },
+        {
+          "path": "apps/client/src/directory.tsx",
+          "sha256": "82044a8b1622029fdb6152e554f01d7dacebbd299579a5044ef8548992b21598",
+          "bytes": 3262
+        },
+        {
+          "path": "apps/client/src/foundation.test.ts",
+          "sha256": "03c5deee27e7682558b55f840dd87206b05ef931c07530c9485486d18a014c74",
+          "bytes": 216
+        },
+        {
+          "path": "apps/client/src/ops/revalidation.test.ts",
+          "sha256": "2bc59c90005b4c73252e66fc25cba84e141b399b6f410d134298589201f8f9f8",
+          "bytes": 2151
+        },
+        {
+          "path": "apps/client/src/ops/revalidation.ts",
+          "sha256": "d5685f019e0326759fe72548da7ff44180aaa89987f2afa4ae0281bdf3e17967",
+          "bytes": 3797
+        },
+        {
+          "path": "apps/client/src/public-ui.tsx",
+          "sha256": "3c3d97e101d239b099327f3a5548162deb31c7ccff17a9fc0f704bbfbf0c7fcc",
+          "bytes": 9215
+        },
+        {
+          "path": "apps/client/src/query-provider.tsx",
+          "sha256": "8804d3af3b659402df92828af644766b9bd5aeaa765fa5fa0589e062aea11cd4",
+          "bytes": 916
+        },
+        {
+          "path": "apps/client/src/result/index.ts",
+          "sha256": "85febed408cf044df858203ff6f6660abdc3004d4c1988ea63d840e3e41d86c0",
+          "bytes": 614
+        },
+        {
+          "path": "apps/client/src/result/LeadCapture.tsx",
+          "sha256": "97a6e250de1dcd42ca9969baa5848d74ad91ae0bd8b8c4a0201e3a3bf9beb214",
+          "bytes": 2839
+        },
+        {
+          "path": "apps/client/src/result/ResultRenderer.test.tsx",
+          "sha256": "4bda6eb231e3604f00f02701ead2800324af2184805a5ca2eeadcdcf5a6b9094",
+          "bytes": 10555
+        },
+        {
+          "path": "apps/client/src/result/ResultRenderer.tsx",
+          "sha256": "7efad9b81d74b7ce9247aea8f6c9c1592ea89c4a61559ffa8115f29906a3a13f",
+          "bytes": 19869
+        },
+        {
+          "path": "apps/client/src/result/types.ts",
+          "sha256": "86a4de71196c950df3604438480110e879cc2f33c6229ef356ac4337e9acfc61",
+          "bytes": 4284
+        },
+        {
+          "path": "apps/client/src/seo.test.ts",
+          "sha256": "729fefa6e061b71aa55fd4c47ba92fa90efa97db296a0a863cdc73c9c90f5ca4",
+          "bytes": 2587
+        },
+        {
+          "path": "apps/client/src/seo.ts",
+          "sha256": "f56ce59dbacc0e7af991a64690a81cdb5438bcf4790ff28851e443c7ce317b43",
+          "bytes": 2714
+        },
+        {
+          "path": "apps/client/src/site-shell.tsx",
+          "sha256": "ec3fb85ff659f0e1b2de83e0cea722a1b34e5cfe46238a858b9bbc8ebaa60ae4",
+          "bytes": 887
+        }
+      ]
+    },
+    {
+      "path": "apps/client/app",
+      "sha256": "afa4152ddf079d3ad2df53dbaa3deb4a63ea83633bbd86756898c1ad4ac2ae0a",
+      "files": [
+        {
+          "path": "apps/client/app/admin/admin.css",
+          "sha256": "ff2832944976910abbaa595e90843e852f973a34f8e3ff57cde0642e82976447",
+          "bytes": 14786
+        },
+        {
+          "path": "apps/client/app/admin/analytics/page.tsx",
+          "sha256": "54e9ad98d13e62a7fe079654088a6ac138c8552647bda5458337795e9308d820",
+          "bytes": 292
+        },
+        {
+          "path": "apps/client/app/admin/calculators/[slug]/versions/[version]/page.tsx",
+          "sha256": "a406667bf1699dcb983b37dd31764142f4e1a1cd8e741a06567287b7e5b31a14",
+          "bytes": 657
+        },
+        {
+          "path": "apps/client/app/admin/layout.tsx",
+          "sha256": "332b47c6e5b76bf7ea6ee022d3a5997470c07787ffb7c5960bc0872928c27816",
+          "bytes": 461
+        },
+        {
+          "path": "apps/client/app/admin/login/page.tsx",
+          "sha256": "7054ada0edabb1544d69e54f34aa36bb713410e2da20dfb9603804e0ef70458e",
+          "bytes": 210
+        },
+        {
+          "path": "apps/client/app/admin/page.tsx",
+          "sha256": "c953cab48c778804cb2102c245cae5eec5c1c8d683ff558b5a70c8b42b5bf824",
+          "bytes": 232
+        },
+        {
+          "path": "apps/client/app/api/healthz/route.test.ts",
+          "sha256": "2e284a6f99b5fe60e025c25262eb508f4b04a98d17ae980ae3090777815f23ab",
+          "bytes": 817
+        },
+        {
+          "path": "apps/client/app/api/healthz/route.ts",
+          "sha256": "f708fa35a570063a6e3fcdf3b98a875a486b1f28fdefbd42689dfc51c68e3235",
+          "bytes": 452
+        },
+        {
+          "path": "apps/client/app/api/v1/internal/revalidate/route.ts",
+          "sha256": "6068cb7825103115176ec5f936f131a7e0eb29725339350992c48868d61acff9",
+          "bytes": 2403
+        },
+        {
+          "path": "apps/client/app/biomarkers/[key]/loading.tsx",
+          "sha256": "990f9fde7971a7f868d1a64bfc9c3faadd3c1b07d2edf9e2fcf0e0b066cf2ace",
+          "bytes": 293
+        },
+        {
+          "path": "apps/client/app/biomarkers/[key]/page.tsx",
+          "sha256": "dbed3782c68dccbc33db1ecfa26e3ca1a49ffed0beec9fd606d90d1fc9844629",
+          "bytes": 2488
+        },
+        {
+          "path": "apps/client/app/biomarkers/page.tsx",
+          "sha256": "ebc10a76fa73513436be38c91ef0549626116dc3e7e6c46c82a12274c8b5edfe",
+          "bytes": 1893
+        },
+        {
+          "path": "apps/client/app/c/[slug]/page.tsx",
+          "sha256": "1e3c2e8bd3db454ce58f73c559b92d1d2640fe4384286832408768365992e8ac",
+          "bytes": 4393
+        },
+        {
+          "path": "apps/client/app/error.tsx",
+          "sha256": "6619d18852204fb29d82e037ee10d1461d44192903a3ea27ad772114a8154869",
+          "bytes": 526
+        },
+        {
+          "path": "apps/client/app/globals.css",
+          "sha256": "ca77e2b8419b275293c66f638e52cd89e42085cfb7624541ba7785f824b0383c",
+          "bytes": 14305
+        },
+        {
+          "path": "apps/client/app/icon.svg",
+          "sha256": "60e280857e8462c107d943d32787b152bc968b05e6cf25a812e4f758d7711d07",
+          "bytes": 201
+        },
+        {
+          "path": "apps/client/app/layout.tsx",
+          "sha256": "345baa509ee714935ddcf328e7cc346ab3d8df3ada63d722710f13474aa2cac3",
+          "bytes": 1046
+        },
+        {
+          "path": "apps/client/app/loading.tsx",
+          "sha256": "309fabd34e71bff85c8e7d6af9c624234602cb1c22a5d77a19ac56aaf6aa2855",
+          "bytes": 248
+        },
+        {
+          "path": "apps/client/app/not-found.tsx",
+          "sha256": "492d187e5a1a51c71b3981834da23dcf162c854f9d569bf964bdeda9097244ca",
+          "bytes": 536
+        },
+        {
+          "path": "apps/client/app/page.tsx",
+          "sha256": "48edfc9e817c514f9635a397e7f4480e835f6db4107dd23677fa11147e69e8fe",
+          "bytes": 1339
+        },
+        {
+          "path": "apps/client/app/results/[shareToken]/not-found.tsx",
+          "sha256": "8954e685b2902be1f340392bbddb4ece97b8f8a312629782aaaa8d8009987e56",
+          "bytes": 543
+        },
+        {
+          "path": "apps/client/app/results/[shareToken]/page.tsx",
+          "sha256": "54251afaf0ab972e3c53817206d58867d10c0c4784581b56a40ab535f0e6dd8f",
+          "bytes": 1353
+        },
+        {
+          "path": "apps/client/app/robots.ts",
+          "sha256": "0bfaf278974da00200c75aa998c2bd535492842bd33425e7d20882ccae838cac",
+          "bytes": 385
+        },
+        {
+          "path": "apps/client/app/sitemap.ts",
+          "sha256": "20071a76bf2517b52050b48e80dcd986ca09b659146540d8dfa8f6f2fee0f5bc",
+          "bytes": 1763
+        }
+      ]
+    }
+  ],
+  "combinedSha256": "82f21e818d0183c1e625e7618840ee84f9a05a0e6b6b0527a9da3de2040a1523"
+}

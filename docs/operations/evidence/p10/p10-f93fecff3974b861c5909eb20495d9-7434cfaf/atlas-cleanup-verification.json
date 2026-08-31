@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "niro-p10-atlas-cleanup-verification.v1",
+  "verifiedAtUtc": "2026-08-29T18:58:20Z",
+  "method": "MongoDB admin listDatabases name-only query after the P10 process exited",
+  "database": "niro_p7_f93fecff3974b861c5909eb20495d9",
+  "present": false,
+  "nextP10CacheCount": 0
+}

@@ -1,0 +1,109 @@
+{
+  "$schema": "niro-platform/calculator-version.v1",
+  "calculatorSlug": "diabetes-risk",
+  "name": "Diabetes Risk Calculator",
+  "version": 1,
+  "status": "draft",
+  "shortDescription": "IDRS-based diabetes risk from age, waist, activity, family history — plus your glucose labs if you have them.",
+  "disclaimers": ["Educational screening aid, not a diagnosis. Confirm with fasting glucose/HbA1c testing and a clinician."],
+  "NIRO_SOURCE_STATUS": {
+    "banner": "NIRO-DEFINED (ACTIVE)",
+    "explanation": "Factors, points, missing-data logic, glycemic max() rule and categories transcribed from Niro 'Risk calculators.xlsx' sheet 'Diabetes'.",
+    "remainingClarifications": ["N3: numeric cutoffs for PP Sugar Normal/Borderline/High not stated in sheet (select input used meanwhile)"]
+  },
+  "parameters": [
+    { "key": "age", "label": "Age", "group": "profile", "inputType": "number", "unit": { "canonical": "years" },
+      "validation": { "required": true, "min": 18, "max": 120 }, "missingPolicy": "block", "order": 1,
+      "source": { "type": "niro", "ref": "XLSX: Age is Mandatory" } },
+    { "key": "sex", "label": "Sex", "group": "profile", "inputType": "select", "validation": { "required": true },
+      "options": [ { "value": "male", "label": "Male" }, { "value": "female", "label": "Female" } ], "order": 2 },
+    { "key": "waistCm", "label": "Waist circumference", "group": "profile", "inputType": "number",
+      "unit": { "canonical": "cm", "allowed": [ { "code": "cm", "factor": 1 }, { "code": "in", "factor": 2.54 } ] },
+      "validation": { "required": false, "min": 40, "max": 250 }, "missingPolicy": "impute-rule", "order": 3,
+      "source": { "type": "niro", "ref": "XLSX missing logic: impute 10 pts if glycemic index ≥ 10" } },
+    { "key": "physicalActivity", "label": "Physical activity", "group": "lifestyle", "inputType": "select",
+      "validation": { "required": false }, "missingPolicy": "default-option",
+      "options": [ { "value": "sedentary", "label": "Sedentary" }, { "value": "moderate", "label": "Moderate" }, { "value": "regular", "label": "Regular exercise" } ],
+      "defaultOption": "moderate", "order": 4,
+      "source": { "type": "niro", "ref": "XLSX missing logic: default 3 pts (= Moderate)" } },
+    { "key": "familyHistory", "label": "Family history of diabetes", "group": "history", "inputType": "select",
+      "validation": { "required": false }, "missingPolicy": "default-option",
+      "options": [ { "value": "none", "label": "None" }, { "value": "one-parent", "label": "One parent" }, { "value": "both-parents", "label": "Both parents" } ],
+      "defaultOption": "none", "order": 5,
+      "source": { "type": "niro", "ref": "XLSX missing logic: default 0" } },
+    { "key": "hba1c", "label": "HbA1c", "group": "labs", "inputType": "number", "unit": { "canonical": "%" },
+      "validation": { "required": false, "min": 3, "max": 20 }, "missingPolicy": "exclude-from-group", "order": 10 },
+    { "key": "fbs", "label": "Fasting blood sugar", "group": "labs", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "mmol/L", "factor": 18.02 } ] },
+      "validation": { "required": false, "min": 30, "max": 600 }, "missingPolicy": "exclude-from-group", "order": 11 },
+    { "key": "ppSugar", "label": "Post-prandial (PP) sugar level", "group": "labs", "inputType": "select",
+      "validation": { "required": false }, "missingPolicy": "exclude-from-group",
+      "options": [ { "value": "normal", "label": "Normal" }, { "value": "borderline", "label": "Borderline" }, { "value": "high", "label": "High" } ],
+      "order": 12, "source": { "type": "niro", "ref": "XLSX: Normal/Borderline/High — numeric cutoffs N3" } }
+  ],
+  "scoringRules": [
+    { "parameterKey": "age", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 35, "maxInclusive": true, "points": 0 }, { "min": 35, "minExclusive": true, "max": 49, "maxInclusive": true, "points": 20 }, { "min": 50, "points": 30 } ],
+      "source": { "type": "niro", "ref": "XLSX: ≤35→0 · 35–49→20 · 50+→30" } } ] },
+    { "parameterKey": "waistCm", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "male" } ] }, "bands": [
+        { "max": 90, "maxInclusive": true, "points": 0 }, { "min": 90, "minExclusive": true, "points": 10 } ] },
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "female" } ] }, "bands": [
+        { "max": 80, "maxInclusive": true, "points": 0 }, { "min": 80, "minExclusive": true, "points": 10 } ] } ],
+      "source": { "type": "niro", "ref": "XLSX: M >90cm→10 · F >80cm→10" } },
+    { "parameterKey": "physicalActivity", "optionPoints": [
+      { "value": "sedentary", "points": 30 }, { "value": "moderate", "points": 3 }, { "value": "regular", "points": 0 } ],
+      "source": { "type": "niro", "ref": "XLSX: Sedentary→30 · Moderate→3 · Regular→0" } },
+    { "parameterKey": "familyHistory", "optionPoints": [
+      { "value": "none", "points": 0 }, { "value": "one-parent", "points": 10 }, { "value": "both-parents", "points": 20 } ],
+      "source": { "type": "niro", "ref": "XLSX: None→0 · One parent→10 · Both→20" } },
+    { "parameterKey": "hba1c", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 5.7, "points": 0 }, { "min": 5.7, "max": 6.4, "maxInclusive": true, "points": 10 }, { "min": 6.5, "points": 20 } ],
+      "source": { "type": "niro", "ref": "XLSX: <5.7→0 · 5.7–6.4→10 · >6.5→20" } } ] },
+    { "parameterKey": "fbs", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 100, "points": 0 }, { "min": 100, "max": 125, "maxInclusive": true, "points": 10 }, { "min": 126, "points": 20 } ],
+      "source": { "type": "niro", "ref": "XLSX: <100→0 · 100–125→10 · >126→20" } } ] },
+    { "parameterKey": "ppSugar", "optionPoints": [
+      { "value": "normal", "points": 0 }, { "value": "borderline", "points": 10 }, { "value": "high", "points": 20 } ],
+      "source": { "type": "niro", "ref": "XLSX: Normal→0 · Borderline→10 · High→20" } }
+  ],
+  "parameterGroupsAggregation": [
+    { "key": "glycemicIndex", "label": "Glycemic index", "aggregate": "max", "parameterKeys": ["hba1c", "fbs", "ppSugar"],
+      "source": { "type": "niro", "ref": "XLSX (verbatim): 'Take only maximum of Hba1c, FBS, PP' → max(hba1c_score, fbs_score, pp_score)" } }
+  ],
+  "imputationRules": [
+    { "key": "waist-impute", "parameterKey": "waistCm",
+      "when": { "all": [ { "aggregate": "glycemicIndex", "op": "gte", "value": 10 } ] },
+      "action": { "setPoints": 10 },
+      "source": { "type": "niro", "ref": "XLSX missing logic: waist scores 10 when glycemic index ≥10 and waist missing" } }
+  ],
+  "domains": [ { "key": "overall", "label": "Diabetes risk factors", "weight": 1.0, "implicit": true,
+    "parameterKeys": ["age", "waistCm", "physicalActivity", "familyHistory"], "aggregateKeys": ["glycemicIndex"] } ],
+  "formulas": [ { "key": "final-score", "expression": "sum(points) + glycemicIndex",
+    "source": { "type": "niro", "ref": "XLSX: IDRS-style additive + single glycemic component" } } ],
+  "resultCategories": {
+    "scale": { "min": 0, "max": 100, "direction": "higher-is-worse" },
+    "bandEdges": "min-inclusive",
+    "bands": [
+      { "label": "Low Risk", "max": 40, "color": "#1a9850",
+        "message": "Individuals have a lower probability of diabetes.", "source": { "type": "niro", "ref": "XLSX: IDRS <40" } },
+      { "label": "Moderate Risk", "min": 40, "max": 70, "maxInclusive": true, "color": "#fee08b",
+        "message": "Individuals have a moderate risk of developing diabetes and need close monitoring.", "source": { "type": "niro", "ref": "XLSX: 40–70" } },
+      { "label": "High Risk", "min": 70, "minExclusive": true, "color": "#d73027",
+        "message": "Individuals are at a high risk of developing diabetes and require immediate intervention.", "source": { "type": "niro", "ref": "XLSX: >70" } }
+    ],
+    "overrides": [
+      { "when": { "all": [ { "aggregate": "glycemicIndex", "op": "eq", "value": 10 } ] }, "minCategory": "Moderate Risk",
+        "source": { "type": "niro", "ref": "XLSX: 'or glycemic index of 10' ⇒ at least Moderate" } },
+      { "when": { "all": [ { "aggregate": "glycemicIndex", "op": "eq", "value": 20 } ] }, "minCategory": "High Risk",
+        "source": { "type": "niro", "ref": "XLSX: 'or Glycemic index of 20' ⇒ High" } }
+    ]
+  },
+  "uiConfig": {
+    "theme": { "accent": "#b45309" },
+    "steps": [ { "key": "about", "title": "About you", "parameterGroups": ["profile", "lifestyle", "history"] },
+               { "key": "labs", "title": "Glucose labs (if available)", "parameterGroups": ["labs"] } ],
+    "result": { "layout": ["score-gauge", "category", "key-contributors", "recommendations"] }
+  },
+  "sources": [ { "type": "niro", "ref": "Risk calculators.xlsx — 'Diabetes' sheet (primary; IDRS-based)" } ]
+}

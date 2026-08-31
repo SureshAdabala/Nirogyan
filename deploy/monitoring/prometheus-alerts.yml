@@ -1,0 +1,39 @@
+groups:
+  - name: niro-platform
+    rules:
+      - alert: NiroApiUnavailable
+        expr: up{job="niro-server"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Niro API metrics target is unavailable
+      - alert: NiroApiHighErrorRate
+        expr: |
+          sum(rate(niro_http_requests_total{job="niro-server",status=~"5.."}[5m]))
+          /
+          clamp_min(sum(rate(niro_http_requests_total{job="niro-server"}[5m])), 0.001)
+          > 0.05
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Niro API 5xx rate exceeds 5 percent
+      - alert: NiroApiHighP95Latency
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum by (le) (rate(niro_http_request_duration_seconds_bucket{job="niro-server"}[5m]))
+          ) > 0.3
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Niro API p95 latency exceeds 300 ms
+      - alert: NiroApiProcessMemoryHigh
+        expr: niro_process_resident_memory_bytes{job="niro-server"} > 650000000
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: Niro API process memory is near the reference container limit

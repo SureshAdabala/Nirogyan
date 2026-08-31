@@ -1,0 +1,436 @@
+{
+  "$schema": "niro-platform/calculator-version.v1",
+  "calculatorSlug": "niro-cws",
+  "name": "Niro Comprehensive Wellness Score",
+  "version": 2,
+  "status": "draft",
+  "shortDescription": "Interprets your biomarkers across 9 health domains and produces a single wellness score with category, contributors and recommendations.",
+  "disclaimers": [
+    "This assessment is educational and is not a medical diagnosis. Discuss results with a healthcare professional.",
+    "Reference ranges vary between laboratories — your lab report's ranges take precedence for individual interpretation."
+  ],
+
+  "NIRO_SOURCE_STATUS": {
+    "banner": "SCORING NOW NIRO-DEFINED (v2)",
+    "explanation": "All scoring bands, points, adjustments, formulas and categories below are transcribed from the primary Niro source: 'Comprehensive Wellness Score Framework: A Point-Based Assessment of Health Parameters' (Risk Analysis folder, extracted 2026-08-18). Full extraction: research/niro-risk-logic-extraction.md.",
+    "governanceCaveat": "The source PDF carries the comment 'This has been rejected because of no stratified ranges available for client'. This configuration therefore represents the DOCUMENTED framework pending Niro's stratified-range revision (clarification N1). Publish only after Niro confirms status.",
+    "remainingClarifications": ["N1 rejection/stratification status", "N2 cortisol intake flow", "N4 estradiol postmenopausal band", "C7 required/optional confirmation"]
+  },
+
+  "parameters": [
+    { "key": "sex", "label": "Sex", "group": "profile", "inputType": "select", "validation": { "required": true },
+      "options": [ { "value": "male", "label": "Male" }, { "value": "female", "label": "Female" } ], "order": 1,
+      "source": { "type": "niro", "ref": "CWS PDF §4.2 — sex-specific ranges inside parameter bands" } },
+    { "key": "age", "label": "Age", "group": "profile", "inputType": "number", "unit": { "canonical": "years" },
+      "validation": { "required": true, "min": 18, "max": 120 }, "order": 2,
+      "source": { "type": "niro", "ref": "CWS PDF §4.1" } },
+    { "key": "heightCm", "label": "Height", "group": "profile", "inputType": "number",
+      "unit": { "canonical": "cm", "allowed": [ { "code": "cm", "factor": 1 }, { "code": "in", "factor": 2.54 } ] },
+      "validation": { "required": true, "min": 100, "max": 250 }, "order": 3 },
+    { "key": "weightKg", "label": "Weight", "group": "profile", "inputType": "number",
+      "unit": { "canonical": "kg", "allowed": [ { "code": "kg", "factor": 1 }, { "code": "lb", "factor": 0.4536 } ] },
+      "validation": { "required": true, "min": 25, "max": 350 }, "order": 4 },
+    { "key": "bmi", "label": "BMI", "group": "profile", "inputType": "derived",
+      "derived": { "formula": "weightKg / pow(heightCm / 100, 2)", "dependsOn": ["weightKg", "heightCm"] },
+      "unit": { "canonical": "kg/m²" }, "order": 5,
+      "source": { "type": "niro", "ref": "CWS PDF §4.3 (WHO categories)" } },
+    { "key": "smoking", "label": "Smoking status", "group": "lifestyle", "inputType": "select",
+      "validation": { "required": true },
+      "options": [
+        { "value": "never", "label": "Never smoked" },
+        { "value": "former-gt5y", "label": "Former smoker — quit more than 5 years ago" },
+        { "value": "former-lt5y", "label": "Former smoker — quit within the last 5 years" },
+        { "value": "current-lt10", "label": "Current smoker — fewer than 10 cigarettes/day" },
+        { "value": "current-gte10", "label": "Current smoker — 10 or more cigarettes/day" }
+      ], "order": 6,
+      "source": { "type": "niro", "ref": "CWS PDF §4.4 — five levels" } },
+    { "key": "physicalActivity", "label": "Physical activity", "group": "lifestyle", "inputType": "select",
+      "validation": { "required": true },
+      "options": [
+        { "value": "gte150", "label": "150+ minutes moderate activity per week" },
+        { "value": "75to149", "label": "75–149 minutes moderate activity per week" },
+        { "value": "lt75", "label": "Under 75 minutes per week" },
+        { "value": "sedentary", "label": "Sedentary lifestyle" }
+      ], "order": 7,
+      "source": { "type": "niro", "ref": "CWS PDF §4.5 — four levels incl. negative points" } },
+    { "key": "cortisolSampleTime", "label": "Cortisol sample time", "group": "hormonal", "inputType": "select",
+      "validation": { "required": false },
+      "options": [ { "value": "morning", "label": "Morning (approx. 6–10 a.m.)" }, { "value": "afternoon", "label": "Afternoon" } ],
+      "order": 89,
+      "source": { "type": "niro", "ref": "CWS PDF §3.9 — separate morning/afternoon optimal ranges (intake flow N2)" } },
+
+    { "key": "totalCholesterol", "label": "Total Cholesterol", "group": "cardiovascular", "biomarkerKey": "total-cholesterol", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "mmol/L", "factor": 38.67 } ] },
+      "validation": { "min": 50, "max": 500 }, "missingPolicy": "exclude-from-max", "order": 10 },
+    { "key": "hdl", "label": "HDL Cholesterol", "group": "cardiovascular", "biomarkerKey": "hdl-cholesterol", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "mmol/L", "factor": 38.67 } ] },
+      "validation": { "min": 5, "max": 150 }, "missingPolicy": "exclude-from-max", "order": 11 },
+    { "key": "ldl", "label": "LDL Cholesterol", "group": "cardiovascular", "biomarkerKey": "ldl-cholesterol", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "mmol/L", "factor": 38.67 } ] },
+      "validation": { "min": 20, "max": 400 }, "missingPolicy": "exclude-from-max", "order": 12 },
+    { "key": "triglycerides", "label": "Triglycerides", "group": "cardiovascular", "biomarkerKey": "triglycerides", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "mmol/L", "factor": 88.57 } ] },
+      "validation": { "min": 20, "max": 2000 }, "missingPolicy": "exclude-from-max", "order": 13 },
+    { "key": "systolicBp", "label": "Systolic Blood Pressure", "group": "cardiovascular", "biomarkerKey": "systolic-bp", "inputType": "number",
+      "unit": { "canonical": "mmHg" }, "validation": { "min": 60, "max": 260 }, "missingPolicy": "exclude-from-max", "order": 14 },
+    { "key": "hscrp", "label": "hs-CRP", "group": "cardiovascular", "biomarkerKey": "hscrp", "inputType": "number",
+      "unit": { "canonical": "mg/L", "allowed": [ { "code": "mg/L", "factor": 1 }, { "code": "mg/dL", "factor": 10 } ] },
+      "validation": { "min": 0, "max": 50 }, "missingPolicy": "exclude-from-max", "order": 15 },
+    { "key": "apobApoaRatio", "label": "ApoB : ApoA-I Ratio", "group": "cardiovascular", "biomarkerKey": "apob-apoa-ratio", "inputType": "number",
+      "unit": { "canonical": "ratio" }, "validation": { "min": 0.1, "max": 5 }, "missingPolicy": "exclude-from-max", "order": 16 },
+
+    { "key": "fastingGlucose", "label": "Fasting Glucose", "group": "metabolic", "biomarkerKey": "fasting-glucose", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "mmol/L", "factor": 18.02 } ] },
+      "validation": { "min": 30, "max": 600 }, "missingPolicy": "exclude-from-max", "order": 20 },
+    { "key": "hba1c", "label": "HbA1c", "group": "metabolic", "biomarkerKey": "hba1c", "inputType": "number",
+      "unit": { "canonical": "%" }, "validation": { "min": 3, "max": 20 }, "missingPolicy": "exclude-from-max", "order": 21 },
+    { "key": "fastingInsulin", "label": "Fasting Insulin", "group": "metabolic", "biomarkerKey": "fasting-insulin", "inputType": "number",
+      "unit": { "canonical": "µIU/mL" }, "validation": { "min": 0.5, "max": 300 }, "missingPolicy": "exclude-from-max", "order": 22 },
+    { "key": "eag", "label": "Estimated Average Glucose", "group": "metabolic", "biomarkerKey": "eag", "inputType": "derived",
+      "derived": { "formula": "28.7 * hba1c - 46.7", "dependsOn": ["hba1c"] },
+      "unit": { "canonical": "mg/dL" }, "missingPolicy": "exclude-from-max", "order": 23,
+      "source": { "type": "niro", "ref": "CWS PDF §3.2 scores eAG as its own parameter (C6 RESOLVED: scored separately)" } },
+
+    { "key": "il6", "label": "IL-6", "group": "inflammatory", "biomarkerKey": "il6", "inputType": "number",
+      "unit": { "canonical": "pg/mL" }, "validation": { "min": 0, "max": 1000 }, "missingPolicy": "exclude-from-max", "order": 30 },
+    { "key": "crp", "label": "CRP", "group": "inflammatory", "biomarkerKey": "crp", "inputType": "number",
+      "unit": { "canonical": "mg/L", "allowed": [ { "code": "mg/L", "factor": 1 }, { "code": "mg/dL", "factor": 10 } ] },
+      "validation": { "min": 0, "max": 600 }, "missingPolicy": "exclude-from-max", "order": 31 },
+    { "key": "esr", "label": "ESR", "group": "inflammatory", "biomarkerKey": "esr", "inputType": "number",
+      "unit": { "canonical": "mm/hr" }, "validation": { "min": 0, "max": 150 }, "missingPolicy": "exclude-from-max", "order": 32 },
+
+    { "key": "vitaminD", "label": "Vitamin D (25-OH)", "group": "nutritional", "biomarkerKey": "vitamin-d", "inputType": "number",
+      "unit": { "canonical": "ng/mL", "allowed": [ { "code": "ng/mL", "factor": 1 }, { "code": "nmol/L", "factor": 0.4 } ] },
+      "validation": { "min": 1, "max": 150 }, "missingPolicy": "exclude-from-max", "order": 40 },
+    { "key": "vitaminB12", "label": "Vitamin B12", "group": "nutritional", "biomarkerKey": "vitamin-b12", "inputType": "number",
+      "unit": { "canonical": "pg/mL", "allowed": [ { "code": "pg/mL", "factor": 1 }, { "code": "pmol/L", "factor": 1.355 } ] },
+      "validation": { "min": 50, "max": 3000 }, "missingPolicy": "exclude-from-max", "order": 41 },
+    { "key": "folate", "label": "Folate (serum)", "group": "nutritional", "biomarkerKey": "folate", "inputType": "number",
+      "unit": { "canonical": "ng/mL", "allowed": [ { "code": "ng/mL", "factor": 1 }, { "code": "nmol/L", "factor": 0.4415 } ] },
+      "validation": { "min": 0.5, "max": 50 }, "missingPolicy": "exclude-from-max", "order": 42 },
+    { "key": "ferritin", "label": "Ferritin", "group": "nutritional", "biomarkerKey": "ferritin", "inputType": "number",
+      "unit": { "canonical": "ng/mL", "allowed": [ { "code": "ng/mL", "factor": 1 }, { "code": "µg/L", "factor": 1 } ] },
+      "validation": { "min": 1, "max": 2000 }, "missingPolicy": "exclude-from-max", "order": 43 },
+    { "key": "magnesium", "label": "Magnesium (serum)", "group": "nutritional", "biomarkerKey": "magnesium", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "mmol/L", "factor": 2.43 } ] },
+      "validation": { "min": 0.5, "max": 6 }, "missingPolicy": "exclude-from-max", "order": 44 },
+    { "key": "zinc", "label": "Zinc (serum)", "group": "nutritional", "biomarkerKey": "zinc", "inputType": "number",
+      "unit": { "canonical": "µg/dL", "allowed": [ { "code": "µg/dL", "factor": 1 }, { "code": "µmol/L", "factor": 6.54 } ] },
+      "validation": { "min": 10, "max": 400 }, "missingPolicy": "exclude-from-max", "order": 45 },
+
+    { "key": "alt", "label": "ALT", "group": "liver", "biomarkerKey": "alt", "inputType": "number",
+      "unit": { "canonical": "U/L" }, "validation": { "min": 1, "max": 2000 }, "missingPolicy": "exclude-from-max", "order": 50 },
+    { "key": "ast", "label": "AST", "group": "liver", "biomarkerKey": "ast", "inputType": "number",
+      "unit": { "canonical": "U/L" }, "validation": { "min": 1, "max": 2000 }, "missingPolicy": "exclude-from-max", "order": 51 },
+    { "key": "ggt", "label": "GGT", "group": "liver", "biomarkerKey": "ggt", "inputType": "number",
+      "unit": { "canonical": "U/L" }, "validation": { "min": 1, "max": 1500 }, "missingPolicy": "exclude-from-max", "order": 52 },
+    { "key": "totalBilirubin", "label": "Total Bilirubin", "group": "liver", "biomarkerKey": "total-bilirubin", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "µmol/L", "factor": 0.0585 } ] },
+      "validation": { "min": 0, "max": 30 }, "missingPolicy": "exclude-from-max", "order": 53 },
+    { "key": "albumin", "label": "Albumin", "group": "liver", "biomarkerKey": "albumin", "inputType": "number",
+      "unit": { "canonical": "g/dL", "allowed": [ { "code": "g/dL", "factor": 1 }, { "code": "g/L", "factor": 0.1 } ] },
+      "validation": { "min": 1, "max": 8 }, "missingPolicy": "exclude-from-max", "order": 54 },
+
+    { "key": "egfr", "label": "eGFR", "group": "kidney", "biomarkerKey": "egfr", "inputType": "number",
+      "unit": { "canonical": "mL/min/1.73m²" }, "validation": { "min": 1, "max": 200 }, "missingPolicy": "exclude-from-max", "order": 60 },
+    { "key": "creatinine", "label": "Serum Creatinine", "group": "kidney", "biomarkerKey": "creatinine", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "µmol/L", "factor": 0.0113 } ] },
+      "validation": { "min": 0.1, "max": 20 }, "missingPolicy": "exclude-from-max", "order": 61 },
+    { "key": "bun", "label": "BUN", "group": "kidney", "biomarkerKey": "bun", "inputType": "number",
+      "unit": { "canonical": "mg/dL" }, "validation": { "min": 1, "max": 200 }, "missingPolicy": "exclude-from-max", "order": 62 },
+    { "key": "uricAcid", "label": "Uric Acid", "group": "kidney", "biomarkerKey": "uric-acid", "inputType": "number",
+      "unit": { "canonical": "mg/dL", "allowed": [ { "code": "mg/dL", "factor": 1 }, { "code": "µmol/L", "factor": 0.0168 } ] },
+      "validation": { "min": 0.5, "max": 20 }, "missingPolicy": "exclude-from-max", "order": 63 },
+
+    { "key": "tsh", "label": "TSH", "group": "thyroid", "biomarkerKey": "tsh", "inputType": "number",
+      "unit": { "canonical": "µIU/mL", "allowed": [ { "code": "µIU/mL", "factor": 1 }, { "code": "mIU/L", "factor": 1 } ] },
+      "validation": { "min": 0.01, "max": 100 }, "missingPolicy": "exclude-from-max", "order": 70 },
+    { "key": "freeT4", "label": "Free T4", "group": "thyroid", "biomarkerKey": "free-t4", "inputType": "number",
+      "unit": { "canonical": "ng/dL", "allowed": [ { "code": "ng/dL", "factor": 1 }, { "code": "pmol/L", "factor": 0.0777 } ] },
+      "validation": { "min": 0.1, "max": 10 }, "missingPolicy": "exclude-from-max", "order": 71 },
+    { "key": "freeT3", "label": "Free T3", "group": "thyroid", "biomarkerKey": "free-t3", "inputType": "number",
+      "unit": { "canonical": "pg/mL", "allowed": [ { "code": "pg/mL", "factor": 1 }, { "code": "pmol/L", "factor": 0.651 } ] },
+      "validation": { "min": 0.5, "max": 30 }, "missingPolicy": "exclude-from-max", "order": 72 },
+    { "key": "antiTpo", "label": "Anti-TPO", "group": "thyroid", "biomarkerKey": "anti-tpo", "inputType": "number",
+      "unit": { "canonical": "IU/mL" }, "validation": { "min": 0, "max": 10000 }, "missingPolicy": "exclude-from-max", "order": 73 },
+
+    { "key": "hemoglobin", "label": "Hemoglobin", "group": "hematological", "biomarkerKey": "hemoglobin", "inputType": "number",
+      "unit": { "canonical": "g/dL", "allowed": [ { "code": "g/dL", "factor": 1 }, { "code": "g/L", "factor": 0.1 } ] },
+      "validation": { "min": 3, "max": 25 }, "missingPolicy": "exclude-from-max", "order": 80 },
+    { "key": "mcv", "label": "MCV", "group": "hematological", "biomarkerKey": "mcv", "inputType": "number",
+      "unit": { "canonical": "fL" }, "validation": { "min": 50, "max": 150 }, "missingPolicy": "exclude-from-max", "order": 81 },
+    { "key": "wbc", "label": "WBC", "group": "hematological", "biomarkerKey": "wbc", "inputType": "number",
+      "unit": { "canonical": "×10⁹/L", "allowed": [ { "code": "×10⁹/L", "factor": 1 }, { "code": "cells/µL", "factor": 0.001 } ] },
+      "validation": { "min": 0.5, "max": 200 }, "missingPolicy": "exclude-from-max", "order": 82 },
+    { "key": "platelets", "label": "Platelets", "group": "hematological", "biomarkerKey": "platelets", "inputType": "number",
+      "unit": { "canonical": "×10⁹/L", "allowed": [ { "code": "×10⁹/L", "factor": 1 }, { "code": "/µL", "factor": 0.001 } ] },
+      "validation": { "min": 5, "max": 2000 }, "missingPolicy": "exclude-from-max", "order": 83 },
+
+    { "key": "cortisol", "label": "Cortisol", "group": "hormonal", "biomarkerKey": "cortisol", "inputType": "number",
+      "unit": { "canonical": "µg/dL", "allowed": [ { "code": "µg/dL", "factor": 1 }, { "code": "nmol/L", "factor": 0.0362 } ] },
+      "validation": { "min": 0.5, "max": 80 }, "missingPolicy": "exclude-from-max", "order": 90 },
+    { "key": "testosterone", "label": "Testosterone (total)", "group": "hormonal", "biomarkerKey": "testosterone", "inputType": "number",
+      "unit": { "canonical": "ng/dL", "allowed": [ { "code": "ng/dL", "factor": 1 }, { "code": "nmol/L", "factor": 28.8 } ] },
+      "validation": { "min": 1, "max": 2000 }, "missingPolicy": "exclude-from-max", "order": 91 },
+    { "key": "menopausalStatus", "label": "Menopausal status", "group": "hormonal", "inputType": "select",
+      "visibility": { "all": [ { "param": "sex", "op": "eq", "value": "female" } ] },
+      "options": [ { "value": "pre", "label": "Premenopausal" }, { "value": "post", "label": "Postmenopausal" } ],
+      "validation": { "required": false }, "order": 92 },
+    { "key": "estradiol", "label": "Estradiol (E2)", "group": "hormonal", "biomarkerKey": "estradiol", "inputType": "number",
+      "unit": { "canonical": "pg/mL", "allowed": [ { "code": "pg/mL", "factor": 1 }, { "code": "pmol/L", "factor": 0.2725 } ] },
+      "validation": { "min": 0, "max": 1000 }, "missingPolicy": "exclude-from-max", "order": 93 }
+  ],
+
+  "scoringRules": [
+    { "parameterKey": "totalCholesterol", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 160, "points": 0 }, { "min": 160, "max": 200, "points": 1 }, { "min": 200, "max": 240, "points": 2 },
+      { "min": 240, "max": 280, "points": 3 }, { "min": 280, "points": 4 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.1 (basis: Stone 2014)" } } ] },
+    { "parameterKey": "hdl", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 60, "points": -2 }, { "min": 50, "max": 60, "points": -1 }, { "min": 40, "max": 50, "points": 0 },
+      { "min": 30, "max": 40, "points": 1 }, { "max": 30, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.1 (negative protective points)" } } ] },
+    { "parameterKey": "ldl", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 70, "points": 0 }, { "min": 70, "max": 100, "points": 1 }, { "min": 100, "max": 130, "points": 2 },
+      { "min": 130, "max": 160, "points": 3 }, { "min": 160, "points": 4 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.1 (basis: Grundy 2019)" } } ] },
+    { "parameterKey": "triglycerides", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 100, "points": 0 }, { "min": 100, "max": 150, "points": 1 }, { "min": 150, "max": 200, "points": 2 },
+      { "min": 200, "max": 500, "points": 3 }, { "min": 500, "points": 4 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.1 (basis: Miller 2011)" } } ] },
+    { "parameterKey": "systolicBp", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 120, "points": 0 }, { "min": 120, "max": 130, "points": 1 }, { "min": 130, "max": 140, "points": 2 },
+      { "min": 140, "max": 160, "points": 3 }, { "min": 160, "points": 4 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.1 (basis: Whelton 2018)" } } ] },
+    { "parameterKey": "hscrp", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 1, "points": 0 }, { "min": 1, "max": 3, "maxInclusive": true, "points": 1 }, { "min": 3, "minExclusive": true, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.1 (basis: Ridker 2008 JUPITER)" } } ] },
+    { "parameterKey": "apobApoaRatio", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 0.5, "points": 0 }, { "min": 0.5, "max": 0.7, "points": 1 }, { "min": 0.7, "max": 0.9, "points": 2 }, { "min": 0.9, "points": 3 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.1 (basis: Walldius 2004)" } } ] },
+
+    { "parameterKey": "fastingGlucose", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 100, "points": 0 }, { "min": 100, "max": 126, "points": 2 }, { "min": 126, "points": 4 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.2 (basis: ADA 2020)" } } ] },
+    { "parameterKey": "hba1c", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 5.7, "points": 0 }, { "min": 5.7, "max": 6.5, "points": 2 }, { "min": 6.5, "points": 4 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.2" } } ] },
+    { "parameterKey": "fastingInsulin", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 10, "points": 0 }, { "min": 10, "max": 15, "maxInclusive": true, "points": 1 }, { "min": 15, "minExclusive": true, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.2 (basis: Laakso 2015) — C9 RESOLVED for insulin" } } ] },
+    { "parameterKey": "eag", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 100, "points": 0 }, { "min": 100, "max": 126, "points": 1 }, { "min": 126, "max": 155, "points": 2 }, { "min": 155, "points": 3 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.2 (basis: Nathan 2008)" } } ] },
+
+    { "parameterKey": "il6", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 1.0, "points": 0 }, { "min": 1.0, "max": 3.0, "maxInclusive": true, "points": 1 }, { "min": 3.0, "minExclusive": true, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.3 (basis: Ridker 2000) — C9 RESOLVED for IL-6" } } ] },
+    { "parameterKey": "crp", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 1, "points": 0 }, { "min": 1, "max": 3, "points": 1 }, { "min": 3, "max": 10, "maxInclusive": true, "points": 2 }, { "min": 10, "minExclusive": true, "points": 3 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.3" } } ] },
+    { "parameterKey": "esr", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "male" } ] }, "bands": [
+        { "max": 15, "points": 0 }, { "min": 15, "max": 30, "maxInclusive": true, "points": 1 }, { "min": 30, "minExclusive": true, "points": 2 } ] },
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "female" } ] }, "bands": [
+        { "max": 20, "points": 0 }, { "min": 20, "max": 35, "maxInclusive": true, "points": 1 }, { "min": 35, "minExclusive": true, "points": 2 } ] } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.3 — sex-specific" } },
+
+    { "parameterKey": "vitaminD", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 30, "minExclusive": true, "points": 0 }, { "min": 20, "max": 30, "maxInclusive": true, "points": 1 }, { "max": 20, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.4 — NOTE: differs from NIH ODS deficiency <12 (Niro rule preserved; divergence flagged)" } } ] },
+    { "parameterKey": "vitaminB12", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 400, "minExclusive": true, "points": 0 }, { "min": 300, "max": 400, "maxInclusive": true, "points": 1 }, { "max": 300, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.4 (basis: Green 2017)" } } ] },
+    { "parameterKey": "folate", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 5.4, "minExclusive": true, "points": 0 }, { "min": 3.0, "max": 5.4, "maxInclusive": true, "points": 1 }, { "max": 3.0, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.4" } } ] },
+    { "parameterKey": "ferritin", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "male" } ] }, "bands": [
+        { "min": 30, "max": 300, "maxInclusive": true, "points": 0 }, { "min": 15, "max": 30, "points": 1 }, { "max": 15, "points": 2 }, { "min": 300, "minExclusive": true, "points": 2 } ] },
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "female" } ] }, "bands": [
+        { "min": 30, "max": 200, "maxInclusive": true, "points": 0 }, { "min": 15, "max": 30, "points": 1 }, { "max": 15, "points": 2 }, { "min": 200, "minExclusive": true, "points": 2 } ] } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.4 — U-shaped (low & high both score)" } },
+    { "parameterKey": "magnesium", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 2.0, "max": 2.5, "maxInclusive": true, "points": 0 }, { "min": 1.8, "max": 2.0, "points": 1 }, { "max": 1.8, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.4 — NOTE: optimal 2.0–2.5 sits above MedlinePlus 1.7–2.2 (Niro rule preserved; divergence flagged); >2.5 unbanded → treated as no-score pending N-clarification" } } ] },
+    { "parameterKey": "zinc", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 70, "max": 120, "maxInclusive": true, "points": 0 }, { "min": 60, "max": 70, "points": 1 }, { "max": 60, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.4 — >120 unbanded (flagged)" } } ] },
+
+    { "parameterKey": "alt", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "male" } ] }, "bands": [
+        { "max": 30, "points": 0 }, { "min": 30, "max": 60, "maxInclusive": true, "points": 1 }, { "min": 60, "minExclusive": true, "points": 2 } ] },
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "female" } ] }, "bands": [
+        { "max": 19, "points": 0 }, { "min": 19, "max": 40, "maxInclusive": true, "points": 1 }, { "min": 40, "minExclusive": true, "points": 2 } ] } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.5 (basis: Prati 2002)" } },
+    { "parameterKey": "ast", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "male" } ] }, "bands": [
+        { "max": 35, "points": 0 }, { "min": 35, "max": 70, "maxInclusive": true, "points": 1 }, { "min": 70, "minExclusive": true, "points": 2 } ] },
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "female" } ] }, "bands": [
+        { "max": 25, "points": 0 }, { "min": 25, "max": 50, "maxInclusive": true, "points": 1 }, { "min": 50, "minExclusive": true, "points": 2 } ] } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.5" } },
+    { "parameterKey": "ggt", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "male" } ] }, "bands": [
+        { "max": 30, "points": 0 }, { "min": 30, "max": 60, "maxInclusive": true, "points": 1 }, { "min": 60, "minExclusive": true, "points": 2 } ] },
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "female" } ] }, "bands": [
+        { "max": 20, "points": 0 }, { "min": 20, "max": 40, "maxInclusive": true, "points": 1 }, { "min": 40, "minExclusive": true, "points": 2 } ] } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.5 (basis: Kunutsor 2014)" } },
+    { "parameterKey": "totalBilirubin", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 0.3, "max": 1.2, "maxInclusive": true, "points": 0 }, { "min": 1.3, "max": 2.0, "maxInclusive": true, "points": 1 },
+      { "min": 2.0, "minExclusive": true, "points": 2 }, { "max": 0.3, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.5 — U-shaped (both extremes score 2)" } } ] },
+    { "parameterKey": "albumin", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 3.6, "max": 5.0, "maxInclusive": true, "points": 0 }, { "min": 3.0, "max": 3.5, "maxInclusive": true, "points": 1 }, { "max": 3.0, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.5 — gap 3.5–3.6 as written in source (flagged)" } } ] },
+
+    { "parameterKey": "egfr", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 90, "points": 0 }, { "min": 60, "max": 90, "points": 1 }, { "min": 45, "max": 60, "points": 2 },
+      { "min": 30, "max": 45, "points": 3 }, { "max": 30, "points": 4 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.6 (basis: KDIGO 2013)" } } ] },
+    { "parameterKey": "creatinine", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "male" } ] }, "bands": [
+        { "min": 0.6, "max": 1.2, "maxInclusive": true, "points": 0 }, { "min": 1.3, "max": 1.5, "maxInclusive": true, "points": 1 }, { "min": 1.5, "minExclusive": true, "points": 2 } ] },
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "female" } ] }, "bands": [
+        { "min": 0.5, "max": 1.1, "maxInclusive": true, "points": 0 }, { "min": 1.2, "max": 1.4, "maxInclusive": true, "points": 1 }, { "min": 1.4, "minExclusive": true, "points": 2 } ] } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.6 — sub-0.6/0.5 values unbanded in source (flagged)" } },
+    { "parameterKey": "bun", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 7, "max": 20, "maxInclusive": true, "points": 0 }, { "min": 21, "max": 30, "maxInclusive": true, "points": 1 }, { "min": 30, "minExclusive": true, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.6 — <7 unbanded (flagged)" } } ] },
+    { "parameterKey": "uricAcid", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "male" } ] }, "bands": [
+        { "min": 3.5, "max": 7.0, "maxInclusive": true, "points": 0 }, { "min": 7.1, "max": 8.0, "maxInclusive": true, "points": 1 }, { "min": 8.0, "minExclusive": true, "points": 2 } ] },
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "female" } ] }, "bands": [
+        { "min": 2.5, "max": 6.0, "maxInclusive": true, "points": 0 }, { "min": 6.1, "max": 7.0, "maxInclusive": true, "points": 1 }, { "min": 7.0, "minExclusive": true, "points": 2 } ] } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.6 (basis: Borghi 2018)" } },
+
+    { "parameterKey": "tsh", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 0.4, "max": 4.0, "maxInclusive": true, "points": 0 }, { "min": 0.1, "max": 0.4, "points": 1 }, { "min": 4.1, "max": 10.0, "maxInclusive": true, "points": 1 },
+      { "max": 0.1, "points": 2 }, { "min": 10.0, "minExclusive": true, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.7 (basis: Wartofsky 2005)" } } ] },
+    { "parameterKey": "freeT4", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 0.8, "max": 1.8, "maxInclusive": true, "points": 0 }, { "min": 0.6, "max": 0.8, "points": 1 }, { "min": 1.81, "max": 2.2, "maxInclusive": true, "points": 1 },
+      { "max": 0.6, "points": 2 }, { "min": 2.2, "minExclusive": true, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.7" } } ] },
+    { "parameterKey": "freeT3", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 2.3, "max": 4.2, "maxInclusive": true, "points": 0 }, { "min": 1.8, "max": 2.2, "maxInclusive": true, "points": 1 }, { "min": 4.3, "max": 5.0, "maxInclusive": true, "points": 1 },
+      { "max": 1.8, "points": 2 }, { "min": 5.0, "minExclusive": true, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.7 (basis: Jonklaas 2014)" } } ] },
+    { "parameterKey": "antiTpo", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 35, "points": 0 }, { "min": 35, "max": 100, "maxInclusive": true, "points": 1 }, { "min": 100, "minExclusive": true, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.7 — C9 RESOLVED for anti-TPO (<35 negative)" } } ] },
+
+    { "parameterKey": "hemoglobin", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "male" } ] }, "bands": [
+        { "min": 13.5, "max": 17.5, "maxInclusive": true, "points": 0 }, { "min": 12.0, "max": 13.4, "maxInclusive": true, "points": 1 }, { "max": 12.0, "points": 2 } ] },
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "female" } ] }, "bands": [
+        { "min": 12.0, "max": 15.5, "maxInclusive": true, "points": 0 }, { "min": 11.0, "max": 11.9, "maxInclusive": true, "points": 1 }, { "max": 11.0, "points": 2 } ] } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.8 (basis: WHO 2011) — >17.5/>15.5 unbanded (flagged)" } },
+    { "parameterKey": "mcv", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 80, "max": 100, "maxInclusive": true, "points": 0 }, { "min": 70, "max": 80, "points": 1 }, { "min": 101, "max": 110, "maxInclusive": true, "points": 1 },
+      { "max": 70, "points": 2 }, { "min": 110, "minExclusive": true, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.8" } } ] },
+    { "parameterKey": "wbc", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 4.0, "max": 11.0, "maxInclusive": true, "points": 0 }, { "min": 3.0, "max": 4.0, "points": 1 }, { "min": 11.1, "max": 15.0, "maxInclusive": true, "points": 1 },
+      { "max": 3.0, "points": 2 }, { "min": 15.0, "minExclusive": true, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.8" } } ] },
+    { "parameterKey": "platelets", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "min": 150, "max": 450, "maxInclusive": true, "points": 0 }, { "min": 100, "max": 150, "points": 1 }, { "min": 451, "max": 600, "maxInclusive": true, "points": 1 },
+      { "max": 100, "points": 2 }, { "min": 600, "minExclusive": true, "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.8" } } ] },
+
+    { "parameterKey": "cortisol", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "cortisolSampleTime", "op": "eq", "value": "morning" } ] }, "bands": [
+        { "min": 5, "max": 25, "maxInclusive": true, "points": 0 }, { "min": 3, "max": 4.9, "maxInclusive": true, "points": 1 }, { "min": 25.1, "max": 30, "maxInclusive": true, "points": 1 },
+        { "max": 3, "points": 2 }, { "min": 30, "minExclusive": true, "points": 2 } ] },
+      { "when": { "all": [ { "param": "cortisolSampleTime", "op": "eq", "value": "afternoon" } ] }, "bands": [
+        { "min": 3, "max": 15, "maxInclusive": true, "points": 0 } ] } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.9 — afternoon abnormal bands not defined in source (N2 flagged)" } },
+    { "parameterKey": "testosterone", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "male" } ] }, "bands": [
+        { "min": 300, "max": 1000, "maxInclusive": true, "points": 0 }, { "min": 200, "max": 299, "maxInclusive": true, "points": 1 },
+        { "max": 200, "points": 2 }, { "min": 1000, "minExclusive": true, "points": 2 } ] },
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "female" } ] }, "bands": [
+        { "min": 15, "max": 70, "maxInclusive": true, "points": 0 }, { "min": 71, "max": 100, "maxInclusive": true, "points": 1 },
+        { "max": 15, "points": 2 }, { "min": 100, "minExclusive": true, "points": 2 } ] } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.9 (basis: Bhasin 2018)" } },
+    { "parameterKey": "estradiol", "bandEdges": "min-inclusive", "contexts": [
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "male" } ] }, "bands": [
+        { "min": 20, "max": 60, "maxInclusive": true, "points": 0 }, { "max": 20, "points": 1 }, { "min": 60, "minExclusive": true, "points": 1 } ] },
+      { "when": { "all": [ { "param": "sex", "op": "eq", "value": "female" }, { "param": "menopausalStatus", "op": "eq", "value": "pre" } ] }, "bands": [
+        { "min": 30, "max": 400, "maxInclusive": true, "points": 0 }, { "max": 30, "points": 1 } ] } ],
+      "source": { "type": "niro", "ref": "CWS PDF §3.9 — 2-point band 'N/A' in source; postmenopausal not covered → excluded from scoring for postmenopausal context (N4)" } }
+  ],
+
+  "domains": [
+    { "key": "cardiovascular", "label": "Cardiovascular", "weight": 0.25,
+      "parameterKeys": ["totalCholesterol", "hdl", "ldl", "triglycerides", "systolicBp", "hscrp", "apobApoaRatio"], "source": { "type": "niro", "ref": "CWS PDF §3.1/§5.2" } },
+    { "key": "metabolic", "label": "Metabolic", "weight": 0.20,
+      "parameterKeys": ["fastingGlucose", "hba1c", "fastingInsulin", "eag"], "source": { "type": "niro", "ref": "CWS PDF §3.2/§5.2" } },
+    { "key": "inflammatory", "label": "Inflammatory", "weight": 0.15,
+      "parameterKeys": ["il6", "crp", "esr"], "source": { "type": "niro", "ref": "CWS PDF §3.3/§5.2" } },
+    { "key": "nutritional", "label": "Nutritional", "weight": 0.10,
+      "parameterKeys": ["vitaminD", "vitaminB12", "folate", "ferritin", "magnesium", "zinc"], "source": { "type": "niro", "ref": "CWS PDF §3.4/§5.2" } },
+    { "key": "liver", "label": "Liver", "weight": 0.10,
+      "parameterKeys": ["alt", "ast", "ggt", "totalBilirubin", "albumin"], "source": { "type": "niro", "ref": "CWS PDF §3.5/§5.2" } },
+    { "key": "kidney", "label": "Kidney", "weight": 0.05,
+      "parameterKeys": ["egfr", "creatinine", "bun", "uricAcid"], "source": { "type": "niro", "ref": "CWS PDF §3.6/§5.2" } },
+    { "key": "thyroid", "label": "Thyroid", "weight": 0.05,
+      "parameterKeys": ["tsh", "freeT4", "freeT3", "antiTpo"], "source": { "type": "niro", "ref": "CWS PDF §3.7/§5.2" } },
+    { "key": "hematological", "label": "Hematological", "weight": 0.05,
+      "parameterKeys": ["hemoglobin", "mcv", "wbc", "platelets"], "source": { "type": "niro", "ref": "CWS PDF §3.8/§5.2" } },
+    { "key": "hormonal", "label": "Hormonal", "weight": 0.05,
+      "parameterKeys": ["cortisol", "testosterone", "estradiol"], "source": { "type": "niro", "ref": "CWS PDF §3.9/§5.2" } }
+  ],
+
+  "formulas": [
+    { "key": "domain-score", "expression": "sum(points) / maxPoints * 100", "scope": "per-domain",
+      "source": { "type": "niro", "ref": "CWS PDF §5.1 (verbatim)" } },
+    { "key": "raw-score", "expression": "weightedSum(domains)", "source": { "type": "niro", "ref": "CWS PDF §5.2" } },
+    { "key": "final-score", "expression": "rawScore + sum(adjustments)", "source": { "type": "niro", "ref": "CWS PDF §5.3" } }
+  ],
+
+  "adjustmentRules": [
+    { "key": "adj-age", "label": "Age adjustment", "bandParam": "age", "bandEdges": "min-inclusive", "bands": [
+      { "max": 30, "points": 0 }, { "min": 30, "max": 40, "points": 1 }, { "min": 40, "max": 50, "points": 2 },
+      { "min": 50, "max": 60, "points": 3 }, { "min": 60, "points": 4 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §4.1 — C2 RESOLVED" } },
+    { "key": "adj-bmi", "label": "BMI adjustment", "bandParam": "bmi", "bandEdges": "min-inclusive", "bands": [
+      { "min": 18.5, "max": 25.0, "points": 0 }, { "min": 25.0, "max": 30.0, "points": 1 }, { "min": 30.0, "max": 35.0, "points": 2 },
+      { "min": 35.0, "max": 40.0, "points": 3 }, { "min": 40.0, "points": 4 }, { "max": 18.5, "points": 4 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §4.3 (≥40 OR <18.5 → 4)" } },
+    { "key": "adj-smoking", "label": "Smoking adjustment", "optionParam": "smoking", "optionPoints": [
+      { "value": "never", "points": 0 }, { "value": "former-gt5y", "points": 1 }, { "value": "former-lt5y", "points": 2 },
+      { "value": "current-lt10", "points": 3 }, { "value": "current-gte10", "points": 4 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §4.4" } },
+    { "key": "adj-activity", "label": "Physical activity adjustment", "optionParam": "physicalActivity", "optionPoints": [
+      { "value": "gte150", "points": -2 }, { "value": "75to149", "points": -1 }, { "value": "lt75", "points": 0 }, { "value": "sedentary", "points": 2 } ],
+      "source": { "type": "niro", "ref": "CWS PDF §4.5 — negative (protective) adjustments" } }
+  ],
+
+  "resultCategories": {
+    "scale": { "min": -10, "max": 110, "direction": "lower-is-better" },
+    "bandEdges": "min-inclusive",
+    "boundarySemantics": { "status": "as-documented", "note": "PDF §6 lists <10 / 10–20 / 21–30 / 31–50 / >50. Continuous min-inclusive bands at 10/21/31/51 preserve the written labels; fractional scores between 20–21, 30–31, 50–51 fall into the lower band by this reading — confirm with Niro (C4 narrowed, not fully closed)." },
+    "bands": [
+      { "label": "Optimal", "max": 10, "color": "#1a9850", "message": "Excellent health status", "recommendation": "Maintain current healthy behaviors", "source": { "type": "niro", "ref": "CWS PDF §6" } },
+      { "label": "Good", "min": 10, "max": 21, "color": "#66bd63", "message": "Minor issues that require attention", "recommendation": "Address specific areas of concern", "source": { "type": "niro", "ref": "CWS PDF §6" } },
+      { "label": "Fair", "min": 21, "max": 31, "color": "#fee08b", "message": "Multiple health parameters outside optimal range", "recommendation": "Focused lifestyle interventions", "source": { "type": "niro", "ref": "CWS PDF §6" } },
+      { "label": "Suboptimal", "min": 31, "max": 51, "color": "#f46d43", "message": "Significant deviations requiring intervention", "recommendation": "Comprehensive lifestyle modification", "source": { "type": "niro", "ref": "CWS PDF §6" } },
+      { "label": "Poor", "min": 51, "color": "#d73027", "message": "High-risk status requiring immediate attention", "recommendation": "Medical evaluation and intervention", "source": { "type": "niro", "ref": "CWS PDF §6" } }
+    ]
+  },
+
+  "uiConfig": {
+    "theme": { "accent": "#0f766e" },
+    "steps": [
+      { "key": "profile", "title": "About you", "parameterGroups": ["profile", "lifestyle"] },
+      { "key": "cardio-metabolic", "title": "Heart & metabolic labs", "parameterGroups": ["cardiovascular", "metabolic"] },
+      { "key": "organ-panels", "title": "Organ panels", "parameterGroups": ["inflammatory", "liver", "kidney"] },
+      { "key": "nutrition-hormones", "title": "Nutrition, thyroid, blood & hormones", "parameterGroups": ["nutritional", "thyroid", "hematological", "hormonal"] }
+    ],
+    "result": {
+      "layout": ["score-gauge", "category", "key-contributors", "domain-breakdown", "biomarker-details", "recommendations"],
+      "informationHierarchy": "RESULT → CATEGORY → WHY → DOMAIN DETAILS → BIOMARKER DETAILS → RECOMMENDATIONS"
+    }
+  }
+}

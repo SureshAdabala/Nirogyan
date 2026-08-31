@@ -1,0 +1,284 @@
+=== A. TOP-LEVEL STRUCTURE (health-calculator-catalog.json) ===
+  $schema: str len=42
+  generatedAt: str len=10
+  generatedBy: str len=107
+  sourcingPolicy: str len=461
+  tierLegend: dict len=3
+  counts: dict len=2
+  calculators: list len=70
+  inventoryIndex: list len=81
+  openIssues: list len=144
+
+=== A2. TOP-LEVEL (measurements-reference-extension.json) ===
+  $schema: str len=49
+  generatedAt: str len=10
+  extends: str len=73
+  sourcingPolicy: str len=461
+  counts: dict len=1
+  measurements: list len=83
+
+=== A3. biomarker-dataset.json top-level keys ===
+  $schema: str len=34
+  generatedAt: str len=10
+  legend: dict len=3
+  domains: list len=9
+  biomarkers: list len=40
+  adjustmentFactors: list len=5
+
+=== B. CALCULATORS PROFILE ===
+by category: Counter({'anthropometric': 12, 'cardiovascular': 11, 'mental-sleep': 8, 'lab-panel-extension': 8, 'metabolic': 7, 'respiratory': 7, 'womens-repro': 7, 'kidney-hydration': 5, 'liver-alcohol': 5})
+by tier: Counter({1: 38, 2: 25, 3: 7})
+by logicType: Counter({'mixed': 25, 'formula': 23, 'bands': 10, 'points': 8, 'lookup': 4})
+field coverage (of 70): {'key': 70, 'name': 70, 'tier': 70, 'whyRelevant': 70, 'inputs': 70, 'logicType': 70, 'logic': 70, 'resultCategories': 70, 'sources': 70, 'platformMapping': 70, 'realWorldPresence': 70, 'cautions': 70, 'category': 70, 'outputScale': 59}
+
+=== C. WITHIN-CALCULATORS DUPLICATE CHECK ===
+exact duplicate keys: NONE
+near-duplicate names (ratio>0.62): [(0.7, 'gestational-age', 'anion-gap'), (0.69, 'ldl-hdl-ratio', 'tg-hdl-ratio'), (0.68, 'waist-to-hip-ratio', 'waist-to-height-ratio'), (0.68, 'bun-creatinine-ratio', 'ag-ratio'), (0.67, 'friedewald-ldl', 'vldl-estimate'), (0.66, 'waist-to-height-ratio', 'apri'), (0.65, 'corrected-calcium', 'indirect-bilirubin'), (0.64, 'tc-hdl-ratio', 'vldl-estimate'), (0.64, 'resting-heart-rate', 'respiratory-rate-checker'), (0.64, 'pregnancy-due-date', 'pregnancy-weight-gain'), (0.63, 'corrected-calcium', 'ag-ratio'), (0.62, 'transferrin-saturation', 'anion-gap'), (0.62, 'tc-hdl-ratio', 'friedewald-ldl'), (0.62, 'non-hdl-cholesterol', 'vldl-estimate'), (0.62, 'gestational-age', 'transferrin-saturation')]
+
+=== D. INVENTORY-INDEX vs FULL-SPEC CROSS-REFERENCE ===
+fullSpecInCatalog: Counter({False: 60, True: 21})
+inventory exact-key duplicates: ['egfr-ckd-epi-2021', 'homa-ir', 'phq-9', 'gad-7', 'target-heart-rate', 'bsa-mosteller', 'pack-years', 'ovulation-fertile-window']
+-- inventory entries marked fullSpecInCatalog=FALSE whose name closely matches a full-spec calculator (mislabeled cross-refs):
+   inv:'bmi-adult' (Adult BMI Calculator) ~ calc:'indirect-bilirubin' ratio=0.65
+   inv:'bmi-child-teen-percentile' (Child & Teen BMI Percentile Calculator) ~ calc:'caffeine-intake-tracker' ratio=0.62
+   inv:'waist-circumference-hip-ratio' (Waist Circumference / Waist-Hip Ratio Assessment) ~ calc:'waist-circumference-risk' ratio=0.79
+   inv:'heart-age' (Heart Age Calculator) ~ calc:'gestational-age' ratio=0.78
+   inv:'ascvd-pce-10yr' (ASCVD 10-Year Risk (2013 Pooled Cohort Equations)) ~ calc:'ascvd-10-year-pce' ratio=0.82
+   inv:'prevent-cvd-risk' (AHA PREVENT Risk Calculator (2023)) ~ calc:'bun-creatinine-ratio' ratio=0.57
+   inv:'diabetes-risk-test-ada-cdc' (ADA/CDC 60-Second Prediabetes/Type 2 Diabetes Risk Test) ~ calc:'ada-type2-risk-test' ratio=0.78
+   inv:'egfr-ckd-epi-2021' (eGFR Calculator (CKD-EPI Creatinine 2021, race-free)) ~ calc:'ckd-epi-2021-egfr' ratio=0.71
+   inv:'uacr-interpretation' (Urine Albumin-Creatinine Ratio (uACR) Interpreter) ~ calc:'fev1-fvc-interpretation' ratio=0.76
+   inv:'ldl-friedewald' (LDL Cholesterol Calculated (Friedewald)) ~ calc:'friedewald-ldl' ratio=0.71
+   inv:'cholesterol-ratios-nonhdl' (Non-HDL Cholesterol & Cholesterol Ratios) ~ calc:'tc-hdl-ratio' ratio=0.71
+   inv:'eag-a1c-converter' (eAG / A1C Conversion Calculator) ~ calc:'anion-gap' ratio=0.65
+   inv:'fib-4' (FIB-4 Index (Liver Fibrosis)) ~ calc:'fib-4-index' ratio=0.78
+   inv:'tsat-transferrin-saturation' (Transferrin Saturation (TSAT) from Iron Studies) ~ calc:'transferrin-saturation' ratio=0.9
+   inv:'calorie-needs' (Daily Calorie Needs Calculator) ~ calc:'caffeine-intake-tracker' ratio=0.77
+   inv:'body-weight-planner' (Body Weight Planner (goal-weight calorie plan)) ~ calc:'ideal-body-weight-devine' ratio=0.65
+   inv:'target-heart-rate' (Target Heart Rate Zones) ~ calc:'target-heart-rate-zones' ratio=0.85
+   inv:'ideal-adjusted-body-weight' (Ideal & Adjusted Body Weight (Devine)) ~ calc:'ideal-body-weight-devine' ratio=0.68
+   inv:'bsa-mosteller' (Body Surface Area (Mosteller)) ~ calc:'body-surface-area' ratio=0.87
+   inv:'pack-years' (Smoking Pack-Years Calculator) ~ calc:'smoking-pack-years' ratio=0.71
+   inv:'breast-cancer-risk-gail' (Breast Cancer Risk Assessment Tool (Gail Model)) ~ calc:'waist-circumference-risk' ratio=0.55
+   inv:'colorectal-cancer-risk' (Colorectal Cancer Risk Assessment Tool (NCI CCRAT)) ~ calc:'corrected-calcium' ratio=0.56
+   inv:'alcohol-standard-drink-calculator' (Standard Drink / Cocktail Content Calculator) ~ calc:'alcohol-standard-drinks' ratio=0.79
+   inv:'alcohol-calorie-calculator' (Alcohol Calorie Calculator) ~ calc:'anion-gap' ratio=0.65
+   inv:'audit-alcohol-screen' (AUDIT / AUDIT-C Alcohol Use Screener) ~ calc:'audit-c' ratio=0.66
+   inv:'steroid-conversion' (Steroid Conversion Calculator) ~ calc:'anion-gap' ratio=0.61
+   inv:'pediatric-gfr-schwartz' (Pediatric eGFR (Bedside Schwartz)) ~ calc:'pediatric-growth-percentiles' ratio=0.56
+   inv:'calorie-bmr-tdee' (Calorie / BMR / TDEE Calculator (Mifflin-St Jeor)) ~ calc:'bmr-mifflin-st-jeor' ratio=0.64
+   inv:'bp-category' (Blood Pressure Category Checker (2017 ACC/AHA)) ~ calc:'blood-pressure-category' ratio=0.83
+   inv:'egfr-ckd-epi-2021' (eGFR Calculator (CKD-EPI Creatinine 2021, race-free)) ~ calc:'ckd-epi-2021-egfr' ratio=0.71
+   inv:'ldl-friedewald-nonhdl' (LDL (Friedewald) + Non-HDL + Cholesterol Ratio Calculator) ~ calc:'friedewald-ldl' ratio=0.74
+   inv:'blood-sugar-converter' (Blood Sugar Unit Converter + Glucose Status (mg/dL <-> mmol/L)) ~ calc:'blood-pressure-category' ratio=0.64
+   inv:'waist-hip-ratio' (Waist-Hip Ratio Calculator) ~ calc:'waist-to-hip-ratio' ratio=0.91
+   inv:'waist-height-ratio' (Waist-to-Height Ratio Calculator) ~ calc:'waist-to-height-ratio' ratio=0.92
+   inv:'body-fat' (Body Fat Percentage Calculator (RFM primary; US Navy variant flagged)) ~ calc:'body-fat-us-navy' ratio=0.67
+   inv:'due-date' (Pregnancy Due Date Calculator) ~ calc:'pregnancy-due-date' ratio=0.94
+   inv:'target-heart-rate' (Target Heart Rate / Exercise Zone Calculator) ~ calc:'target-heart-rate-zones' ratio=0.85
+   inv:'ideal-weight-devine' (Ideal Body Weight Calculator (Devine)) ~ calc:'ideal-body-weight-devine' ratio=0.88
+   inv:'water-intake' (Daily Water / Hydration Calculator) ~ calc:'daily-water-intake' ratio=0.8
+   inv:'diabetes-risk-ada' (ADA Type 2 Diabetes Risk Test (60-second)) ~ calc:'ada-type2-risk-test' ratio=0.69
+   inv:'pack-years' (Smoking Pack-Years Calculator) ~ calc:'smoking-pack-years' ratio=0.71
+   inv:'alcohol-units' (Alcohol Units Calculator (UK-style)) ~ calc:'alcohol-standard-drinks' ratio=0.61
+   inv:'bsa-mosteller' (Body Surface Area Calculator (Mosteller)) ~ calc:'body-surface-area' ratio=0.74
+   inv:'sleep-cycle' (Sleep Cycle / Bedtime Calculator) ~ calc:'pregnancy-due-date' ratio=0.6
+   inv:'epworth-sleepiness' (Epworth Sleepiness Scale (ESS)) ~ calc:'epworth-sleepiness-scale' ratio=1.0
+-- inventory entries with NO fuzzy match >=0.55 (genuinely inventory-only tools):
+   kidney-risk-quiz, lifes-essential-8-score, stroke-risk-quiz, cardiac-risk-assessment-page, stop-bang, frax-osteoporosis, cha2ds2-vasc, meld-3, levothyroxine-dose, kfre-kidney-failure-risk, pecarn-head-injury, ost-osteoporosis-self-assessment, a1c-eag, anemia-hemoglobin, child-bmi-percentile
+
+=== E. CALCULATORS SHARING INPUT KEYS (>=2 shared) ===
+   predicted-peak-expiratory-flow & fev1-fvc-interpretation: 4 shared ['age', 'group', 'heightCm', 'sex']
+   bmr-mifflin-st-jeor & bmr-harris-benedict-revised: 4 shared ['age', 'height', 'sex', 'weight']
+   predicted-peak-expiratory-flow & six-minute-walk-distance: 3 shared ['age', 'heightCm', 'sex']
+   non-hdl-cholesterol & ascvd-10-year-pce: 3 shared ['age', 'hdl', 'totalCholesterol']
+   lean-body-mass-boer & bmr-mifflin-st-jeor: 3 shared ['height', 'sex', 'weight']
+   lean-body-mass-boer & bmr-harris-benedict-revised: 3 shared ['height', 'sex', 'weight']
+   findrisc & ada-type2-risk-test: 3 shared ['age', 'familyHistory', 'sex']
+   fev1-fvc-interpretation & six-minute-walk-distance: 3 shared ['age', 'heightCm', 'sex']
+   ckd-epi-2021-egfr & cockcroft-gault-crcl: 3 shared ['age', 'scr', 'sex']
+   bmr-mifflin-st-jeor & cockcroft-gault-crcl: 3 shared ['age', 'sex', 'weight']
+   bmr-harris-benedict-revised & cockcroft-gault-crcl: 3 shared ['age', 'sex', 'weight']
+   waist-to-hip-ratio & metabolic-syndrome-checker: 2 shared ['sex', 'waist']
+   waist-to-hip-ratio & findrisc: 2 shared ['sex', 'waist']
+   waist-to-hip-ratio & body-fat-us-navy: 2 shared ['hip', 'sex']
+   waist-circumference-risk & waist-to-hip-ratio: 2 shared ['sex', 'waist']
+   waist-circumference-risk & metabolic-syndrome-checker: 2 shared ['sex', 'waist']
+   waist-circumference-risk & findrisc: 2 shared ['sex', 'waist']
+   tg-hdl-ratio & metabolic-syndrome-checker: 2 shared ['hdl', 'triglycerides']
+   tg-hdl-ratio & friedewald-ldl: 2 shared ['hdl', 'triglycerides']
+   tc-hdl-ratio & tg-hdl-ratio: 2 shared ['hdl', 'ratio']
+   tc-hdl-ratio & ldl-hdl-ratio: 2 shared ['hdl', 'ratio']
+   tc-hdl-ratio & friedewald-ldl: 2 shared ['hdl', 'totalCholesterol']
+   tc-hdl-ratio & ascvd-10-year-pce: 2 shared ['hdl', 'totalCholesterol']
+   pregnancy-due-date & ovulation-fertile-window: 2 shared ['cycleLength', 'lmpDate']
+   pregnancy-due-date & gestational-age: 2 shared ['usGaDays', 'usGaWeeks']
+   non-hdl-cholesterol & tc-hdl-ratio: 2 shared ['hdl', 'totalCholesterol']
+   non-hdl-cholesterol & friedewald-ldl: 2 shared ['hdl', 'totalCholesterol']
+   metabolic-syndrome-checker & friedewald-ldl: 2 shared ['hdl', 'triglycerides']
+   mean-arterial-pressure & pulse-pressure: 2 shared ['diastolic', 'systolic']
+   lean-body-mass-boer & pediatric-growth-percentiles: 2 shared ['sex', 'weight']
+   lean-body-mass-boer & cockcroft-gault-crcl: 2 shared ['sex', 'weight']
+   ldl-hdl-ratio & tg-hdl-ratio: 2 shared ['hdl', 'ratio']
+   ideal-body-weight-devine & lean-body-mass-boer: 2 shared ['height', 'sex']
+   ideal-body-weight-devine & bmr-mifflin-st-jeor: 2 shared ['height', 'sex']
+   ideal-body-weight-devine & bmr-harris-benedict-revised: 2 shared ['height', 'sex']
+   homa-ir & quicki: 2 shared ['fastingGlucose', 'fastingInsulin']
+   findrisc & six-minute-walk-distance: 2 shared ['age', 'sex']
+   findrisc & predicted-peak-expiratory-flow: 2 shared ['age', 'sex']
+   findrisc & metabolic-syndrome-checker: 2 shared ['sex', 'waist']
+   findrisc & fev1-fvc-interpretation: 2 shared ['age', 'sex']
+   findrisc & daily-water-intake: 2 shared ['age', 'sex']
+   findrisc & cockcroft-gault-crcl: 2 shared ['age', 'sex']
+   findrisc & ckd-epi-2021-egfr: 2 shared ['age', 'sex']
+   fib-4-index & ast-alt-ratio: 2 shared ['alt', 'ast']
+   fib-4-index & apri: 2 shared ['ast', 'platelets']
+   daily-water-intake & six-minute-walk-distance: 2 shared ['age', 'sex']
+   daily-water-intake & predicted-peak-expiratory-flow: 2 shared ['age', 'sex']
+   daily-water-intake & fev1-fvc-interpretation: 2 shared ['age', 'sex']
+   daily-calorie-needs-dga & six-minute-walk-distance: 2 shared ['age', 'sex']
+   daily-calorie-needs-dga & predicted-peak-expiratory-flow: 2 shared ['age', 'sex']
+   daily-calorie-needs-dga & findrisc: 2 shared ['age', 'sex']
+   daily-calorie-needs-dga & fev1-fvc-interpretation: 2 shared ['age', 'sex']
+   daily-calorie-needs-dga & daily-water-intake: 2 shared ['age', 'sex']
+   daily-calorie-needs-dga & cockcroft-gault-crcl: 2 shared ['age', 'sex']
+   daily-calorie-needs-dga & ckd-epi-2021-egfr: 2 shared ['age', 'sex']
+   daily-calorie-needs-dga & ascvd-10-year-pce: 2 shared ['age', 'sex']
+   daily-calorie-needs-dga & ada-type2-risk-test: 2 shared ['age', 'sex']
+   cockcroft-gault-crcl & six-minute-walk-distance: 2 shared ['age', 'sex']
+   cockcroft-gault-crcl & predicted-peak-expiratory-flow: 2 shared ['age', 'sex']
+   cockcroft-gault-crcl & pediatric-growth-percentiles: 2 shared ['sex', 'weight']
+   cockcroft-gault-crcl & fev1-fvc-interpretation: 2 shared ['age', 'sex']
+   cockcroft-gault-crcl & daily-water-intake: 2 shared ['age', 'sex']
+   ckd-epi-2021-egfr & six-minute-walk-distance: 2 shared ['age', 'sex']
+   ckd-epi-2021-egfr & predicted-peak-expiratory-flow: 2 shared ['age', 'sex']
+   ckd-epi-2021-egfr & fev1-fvc-interpretation: 2 shared ['age', 'sex']
+   ckd-epi-2021-egfr & daily-water-intake: 2 shared ['age', 'sex']
+   body-surface-area & lean-body-mass-boer: 2 shared ['height', 'weight']
+   body-surface-area & ideal-body-weight-devine: 2 shared ['formula', 'height']
+   body-surface-area & bmr-mifflin-st-jeor: 2 shared ['height', 'weight']
+   body-surface-area & bmr-harris-benedict-revised: 2 shared ['height', 'weight']
+   body-fat-us-navy & lean-body-mass-boer: 2 shared ['height', 'sex']
+   body-fat-us-navy & ideal-body-weight-devine: 2 shared ['height', 'sex']
+   body-fat-us-navy & bmr-mifflin-st-jeor: 2 shared ['height', 'sex']
+   body-fat-us-navy & bmr-harris-benedict-revised: 2 shared ['height', 'sex']
+   bmr-mifflin-st-jeor & six-minute-walk-distance: 2 shared ['age', 'sex']
+   bmr-mifflin-st-jeor & predicted-peak-expiratory-flow: 2 shared ['age', 'sex']
+   bmr-mifflin-st-jeor & pediatric-growth-percentiles: 2 shared ['sex', 'weight']
+   bmr-mifflin-st-jeor & findrisc: 2 shared ['age', 'sex']
+   bmr-mifflin-st-jeor & fev1-fvc-interpretation: 2 shared ['age', 'sex']
+   bmr-mifflin-st-jeor & daily-water-intake: 2 shared ['age', 'sex']
+   bmr-mifflin-st-jeor & daily-calorie-needs-dga: 2 shared ['age', 'sex']
+   bmr-mifflin-st-jeor & ckd-epi-2021-egfr: 2 shared ['age', 'sex']
+   bmr-mifflin-st-jeor & ascvd-10-year-pce: 2 shared ['age', 'sex']
+   bmr-mifflin-st-jeor & ada-type2-risk-test: 2 shared ['age', 'sex']
+   bmr-harris-benedict-revised & six-minute-walk-distance: 2 shared ['age', 'sex']
+   bmr-harris-benedict-revised & predicted-peak-expiratory-flow: 2 shared ['age', 'sex']
+   bmr-harris-benedict-revised & pediatric-growth-percentiles: 2 shared ['sex', 'weight']
+   bmr-harris-benedict-revised & findrisc: 2 shared ['age', 'sex']
+   bmr-harris-benedict-revised & fev1-fvc-interpretation: 2 shared ['age', 'sex']
+   bmr-harris-benedict-revised & daily-water-intake: 2 shared ['age', 'sex']
+   bmr-harris-benedict-revised & daily-calorie-needs-dga: 2 shared ['age', 'sex']
+   bmr-harris-benedict-revised & ckd-epi-2021-egfr: 2 shared ['age', 'sex']
+   bmr-harris-benedict-revised & ascvd-10-year-pce: 2 shared ['age', 'sex']
+   bmr-harris-benedict-revised & ada-type2-risk-test: 2 shared ['age', 'sex']
+   bmi & lean-body-mass-boer: 2 shared ['height', 'weight']
+   bmi & body-surface-area: 2 shared ['height', 'weight']
+   bmi & bmr-mifflin-st-jeor: 2 shared ['height', 'weight']
+   bmi & bmr-harris-benedict-revised: 2 shared ['height', 'weight']
+   blood-pressure-category & pulse-pressure: 2 shared ['diastolic', 'systolic']
+   blood-pressure-category & mean-arterial-pressure: 2 shared ['diastolic', 'systolic']
+   ascvd-10-year-pce & six-minute-walk-distance: 2 shared ['age', 'sex']
+   ascvd-10-year-pce & predicted-peak-expiratory-flow: 2 shared ['age', 'sex']
+   ascvd-10-year-pce & metabolic-syndrome-checker: 2 shared ['hdl', 'sex']
+   ascvd-10-year-pce & friedewald-ldl: 2 shared ['hdl', 'totalCholesterol']
+   ascvd-10-year-pce & findrisc: 2 shared ['age', 'sex']
+   ascvd-10-year-pce & fev1-fvc-interpretation: 2 shared ['age', 'sex']
+   ascvd-10-year-pce & daily-water-intake: 2 shared ['age', 'sex']
+   ascvd-10-year-pce & cockcroft-gault-crcl: 2 shared ['age', 'sex']
+   ascvd-10-year-pce & ckd-epi-2021-egfr: 2 shared ['age', 'sex']
+   ascvd-10-year-pce & ada-type2-risk-test: 2 shared ['age', 'sex']
+   alcohol-standard-drinks & audit-c: 2 shared ['age65plus', 'sex']
+   ada-type2-risk-test & six-minute-walk-distance: 2 shared ['age', 'sex']
+   ada-type2-risk-test & predicted-peak-expiratory-flow: 2 shared ['age', 'sex']
+   ada-type2-risk-test & fev1-fvc-interpretation: 2 shared ['age', 'sex']
+   ada-type2-risk-test & daily-water-intake: 2 shared ['age', 'sex']
+   ada-type2-risk-test & cockcroft-gault-crcl: 2 shared ['age', 'sex']
+   ada-type2-risk-test & ckd-epi-2021-egfr: 2 shared ['age', 'sex']
+
+input-key naming variants across calculators (same concept, different key):
+   all input keys: {'sex': 22, 'age': 17, 'height': 9, 'weight': 7, 'hdl': 7, 'waist': 5, 'fastingGlucose': 5, 'systolic': 4, 'totalCholesterol': 4, 'ratio': 4, 'triglycerides': 4, 'diastolic': 3, 'scr': 3, 'ast': 3, 'heightCm': 3, 'cycleLength': 3, 'albumin': 3, 'formula': 2, 'hip': 2, 'activity': 2, 'ageGroup': 2, 'restingHr': 2, 'fastingInsulin': 2, 'familyHistory': 2, 'platelets': 2, 'alt': 2, 'age65plus': 2, 'group': 2, 'usGaDays': 2, 'lmpDate': 2, 'usGaWeeks': 2, 'gaWeeks': 2, 'classification': 1, 'age_gate': 1, 'standard': 1, 'bmi_context': 1, 'neck': 1, 'abdomen_or_waist': 1, 'bmr': 1, 'crisisSymptoms': 1, 'map': 1, 'pulsePressure': 1, 'athlete': 1, 'method': 1, 'intensity': 1, 'nonHdl': 1, 'ldl': 1, 'diabetes': 1, 'smoker': 1, 'race': 1, 'bpTreated': 1, 'bpMedication': 1, 'fruitVeg': 1, 'bmi': 1, 'physicalActivity': 1, 'highGlucoseHistory': 1, 'gestationalDiabetes': 1, 'highBloodPressure': 1, 'weightCategory': 1, 'physicallyActive': 1, 'ethnicity': 1, 'diastolicBP': 1, 'onGlucoseDrug': 1, 'onHdlDrug': 1, 'onTriglycerideDrug': 1, 'onBPDrug': 1, 'systolicBP': 1, 'twoHourGlucose': 1, 'fastingTriglycerides': 1, 'acr': 1, 'egfr': 1, 'bun': 1, 'status': 1, 'context': 1, 'astUln': 1, 'enzymesElevated': 1, 'ukUnits': 1, 'gramsAlcoholPerDrink': 1, 'usStandardDrinks': 1, 'volume': 1, 'abv': 1, 'drinksPerOccasion': 1, 'occasionsPerWeek': 1, 'q2_quantity': 1, 'q3_binge': 1, 'q1_frequency': 1, 'yearsSinceQuit': 1, 'yearsSmoked': 1, 'packYears': 1, 'smokingStatus': 1, 'cigarettesPerDay': 1, 'personalBest': 1, 'measuredPef': 1, 'fvc': 1, 'fev1': 1, 'postBronchodilator': 1, 'breathsCounted': 1, 'rate': 1, 'countDuration': 1, 'chronicLungDisease': 1, 'pregnant': 1, 'spo2': 1, 'weightKg': 1, 'measuredDistance': 1, 'grade': 1, 'usDate': 1, 'datingMethod': 1, 'conceptionDate': 1, 'transferDate': 1, 'asOfDate': 1, 'anchorDate': 1, 'anchorType': 1, 'irregular': 1, 'longestCycle': 1, 'shortestCycle': 1, 'plurality': 1, 'prePregBmi': 1, 'currentWeight': 1, 'prePregWeight': 1, 'severeSymptoms': 1, 'intermenstrualBleeding': 1, 'daysSinceLastPeriod': 1, 'bleedDays': 1, 'dob': 1, 'measurementDate': 1, 'headCircumference': 1, 'lengthHeight': 1, 'q9_flag': 1, 'q4_tired': 1, 'q6_failure': 1, 'q3_sleep': 1, 'q7_concentration': 1, 'q9_selfharm': 1, 'q1_interest': 1, 'q2_down': 1, 'q5_appetite': 1, 'q8_psychomotor': 1, 'q5_restless': 1, 'q3_worry_much': 1, 'q2_control_worry': 1, 'q4_relaxing': 1, 'q7_afraid': 1, 'q1_nervous': 1, 'q6_irritable': 1, 'q2_unable_control': 1, 'q1_upset_unexpected': 1, 'q10_difficulties_piling': 1, 'q8_on_top_of_things': 1, 'q9_angered_outside_control': 1, 'q3_nervous_stressed': 1, 'q4_confident_handle': 1, 'q7_control_irritations': 1, 'q6_could_not_cope': 1, 'q5_going_your_way': 1, 's5_lying_down': 1, 's8_car_traffic': 1, 's1_reading': 1, 's6_talking': 1, 's4_car_passenger': 1, 's7_after_lunch': 1, 's2_tv': 1, 's3_public_place': 1, 'age_years': 1, 'authority': 1, 'usual_sleep_hours': 1, 'pregnancy_context': 1, 'other_caffeine_mg': 1, 'soda_12oz_cans': 1, 'tea_8oz_cups': 1, 'coffee_8oz_cups': 1, 'energy_drink_8oz': 1, 'balance_days_week': 1, 'mvpa_daily_min': 1, 'vigorous_min_week': 1, 'strength_days_week': 1, 'age_group': 1, 'moderate_min_week': 1, 'aerobic_equivalent': 1, 'child_age_months': 1, 'recreational_screen_hours_day': 1, 'serumIron': 1, 'tibc': 1, 'totalCalcium': 1, 'alc': 1, 'anc': 1, 'totalProtein': 1, 'bicarbonate': 1, 'potassium': 1, 'chloride': 1, 'sodium': 1, 'directBilirubin': 1, 'totalBilirubin': 1}
+
+=== F. TOP REUSED SOURCE URLS (calculators) ===
+   3x https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates
+   2x https://www.ncbi.nlm.nih.gov/books/NBK2004/table/A242/
+   2x https://www.who.int/publications/i/item/9789241501491
+   2x https://pmc.ncbi.nlm.nih.gov/articles/PMC9224732/
+   2x https://pmc.ncbi.nlm.nih.gov/articles/PMC9967803/
+   2x https://www.mayoclinic.org/healthy-lifestyle/fitness/in-depth/exercise-intensity/art-20046887
+   2x https://www.mayoclinic.org/diseases-conditions/high-blood-cholesterol/expert-answers/cholesterol-ratio/faq-20058006
+   2x https://pmc.ncbi.nlm.nih.gov/articles/PMC4287763/
+   2x https://www.ncbi.nlm.nih.gov/books/NBK614988/box/ch4.box1/?report=objectonly
+   2x https://biolincc.nhlbi.nih.gov/media/studies/access/Forms/Spirometry%20data.pdf
+   2x https://www.ncbi.nlm.nih.gov/books/NBK559281/
+   2x https://www.ncbi.nlm.nih.gov/books/NBK553213/
+
+=== G. MEASUREMENTS PROFILE & OVERLAPS ===
+by panel: Counter({'CBC differential': 10, 'Vitals': 5, 'Lipid panel': 4, 'womens-reproductive-health': 4, 'Sleep & Lifestyle': 4, 'Electrolytes': 4, 'anthropometry-central-adiposity': 3, 'CBC': 3, 'Iron studies': 3, 'Liver panel': 3, 'anthropometry-core': 2, 'Vitals (derived)': 2, 'Liver / hepatic function panel': 2, 'Vital signs': 2, 'CBC (RBC indices)': 2, 'Proteins': 2, 'Pancreatic enzymes': 2, 'Lipid panel (derived)': 1, 'Basic metabolic / glucose': 1, 'Glucose tolerance': 1, 'Glycemic': 1, 'Metabolic (add-on)': 1, 'Lipid': 1, 'Vitals (self-service)': 1, 'Basic/Comprehensive Metabolic Panel; Renal panel': 1, 'Basic/Comprehensive Metabolic Panel': 1, 'Derived from metabolic panel': 1, 'Urine microalbumin panel': 1, 'Auto-reported with metabolic panels': 1, 'Derived (drug-dosing context)': 1, 'Lifestyle/hydration': 1, 'Complete blood count (CBC)': 1, 'Spirometry': 1, 'Spirometry / asthma self-monitoring': 1, 'Minerals / CMP': 1, 'Minerals': 1, 'Lipids (derived)': 1, 'Lipids': 1, 'Proteins / CMP': 1, 'General chemistry': 1, 'Muscle enzymes': 1, 'Glycemic (HbA1c-adjacent)': 1, "Men's health": 1})
+by contributedBy: Counter({'lab-panel-extension': 40, 'cardiovascular': 10, 'kidney-hydration': 7, 'metabolic': 6, 'anthropometric': 5, 'respiratory': 4, 'womens-repro': 4, 'mental-sleep': 4, 'liver-alcohol': 3})
+exact duplicate measurement keys: NONE
+existing biomarker library keys found: 45
+   age, albumin, alt, anti-tpo, apob-apoa-ratio, ast, bmi, bun, cortisol, creatinine, crp, eag, egfr, esr, estradiol, fasting-glucose, fasting-insulin, ferritin, folate, free-t3, free-t4, ggt, hba1c, hdl-cholesterol, hemoglobin, hscrp, il6, ldl-cholesterol, magnesium, mcv, physical-activity, platelets, sex, smoking, systolic-bp, testosterone, total-bilirubin, total-cholesterol, triglycerides, tsh, uric-acid, vitamin-b12, vitamin-d, wbc, zinc
+EXACT key overlap (measurement ext vs existing library): alt, ast, bun, egfr, fasting-insulin, hba1c, hdl-cholesterol, ldl-cholesterol, systolic-bp, total-cholesterol, triglycerides
+-- fuzzy overlaps (different key, same analyte):
+   ext:'diastolic-bp' ~ lib:'systolic-bp' ratio=0.78
+   ext:'total-cholesterol' ~ lib:'hdl-cholesterol' ratio=0.81
+   ext:'total-cholesterol' ~ lib:'ldl-cholesterol' ratio=0.81
+   ext:'hdl-cholesterol' ~ lib:'total-cholesterol' ratio=0.81
+   ext:'hdl-cholesterol' ~ lib:'ldl-cholesterol' ratio=0.93
+   ext:'ldl-cholesterol' ~ lib:'total-cholesterol' ratio=0.81
+   ext:'ldl-cholesterol' ~ lib:'hdl-cholesterol' ratio=0.93
+   ext:'non-hdl-cholesterol' ~ lib:'total-cholesterol' ratio=0.78
+   ext:'non-hdl-cholesterol' ~ lib:'hdl-cholesterol' ratio=0.88
+   ext:'non-hdl-cholesterol' ~ lib:'ldl-cholesterol' ratio=0.82
+   ext:'fasting-plasma-glucose' ~ lib:'fasting-glucose' ratio=0.81
+   ext:'fasting-triglycerides' ~ lib:'triglycerides' ratio=0.76
+   ext:'serum-creatinine' ~ lib:'creatinine' ratio=0.77
+   ext:'physical-activity-weekly-target' ~ lib:'physical-activity' ratio=0.71
+   ext:'vldl-cholesterol' ~ lib:'total-cholesterol' ratio=0.79
+   ext:'vldl-cholesterol' ~ lib:'hdl-cholesterol' ratio=0.9
+   ext:'vldl-cholesterol' ~ lib:'ldl-cholesterol' ratio=0.97
+   ext:'triglycerides-categories' ~ lib:'triglycerides' ratio=0.7
+   ext:'creatine-kinase' ~ lib:'creatinine' ratio=0.8
+-- fuzzy near-dupes INSIDE measurements extension:
+   'height' ~ 'weight' ratio=0.83
+   'waist-circumference' ~ 'hip-circumference' ratio=0.83
+   'waist-circumference' ~ 'neck-circumference' ratio=0.76
+   'hip-circumference' ~ 'neck-circumference' ratio=0.8
+   'systolic-bp' ~ 'diastolic-bp' ratio=0.78
+   'total-cholesterol' ~ 'hdl-cholesterol' ratio=0.81
+   'total-cholesterol' ~ 'ldl-cholesterol' ratio=0.81
+   'total-cholesterol' ~ 'non-hdl-cholesterol' ratio=0.78
+   'total-cholesterol' ~ 'vldl-cholesterol' ratio=0.79
+   'hdl-cholesterol' ~ 'ldl-cholesterol' ratio=0.93
+   'hdl-cholesterol' ~ 'non-hdl-cholesterol' ratio=0.88
+   'hdl-cholesterol' ~ 'vldl-cholesterol' ratio=0.9
+   'ldl-cholesterol' ~ 'non-hdl-cholesterol' ratio=0.82
+   'ldl-cholesterol' ~ 'vldl-cholesterol' ratio=0.97
+   'non-hdl-cholesterol' ~ 'vldl-cholesterol' ratio=0.8
+   'triglycerides' ~ 'fasting-triglycerides' ratio=0.76
+   'triglycerides' ~ 'triglycerides-categories' ratio=0.7
+   'fasting-plasma-glucose' ~ 'ogtt-2h-plasma-glucose' ratio=0.73
+   'mch' ~ 'mchc' ratio=0.86
+   'neutrophils-percent' ~ 'eosinophils-percent' ratio=0.79
+   'neutrophils-percent' ~ 'basophils-percent' ratio=0.78
+   'neutrophils-absolute' ~ 'eosinophils-absolute' ratio=0.8
+   'neutrophils-absolute' ~ 'basophils-absolute' ratio=0.79
+   'lymphocytes-percent' ~ 'monocytes-percent' ratio=0.83
+   'lymphocytes-absolute' ~ 'monocytes-absolute' ratio=0.84
+   'eosinophils-percent' ~ 'basophils-percent' ratio=0.83
+   'eosinophils-absolute' ~ 'basophils-absolute' ratio=0.84
+   'bilirubin-direct' ~ 'bilirubin-indirect' ratio=0.94
+
+=== H. OPEN ISSUES BY AGENT TAG ===
+{'inventory:platform-survey': 8, 'inventory:seo-india': 18, 'anthropometric': 15, 'cardiovascular': 14, 'metabolic': 12, 'kidney-hydration': 10, 'liver-alcohol': 12, 'respiratory': 13, 'womens-repro': 13, 'mental-sleep': 14, 'lab-panel-extension': 15}

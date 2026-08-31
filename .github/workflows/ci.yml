@@ -1,0 +1,186 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: 1 - Lint and static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.6.1
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - name: Compile package prerequisites for workspace typechecking
+        run: >-
+          npm run build --workspace @niro/contracts &&
+          npm run build --workspace @niro/engine
+      - run: npm run typecheck
+
+  unit:
+    name: 2 - Unit, security, and integrity gates
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.6.1
+      - run: npm ci
+      - name: Compile package prerequisites for unit tests
+        run: >-
+          npm run build --workspace @niro/contracts &&
+          npm run build --workspace @niro/engine
+      - run: npm test
+      - name: P10 non-live security and reusability gates
+        run: >-
+          npx vitest run
+          packages/engine/src/p10-fixture-matrices.test.ts
+          apps/server/src/p10-hardening.test.ts
+          scripts/p10-reusability-fixture.test.ts
+          scripts/p10-reusability-gate.test.ts
+          scripts/p10-performance.test.ts
+          scripts/p10-link-check.test.ts
+          scripts/p10-validation-wiring.test.ts
+          --testTimeout=30000 --maxWorkers=1 --fileParallelism=false
+      - name: Generic-engine calculator-name grep gate
+        shell: bash
+        run: |
+          if rg --ignore-case 'niro|covid' packages/engine/src; then
+            echo 'Calculator-specific terms are forbidden in packages/engine/src.' >&2
+            exit 1
+          fi
+      - run: npm run fixtures:validate
+      - run: npm run contracts:check-generated
+      - run: npm run measurements:integrity
+      - run: npm run p8:divergence:check
+      - run: npm run p8:readiness:check
+      - run: npm audit --audit-level=high
+      - run: npm audit --omit=dev --audit-level=high
+
+  atlas-integrations:
+    name: 3 - Guarded Atlas integrations
+    needs: unit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: p10-test
+    concurrency:
+      group: ci-atlas-integrations
+      cancel-in-progress: false
+    env:
+      ATLAS_INTEGRATIONS_CONFIGURED: ${{ secrets.P10_MONGODB_URI != '' }}
+      MONGODB_URI: ${{ secrets.P10_MONGODB_URI }}
+      MONGODB_DB_NAME: niro_ci_integration
+      NODE_ENV: test
+      AUTH_ACCESS_SECRET: ci-only-access-${{ github.run_id }}-${{ github.run_attempt }}-not-production
+      AUTH_REFRESH_SECRET: ci-only-refresh-${{ github.run_id }}-${{ github.run_attempt }}-not-production
+    steps:
+      - name: Require the protected Atlas integration environment
+        if: env.ATLAS_INTEGRATIONS_CONFIGURED != 'true'
+        shell: bash
+        run: |
+          echo 'Guarded Atlas integrations require P10_MONGODB_URI in the protected p10-test environment.' >&2
+          echo 'A missing integration environment is not a passing CI integration stage.' >&2
+          exit 1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.6.1
+      - run: npm ci
+      - name: Compile package prerequisites for integration harnesses
+        run: >-
+          npm run build --workspace @niro/contracts &&
+          npm run build --workspace @niro/engine
+      - name: Transaction integration
+        run: npm run db:integration -- --allow-temporary-database-write
+      - name: Public API and persistence integration
+        run: npm run public:integration -- --allow-temporary-database-write
+      - name: Admin lifecycle and transaction integration
+        run: npm run admin:integration -- --allow-temporary-database-write
+      - name: Measurement library integration in an owned temporary database
+        run: npm run p6:integration -- --allow-temporary-database-write
+      - name: Analytics integration in an owned temporary database
+        run: npm run analytics:integration -- --allow-temporary-database-write
+
+  production-build:
+    name: 4 - Production build
+    needs: atlas-integrations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.6.1
+      - run: npm ci
+      - run: npm run build
+      - run: npm run deploy:native:verify
+
+  p10-live-browser-gate:
+    name: 5 - P10 live browser and k6 gate
+    needs: production-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: p10-test
+    env:
+      P10_ATLAS_CONFIGURED: ${{ secrets.P10_MONGODB_URI != '' }}
+      MONGODB_URI: ${{ secrets.P10_MONGODB_URI }}
+    steps:
+      - name: Require the explicit live-gate environment
+        if: env.P10_ATLAS_CONFIGURED != 'true'
+        shell: bash
+        run: |
+          echo 'P10 live browser/Reusability Gate cannot run because the protected p10-test environment does not provide P10_MONGODB_URI.' >&2
+          echo 'Configure the environment secret and rerun CI; a skipped live gate is not a passing release gate.' >&2
+          exit 1
+      - uses: actions/checkout@v4
+        if: env.P10_ATLAS_CONFIGURED == 'true'
+      - uses: actions/setup-node@v4
+        if: env.P10_ATLAS_CONFIGURED == 'true'
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.6.1
+        if: env.P10_ATLAS_CONFIGURED == 'true'
+      - run: npm ci
+        if: env.P10_ATLAS_CONFIGURED == 'true'
+      - run: npm run build
+        if: env.P10_ATLAS_CONFIGURED == 'true'
+      - name: Install the pinned official Grafana k6 CLI
+        if: env.P10_ATLAS_CONFIGURED == 'true'
+        uses: grafana/setup-k6-action@v1
+        with:
+          k6-version: '1.7.1'
+      - run: npm run p10:browsers:install -- --with-deps
+        if: env.P10_ATLAS_CONFIGURED == 'true'
+      - name: Run isolated Studio-only browser gate
+        if: env.P10_ATLAS_CONFIGURED == 'true'
+        env:
+          P10_RUN_K6: 'true'
+        run: npm run p10:e2e
+      - name: Archive P10 trace/video/hash evidence
+        if: always() && env.P10_ATLAS_CONFIGURED == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: p10-reusability-evidence
+          path: |
+            tmp/p10-evidence
+            tmp/p10-playwright
+          if-no-files-found: warn
+          retention-days: 30

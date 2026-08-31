@@ -1,0 +1,113 @@
+# Scheduler reference for Kubernetes 1.27+. The application-level durable
+# leases remain authoritative even though CronJob concurrency is also forbidden.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: niro-analytics-current-day
+spec:
+  schedule: '*/5 * * * *'
+  timeZone: 'Etc/UTC'
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 240
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: analytics-rollup
+              image: REPLACE_WITH_IMMUTABLE_SERVER_IMAGE_DIGEST
+              envFrom:
+                - configMapRef:
+                    name: niro-server-config
+                - secretRef:
+                    name: niro-server-secrets
+              command: ['sh', '-euc']
+              args:
+                - >-
+                  exec node apps/server/dist/ops/analytics-rollup-cli.js
+                  --allow-analytics-write
+                  --expected-db-name="$MONGODB_DB_NAME"
+                  --expected-node-env="$NODE_ENV"
+                  --current-day-partial
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                capabilities:
+                  drop: ['ALL']
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: niro-analytics-final
+spec:
+  schedule: '15 0 * * *'
+  timeZone: 'Asia/Kolkata'
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 7
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 900
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: analytics-rollup
+              image: REPLACE_WITH_IMMUTABLE_SERVER_IMAGE_DIGEST
+              envFrom:
+                - configMapRef:
+                    name: niro-server-config
+                - secretRef:
+                    name: niro-server-secrets
+              command: ['sh', '-euc']
+              args:
+                - >-
+                  exec node apps/server/dist/ops/analytics-rollup-cli.js
+                  --allow-analytics-write
+                  --expected-db-name="$MONGODB_DB_NAME"
+                  --expected-node-env="$NODE_ENV"
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                capabilities:
+                  drop: ['ALL']
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: niro-cache-invalidation
+spec:
+  schedule: '* * * * *'
+  timeZone: 'Etc/UTC'
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 50
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: cache-invalidation
+              image: REPLACE_WITH_IMMUTABLE_SERVER_IMAGE_DIGEST
+              envFrom:
+                - configMapRef:
+                    name: niro-server-config
+                - secretRef:
+                    name: niro-server-secrets
+              command: ['node', 'apps/server/dist/ops/cache-invalidation-cli.js']
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                capabilities:
+                  drop: ['ALL']

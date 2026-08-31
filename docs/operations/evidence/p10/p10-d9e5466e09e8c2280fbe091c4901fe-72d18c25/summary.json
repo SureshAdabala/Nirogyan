@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "p10-reusability-gate-run.v1",
+  "status": "ok",
+  "executionId": "p10-d9e5466e09e8c2280fbe091c4901fe-72d18c25",
+  "fixtureOnly": true,
+  "isolatedDatabase": "niro_p7_d9e5466e09e8c2280fbe091c4901fe",
+  "calculatorSlug": "p10-d9e5466e09e8c2280fbe091c4901fe-calculator",
+  "createdFromBlankStudioDraft": true,
+  "fullConfigurationJsonImportUsed": false,
+  "subsequentlyEditedReviewedPublishedViaStudioUi": true,
+  "protectedImplementationSha256": "82f21e818d0183c1e625e7618840ee84f9a05a0e6b6b0527a9da3de2040a1523",
+  "protectedImplementationDifferences": [],
+  "guardedAtlasCleanup": "completed",
+  "performance": {
+    "status": "ok",
+    "calculatorSlug": "p10-d9e5466e09e8c2280fbe091c4901fe-calculator",
+    "coldConfigMs": 32.87,
+    "warmConfigMs": 6.56,
+    "warmCacheStatus": 304,
+    "requestCount": 18,
+    "concurrency": 3,
+    "assessmentP50Ms": 91.82,
+    "assessmentP95Ms": 143.83,
+    "assessmentMaxMs": 143.83,
+    "budgetMs": 300
+  },
+  "k6": {
+    "requested": true,
+    "completed": true,
+    "summaryArtifact": "k6-summary.json"
+  },
+  "childProcessLogs": [
+    {
+      "label": "api-server",
+      "stdout": "logs/api-server.stdout.log",
+      "stderr": "logs/api-server.stderr.log"
+    },
+    {
+      "label": "next-client-build",
+      "stdout": "logs/next-client-build.stdout.log",
+      "stderr": "logs/next-client-build.stderr.log"
+    },
+    {
+      "label": "next-client-standalone-stage",
+      "stdout": "logs/next-client-standalone-stage.stdout.log",
+      "stderr": "logs/next-client-standalone-stage.stderr.log"
+    },
+    {
+      "label": "next-client",
+      "stdout": "logs/next-client.stdout.log",
+      "stderr": "logs/next-client.stderr.log"
+    },
+    {
+      "label": "playwright",
+      "stdout": "logs/playwright.stdout.log",
+      "stderr": "logs/playwright.stderr.log"
+    },
+    {
+      "label": "k6",
+      "stdout": "logs/k6.stdout.log",
+      "stderr": "logs/k6.stderr.log"
+    },
+    {
+      "label": "api-server-node-performance",
+      "stdout": "logs/api-server-node-performance.stdout.log",
+      "stderr": "logs/api-server-node-performance.stderr.log"
+    }
+  ],
+  "playwrightArtifacts": "tmp/p10-playwright"
+}

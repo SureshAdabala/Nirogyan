@@ -1,0 +1,70 @@
+{
+  "$schema": "niro-platform/calculator-version.v1",
+  "calculatorSlug": "hypothyroid-risk",
+  "name": "Hypothyroid Risk Calculator",
+  "version": 1,
+  "status": "draft",
+  "shortDescription": "Estimates your risk of hypothyroidism from clinical risk factors, symptoms and thyroid labs.",
+  "disclaimers": ["Educational screening aid, not a diagnosis. Confirm with TSH/T4 testing and a clinician."],
+  "NIRO_SOURCE_STATUS": {
+    "banner": "NIRO-DEFINED (ACTIVE)",
+    "explanation": "All factors, points and categories transcribed from Niro 'Risk calculators.xlsx' sheet 'Hypothyroid' (Risk Analysis folder). Sheet cites: Indian Thyroid Society guidelines, ATA 2021, NHANES, Unnikrishnan 2011.",
+    "remainingClarifications": ["N5: symptom cluster = one 5-point factor (configured) or per-symptom-row points?"]
+  },
+  "parameters": [
+    { "key": "age", "label": "Age", "group": "profile", "inputType": "number", "unit": { "canonical": "years" }, "validation": { "required": true, "min": 18, "max": 120 }, "order": 1 },
+    { "key": "sex", "label": "Sex", "group": "profile", "inputType": "select", "validation": { "required": true },
+      "options": [ { "value": "male", "label": "Male" }, { "value": "female", "label": "Female" } ], "order": 2 },
+    { "key": "familyHistoryThyroid", "label": "Family history of thyroid disease", "group": "history", "inputType": "boolean", "order": 10 },
+    { "key": "symptoms", "label": "Symptoms: weight gain, fatigue, dry skin, hair loss, constipation or irregular periods", "group": "history", "inputType": "boolean", "order": 11,
+      "source": { "type": "niro", "ref": "XLSX Hypothyroid R6–R7 — merged symptom cluster (N5)" } },
+    { "key": "autoimmuneHistory", "label": "History of autoimmune disease", "group": "history", "inputType": "boolean", "order": 12 },
+    { "key": "tshHigh", "label": "TSH above 4.5", "group": "labs", "inputType": "select", "validation": { "required": false },
+      "options": [ { "value": "yes", "label": "Yes (TSH > 4.5)" }, { "value": "no", "label": "No" }, { "value": "unknown", "label": "Not tested / don't know" } ], "order": 20 },
+    { "key": "lowT4T3", "label": "Low free T4 or T3", "group": "labs", "inputType": "select", "validation": { "required": false },
+      "options": [ { "value": "yes", "label": "Yes" }, { "value": "no", "label": "No" }, { "value": "unknown", "label": "Not tested" } ], "order": 21 },
+    { "key": "antibodiesPositive", "label": "Thyroid antibodies positive", "group": "labs", "inputType": "select", "validation": { "required": false },
+      "options": [ { "value": "yes", "label": "Yes" }, { "value": "no", "label": "No" }, { "value": "unknown", "label": "Not tested" } ], "order": 22 }
+  ],
+  "scoringRules": [
+    { "parameterKey": "age", "bandEdges": "min-inclusive", "contexts": [ { "when": null, "bands": [
+      { "max": 35, "maxInclusive": true, "points": 0 }, { "min": 35, "minExclusive": true, "points": 5 } ],
+      "source": { "type": "niro", "ref": "XLSX: Age > 35 → 5" } } ] },
+    { "parameterKey": "sex", "optionPoints": [ { "value": "female", "points": 10 }, { "value": "male", "points": 0 } ],
+      "source": { "type": "niro", "ref": "XLSX: Female → 10" } },
+    { "parameterKey": "familyHistoryThyroid", "optionPoints": [ { "value": true, "points": 10 }, { "value": false, "points": 0 } ],
+      "source": { "type": "niro", "ref": "XLSX: Family history → 10" } },
+    { "parameterKey": "symptoms", "optionPoints": [ { "value": true, "points": 5 }, { "value": false, "points": 0 } ],
+      "source": { "type": "niro", "ref": "XLSX: symptom cluster → 5 (N5)" } },
+    { "parameterKey": "autoimmuneHistory", "optionPoints": [ { "value": true, "points": 10 }, { "value": false, "points": 0 } ],
+      "source": { "type": "niro", "ref": "XLSX: Autoimmune history → 10" } },
+    { "parameterKey": "tshHigh", "optionPoints": [ { "value": "yes", "points": 20 }, { "value": "no", "points": 0 }, { "value": "unknown", "points": 0 } ],
+      "source": { "type": "niro", "ref": "XLSX: TSH (>4.5) → 20" } },
+    { "parameterKey": "lowT4T3", "optionPoints": [ { "value": "yes", "points": 10 }, { "value": "no", "points": 0 }, { "value": "unknown", "points": 0 } ],
+      "source": { "type": "niro", "ref": "XLSX: Low free T4 or T3 → 10" } },
+    { "parameterKey": "antibodiesPositive", "optionPoints": [ { "value": "yes", "points": 15 }, { "value": "no", "points": 0 }, { "value": "unknown", "points": 0 } ],
+      "source": { "type": "niro", "ref": "XLSX: Antibodies positive → 15" } }
+  ],
+  "domains": [ { "key": "overall", "label": "Thyroid risk factors", "weight": 1.0, "implicit": true,
+    "parameterKeys": ["age", "sex", "familyHistoryThyroid", "symptoms", "autoimmuneHistory", "tshHigh", "lowT4T3", "antibodiesPositive"] } ],
+  "formulas": [ { "key": "final-score", "expression": "sum(points)", "source": { "type": "niro", "ref": "XLSX additive total (max 85)" } } ],
+  "resultCategories": {
+    "scale": { "min": 0, "max": 85, "direction": "higher-is-worse" },
+    "bandEdges": "min-inclusive",
+    "bands": [
+      { "label": "Low", "max": 15, "maxInclusive": true, "color": "#1a9850", "source": { "type": "niro", "ref": "XLSX: 0–15 Low" } },
+      { "label": "Medium", "min": 16, "max": 35, "maxInclusive": true, "color": "#fee08b", "source": { "type": "niro", "ref": "XLSX: 16–35 Medium" } },
+      { "label": "High", "min": 35, "minExclusive": true, "color": "#d73027", "source": { "type": "niro", "ref": "XLSX: >35 High" } }
+    ]
+  },
+  "uiConfig": {
+    "theme": { "accent": "#0e7490" },
+    "steps": [ { "key": "about", "title": "About you", "parameterGroups": ["profile", "history"] },
+               { "key": "labs", "title": "Thyroid labs (if available)", "parameterGroups": ["labs"] } ],
+    "result": { "layout": ["score-gauge", "category", "key-contributors", "recommendations"] }
+  },
+  "sources": [
+    { "type": "niro", "ref": "Risk calculators.xlsx — 'Hypothyroid' sheet (primary)" },
+    { "type": "external", "org": "Indian Thyroid Society / ATA 2021 / NHANES / Unnikrishnan 2011", "note": "cited inside the Niro sheet as evidence basis" }
+  ]
+}

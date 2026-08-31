@@ -1,0 +1,40 @@
+name: Quarterly public rendered-link check
+
+on:
+  schedule:
+    - cron: '17 4 1 1,4,7,10 *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quarterly-public-rendered-link-check
+  cancel-in-progress: false
+
+jobs:
+  public-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      P11_PUBLIC_SITE_URL: ${{ vars.P11_PUBLIC_SITE_URL }}
+      P10_LINK_CHECK_MAX_PAGES: '250'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.6.1
+      - run: npm ci --ignore-scripts
+      - name: Require the non-secret public site variable
+        shell: bash
+        run: |
+          if [[ -z "$P11_PUBLIC_SITE_URL" ]]; then
+            echo 'Configure the non-secret repository variable P11_PUBLIC_SITE_URL.' >&2
+            exit 1
+          fi
+      - name: Check public rendered and external links with read-only requests
+        run: npm run p11:links -- "$P11_PUBLIC_SITE_URL"

@@ -1,0 +1,100 @@
+{
+  "$schema": "niro-platform/calculator-version.v1",
+  "calculatorSlug": "covid-19-risk-check",
+  "name": "COVID-19 Risk Check (Reusability Demo)",
+  "version": 1,
+  "status": "draft",
+  "shortDescription": "A quick check of factors associated with higher risk of severe COVID-19 illness.",
+  "disclaimers": [
+    "DEMONSTRATION CALCULATOR — built to validate the platform's configuration-driven architecture. The point values are illustrative, not a validated clinical instrument.",
+    "Risk-factor list follows CDC's published factors for severe COVID-19; consult a clinician for personal medical advice."
+  ],
+
+  "PURPOSE_NOTE": "This is the platform's REUSABILITY PROOF (success criterion 8, master requirement §16): a structurally different calculator — option-points scoring, single implicit domain, higher-is-worse scale, no lab units, no demographic banding — expressed purely as configuration. It runs on the identical engine and renderer as Niro CWS with ZERO core-code changes. Factual risk-factor list externally sourced (CDC); point weights are demo values, clearly labeled.",
+
+  "parameters": [
+    { "key": "age", "label": "Age", "group": "profile", "inputType": "number",
+      "unit": { "canonical": "years" }, "validation": { "required": true, "min": 18, "max": 120 }, "order": 1 },
+    { "key": "vaccination", "label": "COVID-19 vaccination status", "group": "profile", "inputType": "select",
+      "validation": { "required": true }, "order": 2,
+      "options": [
+        { "value": "up-to-date", "label": "Up to date (incl. recent booster)" },
+        { "value": "partial", "label": "Vaccinated, not up to date" },
+        { "value": "none", "label": "Not vaccinated" }
+      ],
+      "source": { "type": "external", "org": "CDC", "note": "Vaccination reduces severe-illness risk — factor sourced from CDC; demo points" } },
+    { "key": "diabetes", "label": "Diabetes (type 1 or 2)", "group": "conditions", "inputType": "boolean", "order": 10,
+      "source": { "type": "external", "org": "CDC", "note": "CDC lists diabetes among conditions with higher severe-COVID risk" } },
+    { "key": "heartDisease", "label": "Heart disease", "group": "conditions", "inputType": "boolean", "order": 11,
+      "source": { "type": "external", "org": "CDC" } },
+    { "key": "chronicLungDisease", "label": "Chronic lung disease (incl. COPD, moderate–severe asthma)", "group": "conditions", "inputType": "boolean", "order": 12,
+      "source": { "type": "external", "org": "CDC" } },
+    { "key": "chronicKidneyDisease", "label": "Chronic kidney disease", "group": "conditions", "inputType": "boolean", "order": 13,
+      "source": { "type": "external", "org": "CDC" } },
+    { "key": "immunocompromised", "label": "Weakened immune system", "group": "conditions", "inputType": "boolean", "order": 14,
+      "source": { "type": "external", "org": "CDC" } },
+    { "key": "obesity", "label": "Obesity (BMI ≥ 30)", "group": "conditions", "inputType": "boolean", "order": 15,
+      "source": { "type": "external", "org": "CDC/WHO BMI category" } },
+    { "key": "pregnancy", "label": "Currently pregnant", "group": "conditions", "inputType": "boolean", "order": 16,
+      "source": { "type": "external", "org": "CDC" } },
+    { "key": "smokingCurrent", "label": "Current or former smoker", "group": "lifestyle", "inputType": "boolean", "order": 20,
+      "source": { "type": "external", "org": "CDC" } }
+  ],
+
+  "scoringRules": [
+    { "parameterKey": "age", "bandEdges": "min-inclusive",
+      "contexts": [ { "when": null, "bands": [
+        { "min": null, "max": 50, "points": 0, "interpretation": "baseline", "source": { "type": "external", "org": "CDC — risk rises with age", "demoPoints": true } },
+        { "min": 50, "max": 65, "points": 1, "interpretation": "increased", "source": { "type": "external", "org": "CDC", "demoPoints": true } },
+        { "min": 65, "max": 75, "points": 2, "interpretation": "high", "source": { "type": "external", "org": "CDC", "demoPoints": true } },
+        { "min": 75, "max": null, "points": 3, "interpretation": "highest", "source": { "type": "external", "org": "CDC", "demoPoints": true } }
+      ] } ] },
+    { "parameterKey": "vaccination", "optionPoints": [
+        { "value": "up-to-date", "points": 0 }, { "value": "partial", "points": 1 }, { "value": "none", "points": 2 }
+      ], "source": { "demoPoints": true } },
+    { "parameterKey": "diabetes", "optionPoints": [ { "value": true, "points": 1 }, { "value": false, "points": 0 } ], "source": { "demoPoints": true } },
+    { "parameterKey": "heartDisease", "optionPoints": [ { "value": true, "points": 1 }, { "value": false, "points": 0 } ], "source": { "demoPoints": true } },
+    { "parameterKey": "chronicLungDisease", "optionPoints": [ { "value": true, "points": 1 }, { "value": false, "points": 0 } ], "source": { "demoPoints": true } },
+    { "parameterKey": "chronicKidneyDisease", "optionPoints": [ { "value": true, "points": 1 }, { "value": false, "points": 0 } ], "source": { "demoPoints": true } },
+    { "parameterKey": "immunocompromised", "optionPoints": [ { "value": true, "points": 2 }, { "value": false, "points": 0 } ], "source": { "demoPoints": true } },
+    { "parameterKey": "obesity", "optionPoints": [ { "value": true, "points": 1 }, { "value": false, "points": 0 } ], "source": { "demoPoints": true } },
+    { "parameterKey": "pregnancy", "optionPoints": [ { "value": true, "points": 1 }, { "value": false, "points": 0 } ], "source": { "demoPoints": true } },
+    { "parameterKey": "smokingCurrent", "optionPoints": [ { "value": true, "points": 1 }, { "value": false, "points": 0 } ], "source": { "demoPoints": true } }
+  ],
+
+  "domains": [
+    { "key": "overall", "label": "Overall risk factors", "weight": 1.0, "implicit": true,
+      "parameterKeys": ["age", "vaccination", "diabetes", "heartDisease", "chronicLungDisease", "chronicKidneyDisease", "immunocompromised", "obesity", "pregnancy", "smokingCurrent"] }
+  ],
+
+  "formulas": [
+    { "key": "final-score", "expression": "sum(points)", "note": "Simple additive sum — structurally different from Niro's weighted-domain model, same engine primitives" }
+  ],
+
+  "resultCategories": {
+    "scale": { "min": 0, "max": 14, "direction": "higher-is-worse" },
+    "bandEdges": "min-inclusive",
+    "bands": [
+      { "label": "Lower risk profile", "min": null, "max": 3, "color": "#1a9850",
+        "message": "Few known severe-illness risk factors. Stay current with vaccination and usual precautions." },
+      { "label": "Moderate risk profile", "min": 3, "max": 6, "color": "#fee08b",
+        "message": "Some factors associated with higher risk of severe illness. Consider discussing prevention and early-treatment options with a clinician." },
+      { "label": "Higher risk profile", "min": 6, "max": null, "color": "#d73027",
+        "message": "Multiple factors associated with severe illness. CDC advises people at higher risk to plan early testing and treatment with their clinician." }
+    ]
+  },
+
+  "uiConfig": {
+    "theme": { "accent": "#7c3aed" },
+    "steps": [
+      { "key": "about", "title": "About you", "parameterGroups": ["profile"] },
+      { "key": "health", "title": "Health background", "parameterGroups": ["conditions", "lifestyle"] }
+    ],
+    "result": { "layout": ["score-gauge", "category", "key-contributors", "recommendations"] }
+  },
+
+  "sources": [
+    { "type": "external", "org": "CDC", "title": "People with Certain Medical Conditions and COVID-19 Risk Factors", "url": "https://www.cdc.gov/covid/risk-factors/index.html", "accessed": "2026-08-18", "note": "risk-factor list; page family 403-blocked to automated fetch — factor list corroborated via CDC-derived NIH-family sources; re-verify before production use" },
+    { "type": "external", "org": "WHO/CDC", "title": "BMI obesity category ≥30", "url": "https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight", "accessed": "2026-08-18" }
+  ]
+}

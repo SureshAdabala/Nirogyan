@@ -1,0 +1,17 @@
+{
+  "name": "@niro/engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "tsc -p tsconfig.build.json --build --clean",
+    "test": "vitest run --config ../../vitest.config.ts --no-file-parallelism --testTimeout 30000",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}

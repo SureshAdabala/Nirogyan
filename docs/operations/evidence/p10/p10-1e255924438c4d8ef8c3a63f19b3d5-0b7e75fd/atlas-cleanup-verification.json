@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "niro-p10-atlas-cleanup-verification.v1",
+  "status": "ok",
+  "executionId": "p10-1e255924438c4d8ef8c3a63f19b3d5-0b7e75fd",
+  "database": "niro_p7_1e255924438c4d8ef8c3a63f19b3d5",
+  "fixtureOnly": true,
+  "ownershipVerifiedBeforeDrop": true,
+  "namespacePresentAfterDrop": false,
+  "completedAtUtc": "2026-08-30T02:10:34.208Z"
+}

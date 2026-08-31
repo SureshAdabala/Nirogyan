@@ -1,0 +1,341 @@
+{
+  "schemaVersion": "niro-evidence-requests.v1",
+  "evaluatedAgainstContractsAt": "2026-08-28T00:00:00.000Z",
+  "purpose": "Fail-closed handoff register for evidence that must come from an external source owner, qualified independent medical reviewer, measurement reviewer, content owner, or governance owner before a Niro calculator can be considered for publication.",
+  "policy": {
+    "autoApply": false,
+    "autoApprove": false,
+    "clinicalValuesPresent": false,
+    "acceptedEvidenceMustBeAppliedThroughStudio": true,
+    "note": "This register requests evidence; it does not contain or imply a clinical decision, reviewer approval, publish instruction, or executable calculator change."
+  },
+  "calculators": [
+    {
+      "calculatorSlug": "diabetes-risk",
+      "applicationState": "draft",
+      "releaseState": "publication-blocked",
+      "sourceLocator": "data/sources/risk-analysis/Risk calculators.xlsx#Diabetes!B5:I27",
+      "externalClinicalBlockerIds": [
+        "DIA-01",
+        "DIA-02",
+        "DIA-03",
+        "DIA-04",
+        "DIA-06",
+        "DIA-07",
+        "DIA-09",
+        "DIA-10",
+        "DIA-11",
+        "DIA-12",
+        "DIA-13",
+        "DIA-14"
+      ],
+      "lockedEngineeringDispositions": [
+        {
+          "discrepancyId": "DIA-05",
+          "disposition": "Engine aggregation semantics are locked; clinical and complete-test evidence remains required."
+        },
+        {
+          "discrepancyId": "DIA-08",
+          "disposition": "Imputation applies only to a missing target under the locked engine contract."
+        }
+      ],
+      "requests": [
+        {
+          "kind": "source-owner-disposition",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "niro-source-owner",
+          "requiredEvidence": [
+            "A decision for every listed calculator-specific blocker ID.",
+            "A precise locator in a versioned source artifact for every confirmed threshold, endpoint, applicability rule, and missing-data rule.",
+            "An explicit statement where the source intentionally leaves a value unscorable or a feature out of scope."
+          ]
+        },
+        {
+          "kind": "measurement-review",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "qualified-measurement-reviewer",
+          "requiredEvidence": [
+            "Approved immutable measurement revisions for every medical parameter selected during reviewed Studio authoring.",
+            "Reviewed unit, conversion, bound, context, and claim-source evidence for each selected revision."
+          ]
+        },
+        {
+          "kind": "complete-source-worked-example",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "niro-source-owner",
+          "requiredEvidence": [
+            "One complete input set covering every required final-result dependency.",
+            "Expected final score and result category.",
+            "A precise current source locator and reviewer-approved boundary cases."
+          ]
+        },
+        {
+          "kind": "content-governance",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "content-and-governance-owner",
+          "requiredEvidence": [
+            "Reviewed structured content, educational disclaimer, applicability copy, SEO metadata, authorship, and claim-level citations.",
+            "Current source verification and licensing dispositions for every medical claim.",
+            "Approved privacy, retention, legal, and publication policy values required by the calculator."
+          ]
+        },
+        {
+          "kind": "independent-medical-review",
+          "status": "blocked-by-prerequisite",
+          "ownerRole": "qualified-independent-medical-reviewer",
+          "requiredEvidence": [
+            "Named reviewer identity with accepted credentials and jurisdiction.",
+            "Independent approval of the final protected logic, content, citation, measurement, and required-test snapshot hashes.",
+            "A current review date and approved review-expiry cadence."
+          ]
+        }
+      ]
+    },
+    {
+      "calculatorSlug": "heart-risk",
+      "applicationState": "draft",
+      "releaseState": "publication-blocked",
+      "sourceLocator": "data/sources/risk-analysis/Risk calculators.xlsx#'Heart '!A1:V66",
+      "externalClinicalBlockerIds": [
+        "HRT-01",
+        "HRT-02",
+        "HRT-03",
+        "HRT-04",
+        "HRT-05",
+        "HRT-06",
+        "HRT-07",
+        "HRT-08",
+        "HRT-09",
+        "HRT-10",
+        "HRT-11",
+        "HRT-12",
+        "HRT-13",
+        "HRT-14",
+        "HRT-16",
+        "HRT-17",
+        "HRT-18",
+        "HRT-20"
+      ],
+      "lockedEngineeringDispositions": [
+        {
+          "discrepancyId": "HRT-15",
+          "disposition": "No applicable floor is zero with trace under the locked engine contract."
+        },
+        {
+          "discrepancyId": "HRT-19",
+          "disposition": "Legacy formula aliases bind deterministically under the locked engine contract."
+        },
+        {
+          "discrepancyId": "HRT-20",
+          "disposition": "Maximum applicable floor and all messages are locked engineering behavior; independent clinical approval remains required."
+        }
+      ],
+      "requests": [
+        {
+          "kind": "source-owner-disposition",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "niro-source-owner",
+          "requiredEvidence": [
+            "A decision for every listed calculator-specific blocker ID, including sex/population applicability and interval-valued lookup/floor outputs.",
+            "A precise locator in a versioned source artifact for every confirmed threshold, endpoint, floor predicate, and score transformation.",
+            "An explicit in-scope or out-of-scope decision for non-HDL and vascular-age claims."
+          ]
+        },
+        {
+          "kind": "measurement-review",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "qualified-measurement-reviewer",
+          "requiredEvidence": [
+            "Approved immutable measurement revisions for every bound Heart parameter.",
+            "Explicit review of the calculator-local 38.61 lipid conversion without global harmonization."
+          ]
+        },
+        {
+          "kind": "complete-source-worked-example",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "niro-source-owner",
+          "requiredEvidence": [
+            "A complete input set including LDL and triglycerides and every final floor/adjustment dependency.",
+            "Expected final adjusted/floored score and result category.",
+            "A precise current source locator and reviewer-approved boundary cases; the existing 13-to-10 base-stage example is insufficient."
+          ]
+        },
+        {
+          "kind": "content-governance",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "content-and-governance-owner",
+          "requiredEvidence": [
+            "Reviewed structured content, educational disclaimer, applicability copy, SEO metadata, authorship, and claim-level citations.",
+            "Current source verification and licensing dispositions for every medical claim.",
+            "Approved privacy, retention, legal, and publication policy values required by the calculator."
+          ]
+        },
+        {
+          "kind": "independent-medical-review",
+          "status": "blocked-by-prerequisite",
+          "ownerRole": "qualified-independent-medical-reviewer",
+          "requiredEvidence": [
+            "Named reviewer identity with accepted credentials and jurisdiction.",
+            "Independent approval of the final protected logic, content, citation, measurement, and required-test snapshot hashes.",
+            "A current review date and approved review-expiry cadence."
+          ]
+        }
+      ]
+    },
+    {
+      "calculatorSlug": "hypothyroid-risk",
+      "applicationState": "draft",
+      "releaseState": "publication-blocked",
+      "sourceLocator": "data/sources/risk-analysis/Risk calculators.xlsx#Hypothyroid!A2:E49",
+      "externalClinicalBlockerIds": [
+        "HYP-01",
+        "HYP-02",
+        "HYP-03",
+        "HYP-04",
+        "HYP-05",
+        "HYP-06",
+        "HYP-07"
+      ],
+      "lockedEngineeringDispositions": [],
+      "requests": [
+        {
+          "kind": "source-owner-disposition",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "niro-source-owner",
+          "requiredEvidence": [
+            "A decision for every listed calculator-specific blocker ID, including symptom grouping, unknown/omitted inputs, partial completion, score lattice, and population applicability.",
+            "A precise locator in a versioned source artifact for every confirmed rule.",
+            "An explicit statement where the source intentionally leaves an input unscored or an assessment invalid."
+          ]
+        },
+        {
+          "kind": "measurement-review",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "qualified-measurement-reviewer",
+          "requiredEvidence": [
+            "Approved immutable measurement revisions for every medical parameter selected during reviewed Studio authoring.",
+            "Reviewed unit, bound, missing-state, context, and claim-source evidence for each selected revision."
+          ]
+        },
+        {
+          "kind": "complete-source-worked-example",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "niro-source-owner",
+          "requiredEvidence": [
+            "One complete input set covering every required final-result dependency.",
+            "Expected final score and result category.",
+            "A precise current source locator and reviewer-approved boundary cases."
+          ]
+        },
+        {
+          "kind": "content-governance",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "content-and-governance-owner",
+          "requiredEvidence": [
+            "Reviewed structured content, educational disclaimer, applicability copy, SEO metadata, authorship, and claim-level citations.",
+            "Current source verification and licensing dispositions for every medical claim.",
+            "Approved privacy, retention, legal, and publication policy values required by the calculator."
+          ]
+        },
+        {
+          "kind": "independent-medical-review",
+          "status": "blocked-by-prerequisite",
+          "ownerRole": "qualified-independent-medical-reviewer",
+          "requiredEvidence": [
+            "Named reviewer identity with accepted credentials and jurisdiction.",
+            "Independent approval of the final protected logic, content, citation, measurement, and required-test snapshot hashes.",
+            "A current review date and approved review-expiry cadence."
+          ]
+        }
+      ]
+    },
+    {
+      "calculatorSlug": "niro-cws",
+      "applicationState": "draft",
+      "releaseState": "source-rejected-publication-blocked",
+      "sourceLocator": "data/sources/risk-analysis/Comprehensive Wellness Score Framework_ A Point-Based Assessment of Health Parameters.pdf#sections-2-6-and-page-18",
+      "externalClinicalBlockerIds": [
+        "N1",
+        "CWS-01",
+        "CWS-03",
+        "CWS-04",
+        "CWS-05",
+        "CWS-06",
+        "CWS-07",
+        "CWS-08",
+        "CWS-09",
+        "CWS-10",
+        "CWS-11",
+        "CWS-12",
+        "CWS-13",
+        "CWS-14",
+        "CWS-15",
+        "CWS-16",
+        "CWS-18",
+        "CWS-19",
+        "CWS-20"
+      ],
+      "lockedEngineeringDispositions": [
+        {
+          "discrepancyId": "CWS-02",
+          "disposition": "Public copy must distinguish 38 measured labs, 40 scored parameters, and 49 total parameters, or omit the count. This does not resolve clinical eligibility."
+        },
+        {
+          "discrepancyId": "CWS-17",
+          "disposition": "Revision-3 measurement provenance records exact source/version linkage and all 45 current calculator references. This resolves the stale usage-metadata defect without approving any measurement or CWS clinical value."
+        }
+      ],
+      "requests": [
+        {
+          "kind": "source-owner-disposition",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "niro-source-owner",
+          "requiredEvidence": [
+            "A signed/versioned disposition of the source's explicit rejection and N1 before any other publication work can make CWS eligible.",
+            "A decision for every listed CWS blocker ID, including stratified ranges, gaps, contexts, missing-domain behavior, category seams, extrema, and applicability.",
+            "A precise locator in a versioned replacement or explicitly approved source artifact for every confirmed rule."
+          ]
+        },
+        {
+          "kind": "measurement-review",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "qualified-measurement-reviewer",
+          "requiredEvidence": [
+            "Approved immutable revisions for all 40 selected measurement dependencies.",
+            "Reviewed range, unit, conversion, context, derivation, and claim-source evidence without importing the quarantined catalog."
+          ]
+        },
+        {
+          "kind": "complete-source-worked-example",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "niro-source-owner",
+          "requiredEvidence": [
+            "One complete input set covering domain, missing-data, derived, adjustment, and final-category behavior.",
+            "Expected final score and result category.",
+            "A precise current source locator and reviewer-approved boundary cases."
+          ]
+        },
+        {
+          "kind": "content-governance",
+          "status": "awaiting-external-evidence",
+          "ownerRole": "content-and-governance-owner",
+          "requiredEvidence": [
+            "Reviewed structured content that clearly labels the source status and does not present an unapproved framework as medical advice.",
+            "Educational disclaimer, applicability copy, SEO/indexing decision, authorship, and claim-level citations with current licensing dispositions.",
+            "Approved privacy, retention, legal, and publication policy values required by the calculator."
+          ]
+        },
+        {
+          "kind": "independent-medical-review",
+          "status": "blocked-by-prerequisite",
+          "ownerRole": "qualified-independent-medical-reviewer",
+          "requiredEvidence": [
+            "Named reviewer identity with accepted credentials and jurisdiction.",
+            "Independent approval of the final protected logic, content, citation, measurement, and required-test snapshot hashes after N1 is resolved.",
+            "A current review date and approved review-expiry cadence."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"types.d.ts","sourceRoot":"","sources":["../../src/persistence/types.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,KAAK,EAAE,MAAM,UAAU,CAAC;AAEtC,eAAO,MAAM,kBAAkB,iFAOrB,CAAC;AAEX,MAAM,MAAM,eAAe,GAAG,CAAC,OAAO,kBAAkB,CAAC,CAAC,MAAM,CAAC,CAAC;AAElE,MAAM,MAAM,YAAY,GAAG,KAAK,CAAC,QAAQ,CAAC"}
