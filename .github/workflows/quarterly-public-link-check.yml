@@ -20,10 +20,10 @@ jobs:
       P11_PUBLIC_SITE_URL: ${{ vars.P11_PUBLIC_SITE_URL }}
       P10_LINK_CHECK_MAX_PAGES: '250'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm

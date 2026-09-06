@@ -13,8 +13,8 @@ jobs:
     name: 1 - Lint and static analysis
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -33,8 +33,8 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -95,8 +95,8 @@ jobs:
           echo 'Guarded Atlas integrations require P10_MONGODB_URI in the protected p10-test environment.' >&2
           echo 'A missing integration environment is not a passing CI integration stage.' >&2
           exit 1
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -122,8 +122,8 @@ jobs:
     needs: atlas-integrations
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -149,9 +149,9 @@ jobs:
           echo 'P10 live browser/Reusability Gate cannot run because the protected p10-test environment does not provide P10_MONGODB_URI.' >&2
           echo 'Configure the environment secret and rerun CI; a skipped live gate is not a passing release gate.' >&2
           exit 1
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: env.P10_ATLAS_CONFIGURED == 'true'
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         if: env.P10_ATLAS_CONFIGURED == 'true'
         with:
           node-version: 24
@@ -176,7 +176,7 @@ jobs:
         run: npm run p10:e2e
       - name: Archive P10 trace/video/hash evidence
         if: always() && env.P10_ATLAS_CONFIGURED == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: p10-reusability-evidence
           path: |
